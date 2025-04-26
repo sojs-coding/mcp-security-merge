@@ -168,14 +168,14 @@ INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
 
 Access the Agent 🤖 interface by going to `http://localhost:8000`
 
-> [!NOTE]  
+> 🪧 **NOTE:**  
 > First response usually takes a bit longer as the agent is loading the tools from the MCP server(s).
 
-> [!CAUTION]  
+> ⚠️ **CAUTION:**  
 > In case the response seems stuck and/or there is an error on the console, create a new session in the ADK Web UI by clicking `+ New Session` in the top right corner.
 
-> [!NOTE]  
-> When exiting, shut down the UI tab first and then use `ctrl+c` to exit. 
+> 🪧 **NOTE:**  
+> When exiting, shut down the browser tab first and then use `ctrl+c` to exit on the console. 
 
 </details>
 
