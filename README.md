@@ -115,6 +115,10 @@ GOOGLE_API_KEY="NOT_SET"
 Once the variables are all updated as needed, run the agent again (make sure you are back in the `mcp-security/run-with-google-adk` directory).
 
 ```bash
+   # Authenticate to use SecOps APIs
+   # Skip if running in Google Cloud Shell
+   gcloud auth application-default login
+
    # Run the agent again
    ./run-adk-agent.sh
 ```
@@ -164,13 +168,13 @@ INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
 
 Access the Agent 🤖 interface by going to `http://localhost:8000`
 
-> [!NOTE]
+> [!NOTE]  
 > First response usually takes a bit longer as the agent is loading the tools from the MCP server(s).
 
-> [!CAUTION]
+> [!CAUTION]  
 > In case the response seems stuck and/or there is an error on the console, create a new session in the ADK Web UI by clicking `+ New Session` in the top right corner.
 
-> [!NOTE]
+> [!NOTE]  
 > When exiting, shut down the UI tab first and then use `ctrl+c` to exit. 
 
 </details>
