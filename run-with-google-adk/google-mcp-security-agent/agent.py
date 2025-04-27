@@ -1,11 +1,14 @@
 from google.adk.agents.llm_agent import LlmAgent
 from google.adk.tools.mcp_tool.mcp_toolset import MCPToolset, StdioServerParameters
 import os
+import logging
 
+logging.basicConfig(
+    level=logging.INFO)
 
 async def get_all_tools():
   """Get Tools from All MCP servers"""
-  print("Attempting to connect to MCP servers...")
+  logging.info("Attempting to connect to MCP servers...")
   secops_tools = []
   gti_tools = []
   secops_soar_tools = []
@@ -55,8 +58,7 @@ async def get_all_tools():
                 ),async_exit_stack=exit_stack
     )  
 
-           
-  print("MCP Toolsets created successfully.")
+  logging.info("MCP Toolsets created successfully.")
   return secops_tools+gti_tools+secops_soar_tools, exit_stack
 
 async def create_agent():
@@ -65,7 +67,7 @@ async def create_agent():
 
   agent = LlmAgent(
       model=os.environ.get("GOOGLE_MODEL"), 
-      name='google_security_assistent',
+      name='google_security_assistant',
       instruction=os.environ.get("DEFAULT_PROMPT"),
       tools=tools 
   )

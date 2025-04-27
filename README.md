@@ -32,25 +32,26 @@ The server uses Google's authentication. Make sure you have either:
 2. Set a GOOGLE_APPLICATION_CREDENTIALS environment variable
 3. Used `gcloud auth application-default login`
 
-## Client Configuration
+## Client Configurations
+The MCP servers from this repo can be used with following clients
+1. Cline and Claude Desktop
+2. Google ADK Agents (a prebuilt agent is provided)
 
-The configuration for Claude Desktop and cline is the same. We make use of uv to
-run the mcp services locally and use the stdio transport.
+The configuration for Claude Desktop and Cline is the same (provided below for [uv](#using-uv-recommended) and [pip](#using-pip)).  We use the stdio transport.
 
 This repo also comes with a prebuilt [Google ADK(Agent Development Kit)](https://google.github.io/adk-docs/) agent. It can be configured and run out of the box, instructions below - 
 
 
-<details>
+### Using the prebuilt Google ADK agent as client
 
-<summary>Running with the prebuilt agent</summary>
-
-### Prerequesites
+#### Prerequesites
 You need the following to run the agent
 
 1. `python` - v3.11+
 2. `pip`
 3. `gcloud` cli (If you ran on Google Cloud Console then gcloud is already installed)
 
+#### Setting up and running the agent
 Please execute the following instructions
 
 ```bash
@@ -86,7 +87,7 @@ $./run-adk-agent.sh
 
 Use your favorite editor and update `./google-mcp-security-agent/.env`. 
 
-The default `.env` file is shown below. Update the variables as needed in your favorite editor. You can choose to load some or all of the MCP servers available using the load environment variable at the start of each section. Make sure that variables in the `MANDATORY` section have proper values (make sure you get and update the `GOOGLE_API_KEY` using [instructions](https://ai.google.dev/gemini-api/docs/api-key)) and the value of the variable `GOOGLE_GENAI_USE_VERTEXAI` is set to "False" always.
+The default `.env` file is shown below. Update the variables as needed in your favorite editor. You can choose to load some or all of the MCP servers available using the load environment variable at the start of each section. Make sure that variables in the `MANDATORY` section have proper values (make sure you get and update the `GOOGLE_API_KEY` using [instructions](https://ai.google.dev/gemini-api/docs/api-key)) and the value of the variable `GOOGLE_GENAI_USE_VERTEXAI` is set to "False" always (As we want to use the Google [Gen AI SDK](https://cloud.google.com/vertex-ai/generative-ai/docs/sdks/overview) instead of the [Vertex AI SDK](https://cloud.google.com/vertex-ai/docs/python-sdk/use-vertex-ai-python-sdk)).
 
 ```bash
 # SecOps MCP
@@ -118,7 +119,9 @@ Once the variables are all updated as needed, run the agent again (make sure you
    # Authenticate to use SecOps APIs
    # Skip if running in Google Cloud Shell
    gcloud auth application-default login
+```
 
+```bash
    # Run the agent again
    ./run-adk-agent.sh
 ```
@@ -172,12 +175,13 @@ Access the Agent 🤖 interface by going to `http://localhost:8000`
 > First response usually takes a bit longer as the agent is loading the tools from the MCP server(s).
 
 > ⚠️ **CAUTION:**  
-> In case the response seems stuck and/or there is an error on the console, create a new session in the ADK Web UI by clicking `+ New Session` in the top right corner.
+> In case the response seems stuck and/or there is an error on the console, create a new session in the ADK Web UI by clicking `+ New Session` in the top right corner. You can also ask a follow up question in the same session like `Are you still there?` or `Can you retry that?`
 
 > 🪧 **NOTE:**  
 > When exiting, shut down the browser tab first and then use `ctrl+c` to exit on the console. 
 
-</details>
+
+> If you want to use Cline / Cloude Desktop please check the following two sections for configurations
 
 
 ### Using uv (Recommended)
