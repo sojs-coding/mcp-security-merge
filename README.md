@@ -34,8 +34,8 @@ The server uses Google's authentication. Make sure you have either:
 
 ## Client Configurations
 The MCP servers from this repo can be used with following clients
-1. Cline and Claude Desktop
-2. Google ADK Agents (a prebuilt agent is provided)
+1. Cline, Claude Desktop, and other MCP supported clients
+2. Google ADK Agents (a prebuilt agent example is provided)
 
 The configuration for Claude Desktop and Cline is the same (provided below for [uv](#using-uv-recommended) and [pip](#using-pip)).  We use the stdio transport.
 
@@ -43,7 +43,7 @@ This repo also comes with a prebuilt [Google ADK(Agent Development Kit)](https:/
 
 
 ### Using the prebuilt Google ADK agent as client
-
+<details>
 #### Prerequesites
 You need the following to run the agent
 
@@ -182,7 +182,7 @@ Access the Agent 🤖 interface by going to `http://localhost:8000`
 
 
 > If you want to use Cline / Cloude Desktop please check the following two sections for configurations
-
+</details>
 
 ### Using uv (Recommended)
 
