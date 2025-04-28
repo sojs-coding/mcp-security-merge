@@ -291,7 +291,6 @@ Below is a list of documented integrations. Select an integration to view its sp
  * [VirusTotal V3](virus_total_v3.md)
  * [VMRay](vm_ray.md)
  * [Web Risk](web_risk.md)
- * [Websense](websense.md)
  * [WildFire](wildfire.md)
  * [WMI](wmi.md)
  * [X-Force](x_force.md)

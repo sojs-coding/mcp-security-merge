@@ -34,6 +34,7 @@ Each server provides different capabilities:
 - [Security Command Center (SCC) Server](servers/scc_mcp.md) - Manage cloud security posture and vulnerabilities
 - [Chronicle Security Operations (SecOps) Server](servers/secops_mcp.md) - Search and analyze security events and alerts
 - [SecOps SOAR Server](servers/secops_soar_mcp.md) - Manage security cases and automate response actions
+  - [SOAR Integrations](soar_integrations/index.md) - Link list to documented integrations
 
 ## Example Use Cases
 
