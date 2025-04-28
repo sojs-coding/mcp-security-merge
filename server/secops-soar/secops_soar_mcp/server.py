@@ -26,7 +26,7 @@ from secops_soar_mcp.utils.utils import normalize_integration_name
 import argparse
 
 logger = get_logger(__name__)
-mcp = FastMCP("SoarAS")
+mcp = FastMCP("SecOps SOAR")
 
 register_tools_case_management(mcp)
 
