@@ -311,7 +311,19 @@ You can also use pip instead of uv to install and run the MCP servers. This appr
       "alwaysAllow": [
       ]
     },
-  "secops-soar": {
+    "scc-mcp": {
+      "command": "/bin/bash",
+      "args": [
+        "-c",
+        "cd /path/to/the/repo/server/scc && pip install -e . && scc_mcp"
+      ],
+      "env": {
+      },
+      "disabled": false,
+      "autoApprove": [],
+      "alwaysAllow": []
+    },
+    "secops-soar": {
       "autoApprove": [
       ],
       "disabled": false,
