@@ -328,7 +328,6 @@ You can also use pip instead of uv to install and run the MCP servers. This appr
       "transportType": "stdio"
     }
   }
-  }
 }
 ```
 
