@@ -19,6 +19,13 @@ import logging
 logging.basicConfig(
     level=logging.INFO)
 
+
+if os.environ.get("MINIMAL_LOGGING","N") == "Y":
+  root_logger = logging.getLogger()
+  root_logger.setLevel(logging.ERROR)
+
+
+
 async def get_all_tools():
   """Get Tools from All MCP servers"""
   logging.info("Attempting to connect to MCP servers...")
@@ -26,19 +33,27 @@ async def get_all_tools():
   gti_tools = []
   secops_soar_tools = []
   exit_stack = None
+  uv_dir_prefix="../server"
+  env_file_path = "../../../run-with-google-adk/google-mcp-security-agent/.env"
+
+  if os.environ.get("REMOTE_RUN","N") == "Y":
+    env_file_path="/tmp/.env"
+    uv_dir_prefix="./server"
+
+  logging.info(f"Using Env File Path - {env_file_path}, Current directory is - {os.getcwd()}")
 
   if os.environ.get("LOAD_SECOPS_MCP") == "Y":
     secops_tools, exit_stack = await MCPToolset.from_server(
             connection_params=StdioServerParameters(
                 command='uv',
                 args=["--directory",
-                        "../server/secops/secops_mcp",
+                        uv_dir_prefix + "/secops/secops_mcp",
                         "run",
                         "--env-file",
-                        "../../../run-with-google-adk/google-mcp-security-agent/.env",
+                        env_file_path,
                         "server.py"
                     ],
-                ),async_exit_stack=exit_stack
+                )
     )
 
   if os.environ.get("LOAD_GTI_MCP") == "Y":
@@ -46,10 +61,10 @@ async def get_all_tools():
             connection_params=StdioServerParameters(
                 command='uv',
                 args=[ "--directory",
-                        "../server/gti/gti_mcp",
+                        uv_dir_prefix + "/gti/gti_mcp",
                         "run",
                         "--env-file",
-                        "../../../run-with-google-adk/google-mcp-security-agent/.env",
+                        env_file_path,
                         "server.py"
                     ],
                 ),async_exit_stack=exit_stack
@@ -60,10 +75,10 @@ async def get_all_tools():
             connection_params=StdioServerParameters(
                 command='uv',
                 args=["--directory",
-                        "../server/secops-soar/secops_soar_mcp",
+                        uv_dir_prefix + "/secops-soar/secops_soar_mcp",
                         "run",
                         "--env-file",
-                        "../../../run-with-google-adk/google-mcp-security-agent/.env",
+                        env_file_path,
                         "server.py",
                         "--integrations",
                         "CSV,OKTA"
@@ -71,8 +86,21 @@ async def get_all_tools():
                 ),async_exit_stack=exit_stack
     )  
 
+  if os.environ.get("LOAD_SCC_MCP") == "Y":
+    scc_tools, exit_stack = await MCPToolset.from_server(
+            connection_params=StdioServerParameters(
+                command='uv',
+                args=[ "--directory",
+                        uv_dir_prefix + "/scc/",
+                        "run",
+                        "scc_mcp.py"
+                    ],
+                ),async_exit_stack=exit_stack
+    )  
+
+
   logging.info("MCP Toolsets created successfully.")
-  return secops_tools+gti_tools+secops_soar_tools, exit_stack
+  return secops_tools+gti_tools+secops_soar_tools+scc_tools, exit_stack
 
 async def create_agent():
   """Gets tools from MCP Server."""
