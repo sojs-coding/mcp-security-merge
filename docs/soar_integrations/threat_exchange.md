@@ -1,5 +1,24 @@
-# ThreatExchange Integration
+# ThreatExchange SOAR Integration
 
-*Placeholder for ThreatExchange integration documentation.*
+## Overview
+This document outlines the tools available in the ThreatExchange integration for Chronicle SOAR.
 
-**Note:** This document needs to be populated with details about the integration's capabilities, configuration, and usage.
+## Tools
+
+### `threat_exchange_get_reputations`
+Get reputations for a given entity.
+
+**Parameters:**
+*   `case_id` (str, required): The ID of the case.
+*   `alert_group_identifiers` (List[str], required): Identifiers for the alert groups.
+*   `target_entities` (List[TargetEntity], optional, default=factory): Optional list of specific target entities (Identifier, EntityType) to run the action on.
+*   `scope` (str, optional, default="All entities"): Defines the scope for the action.
+
+### `threat_exchange_ping`
+Test Connectivity.
+
+**Parameters:**
+*   `case_id` (str, required): The ID of the case.
+*   `alert_group_identifiers` (List[str], required): Identifiers for the alert groups.
+*   `target_entities` (List[TargetEntity], optional, default=factory): Optional list of specific target entities (Identifier, EntityType) to run the action on.
+*   `scope` (str, optional, default="All entities"): Defines the scope for the action.
