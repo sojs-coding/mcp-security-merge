@@ -12,18 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# this script runs from the top level directory (mcp-security when deploying and /app when running in container)
+
 #!/bin/bash
 
 ENV_FILE="./run-with-google-adk/google-mcp-security-agent/.env"
 
-# Check if required environment variables are set
-if [ -z "$GOOGLE_CLOUD_PROJECT" ] || [ -z "$GOOGLE_CLOUD_LOCATION" ]; then
-  echo "Error: GOOGLE_CLOUD_PROJECT and GOOGLE_CLOUD_LOCATION environment variables must be set."
-  echo "Please set them before running this script, e.g.:"
-  echo "export GOOGLE_CLOUD_PROJECT=your-project-id"
-  echo "export GOOGLE_CLOUD_LOCATION=your-region"
-  exit 1
-fi
 
 # Function to create .env file
 create_env_file() {
@@ -50,8 +44,6 @@ create_env_file() {
 # Check the command
 if [ "$1" = "deploy" ]; then
   echo "Starting deployment process..."
-  # Initialize the env_vars string with the given values
-  env_vars="GOOGLE_CLOUD_PROJECT=$GOOGLE_CLOUD_PROJECT,GOOGLE_CLOUD_LOCATION=$GOOGLE_CLOUD_LOCATION,GOOGLE_GENAI_USE_VERTEXAI=False,REMOTE_RUN=Y"
 
   # Check if the .env file exists
   if [ ! -f "$ENV_FILE" ]; then
@@ -63,22 +55,23 @@ if [ "$1" = "deploy" ]; then
   while IFS='=' read -r key value; do
     # Skip empty lines and comments
     if [[ -n "$key" && "$key" != "#"* ]]; then
-      # Skip GOOGLE_GENAI_USE_VERTEXAI
-      if [ "$key" != "GOOGLE_GENAI_USE_VERTEXAI" ]; then
-        # Replace commas with semi commas for DEFAULT_PROMPT
-        if [ "$key" = "DEFAULT_PROMPT" ]; then
-          value=$(echo "$value" | sed 's/,/;/g')
-        fi
-        # Append to the env_vars string
-        if [ -z "$env_vars" ]; then
-          env_vars="$key=$value"
-        else
-          env_vars="$env_vars,$key=$value"
-        fi
-        echo "Adding environment variable: $key"
-      else
-        echo "Skipping environment variable: GOOGLE_GENAI_USE_VERTEXAI"
+      # Replace commas with semi commas for DEFAULT_PROMPT
+      if [ "$key" = "GOOGLE_CLOUD_LOCATION" ]; then
+        GOOGLE_CLOUD_LOCATION="$value"
       fi
+      if [ "$key" = "GOOGLE_CLOUD_PROJECT" ]; then
+        GOOGLE_CLOUD_PROJECT="$value"
+      fi
+      if [ "$key" = "DEFAULT_PROMPT" ]; then
+        value=$(echo "$value" | sed 's/,/;/g')
+      fi
+      # Append to the env_vars string
+      if [ -z "$env_vars" ]; then
+        env_vars="$key=$value"
+      else
+        env_vars="$env_vars,$key=$value"
+      fi
+      echo "Adding environment variable: $key"
     fi
   done < "$ENV_FILE"
 
@@ -88,9 +81,21 @@ if [ "$1" = "deploy" ]; then
     echo "The 'gcloud run deploy' command may fail if required variables are missing."
   fi
 
+  # Initialize the env_vars string with the given values
+  env_vars="$env_vars,REMOTE_RUN=Y"
+
   # Print the constructed environment variables string
   echo "Using environment variables: $env_vars"
 
+  # Copying files in the top level directory as required by cloud run deployment
+  echo "Temporarily copying files in the top level directory for image creation."
+  cp ./run-with-google-adk/cloudrun_deploy_run.sh .
+  cp ./run-with-google-adk/cloudrun_deploy.py .
+  cp ./run-with-google-adk/Dockerfile .
+  cp ./run-with-google-adk/.dockerignore .
+
+  
+ 
   # Deploy the service with the dynamically constructed environment variables
   gcloud run deploy mcp-security-agent-service \
     --source . \
@@ -104,8 +109,18 @@ if [ "$1" = "deploy" ]; then
 
   # Check the status of the deployment
   if [ "$deploy_status" -eq 0 ]; then
+    # Deleting temporarily files in the top level directory 
+    echo "Deleting temporarily copied files in the top level directory for image creation."
+    rm ./cloudrun_deploy_run.sh
+    rm ./cloudrun_deploy.py
+    rm ./Dockerfile
+    rm ./.dockerignore
     echo "Successfully deployed the service."
   else
+    rm ./cloudrun_deploy_run.sh
+    rm ./cloudrun_deploy.py
+    rm ./Dockerfile
+    rm ./.dockerignore
     echo "Failed to deploy the service."
     exit 1
   fi
