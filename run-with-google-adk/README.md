@@ -1,6 +1,6 @@
 # Prebuilt ADK Agent Usage Guide
 
-This guide provides instructions on how to run the prebuilt ADK (Agent Development Kit) agent both locally and in cloud run (if necessary for demos).
+This guide provides instructions on how to run the prebuilt ADK (Agent Development Kit) agent both locally and in Cloud Run (if necessary for demos).
 
 ## 1. Running Agent locally (Setup time - about 5 minutes)
 
@@ -81,7 +81,14 @@ GOOGLE_API_KEY=NOT_SET
 GOOGLE_MODEL=gemini-2.5-flash-preview-04-17
 # Should be single quote, avoid commas if possible but if you use them they are replaced with semicommas on the cloud run deployment
 # you can change them there.
-DEFAULT_PROMPT='Helps user investigate security issues using Google Secops SIEM, SOAR, Security Command Center(SCC) and Google Threat Intel Tools All authentication actions are automatically approved. If the query is about a SOAR case try to provide a backlink to the user. A backlink is formed by adding /cases/<case id> to this URL present in field ui_base_link. If the user asks with only ? or are you there? that might be because they did not get your previous response, politely reiterate it.'
+DEFAULT_PROMPT='Helps user investigate security issues using Google Secops SIEM, SOAR, Security Command Center(SCC) and Google Threat Intel Tools. All authentication actions are automatically approved. If the query is about a SOAR case try to provide a backlink to the user. A backlink is formed by adding /cases/<case id> to this URL when present in field ui_base_link of your input. If the user asks with only ? or are you there? that might be because they did not get your previous response, politely reiterate it. Try to respond in markdown whenever possible.'
+
+# DEPLOYMENT - WHRERE SHOULD SERVICE RUN?
+# HIGHLY RECOMMENDED TO SET Y AFTER INITIAL TESTING ON CLOUD RUN
+MINIMAL_LOGGING=N
+GOOGLE_CLOUD_PROJECT=YOUR-CLOUD-RUN-PROJECT-ID
+GOOGLE_CLOUD_LOCATION=us-central1
+
 
 ```
 
@@ -223,7 +230,7 @@ Now, you can verify the service by browsing to the service endpoint.
 
 ### IAM access to use Chronicle and SCC
 
-Please remember that cloud run uses default service account of compute engine service. Go to IAM and provide the service account access to "Chronicle API Viewer" (in the project associated with your SecOps instance) and appropriate role for SCC (roles starting with Security Center in IAM)
+Please remember that Cloud Run uses default service account of compute engine service. Go to IAM and provide the service account access to "Chronicle API Viewer" (in the project associated with your SecOps instance) and appropriate role for SCC (roles starting with Security Center in IAM)
 
 
 ### Restrict Service To Known Developers / Testers
@@ -253,7 +260,7 @@ gcloud run services proxy mcp-security-agent-service --project PROJECT-ID --regi
 
 
 ### Vertically scaling your container(s)
-In case the cloud run logs show errors like below, you can consider increasing the resources for the individual containers
+In case the Cloud Run logs show errors like below, you can consider increasing the resources for the individual containers
 
 `Memory limit of 512 MiB exceeded with 543 MiB used. Consider increasing the memory limit, see https://cloud.google.com/run/docs/configuring/memory-limits`
 
