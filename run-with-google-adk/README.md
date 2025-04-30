@@ -256,7 +256,7 @@ Summarizing the steps from [IAM authentication](https://cloud.google.com/run/doc
 gcloud run services proxy mcp-security-agent-service --project PROJECT-ID --region YOUR-REGION
 
 ```
-2. Now they can access this agent on `http://localhost:8080`
+2. Now they can access the Cloud Run Service locally on `http://localhost:8080`
 
 
 ### Vertically scaling your container(s)
