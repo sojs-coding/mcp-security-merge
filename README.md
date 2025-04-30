@@ -33,156 +33,16 @@ The server uses Google's authentication. Make sure you have either:
 3. Used `gcloud auth application-default login`
 
 ## Client Configurations
-The MCP servers from this repo can be used with following clients
+The MCP servers from this repo can be used with the following clients
 1. Cline, Claude Desktop, and other MCP supported clients
-2. Google ADK Agents (a prebuilt agent example is provided)
+2. [Google ADK(Agent Development Kit)](https://google.github.io/adk-docs/) Agents (a prebuilt agent is provided, details [below](#using-the-prebuilt-google-adk-agent-as-client))
 
 The configuration for Claude Desktop and Cline is the same (provided below for [uv](#using-uv-recommended) and [pip](#using-pip)).  We use the stdio transport.
 
-This repo also comes with a prebuilt [Google ADK(Agent Development Kit)](https://google.github.io/adk-docs/) agent. It can be configured and run out of the box, instructions below - 
-
-
 ### Using the prebuilt Google ADK agent as client
-<details>
-#### Prerequesites
-You need the following to run the agent
 
-1. `python` - v3.11+
-2. `pip`
-3. `gcloud` cli (If you ran on Google Cloud Console then gcloud is already installed)
+Please refer to the [README file](./run-with-google-adk/README.md) for both - locally running the prebuilt agent and [Cloud Run](https://cloud.google.com/run) deployment.
 
-#### Setting up and running the agent
-Please execute the following instructions
-
-```bash
-   # Clone the repo
-   git clone https://github.com/google/mcp-security.git
-   
-   # Goto the agent directory
-   cd mcp-security/run-with-google-adk
-   
-   # Create and activate the virtual environment
-   python3 -m venv .venv
-   . .venv/bin/activate
-
-   # Install dependencies (google-adk and uv)
-   pip install -r requirements.txt
-   
-   # Add exec permission to run-adk-agent.sh - which runs our agent
-   chmod +x run-adk-agent.sh
-
-   # Run the agent
-   ./run-adk-agent.sh
-```
-
-For the very first run it creates a `.env` file to update
-
-```bash
-# sample output
-$./run-adk-agent.sh 
-[INFO] '.env' file not found at './google-mcp-security-agent/.env'. Creating it with default values (double-quoted in file)...
-[WARN] '.env' file created at ./google-mcp-security-agent/.env
-[WARN] Please update values for variables (and review LOAD_ flags) in './google-mcp-security-agent/.env', then re-run this script.
-```
-
-Use your favorite editor and update `./google-mcp-security-agent/.env`. 
-
-The default `.env` file is shown below. Update the variables as needed in your favorite editor. You can choose to load some or all of the MCP servers available using the load environment variable at the start of each section. Make sure that variables in the `MANDATORY` section have proper values (make sure you get and update the `GOOGLE_API_KEY` using [instructions](https://ai.google.dev/gemini-api/docs/api-key)) and the value of the variable `GOOGLE_GENAI_USE_VERTEXAI` is set to "False" always (As we want to use the Google [Gen AI SDK](https://cloud.google.com/vertex-ai/generative-ai/docs/sdks/overview) instead of the [Vertex AI SDK](https://cloud.google.com/vertex-ai/docs/python-sdk/use-vertex-ai-python-sdk)).
-
-```bash
-# SecOps MCP
-LOAD_SECOPS_MCP="Y"
-CHRONICLE_PROJECT_ID="NOT_SET"
-CHRONICLE_CUSTOMER_ID="NOT_SET"
-CHRONICLE_REGION="NOT_SET"
-
-# GTI MCP
-LOAD_GTI_MCP="Y"
-VT_APIKEY="NOT_SET"
-
-# SECOPS_SOAR MCP
-LOAD_SECOPS_SOAR_MCP="Y"
-SOAR_URL="NOT_SET"
-SOAR_APP_KEY="NOT_SET"
-
-# MANDATORY
-GOOGLE_GENAI_USE_VERTEXAI="False"
-GOOGLE_MODEL="gemini-2.5-pro-preview-03-25"
-DEFAULT_PROMPT="Helps user investigate security issues using Google Secops SIEM, SOAR and Google Threat Intel Tools, all authentication actions are automatically approved"
-GOOGLE_API_KEY="NOT_SET"
-
-```
-
-Once the variables are all updated as needed, run the agent again (make sure you are back in the `mcp-security/run-with-google-adk` directory).
-
-```bash
-   # Authenticate to use SecOps APIs
-   # Skip if running in Google Cloud Shell
-   gcloud auth application-default login
-```
-
-```bash
-   # Run the agent again
-   ./run-adk-agent.sh
-```
-
-You should get an output like following
-
-```bash
-# Sample output
-$./run-adk-agent.sh 
-[INFO] Found './google-mcp-security-agent/.env'. Ensuring its structure...
-[INFO] Validating variable values in './google-mcp-security-agent/.env'...
-[INFO] All required variables are set according to LOAD flags.
-[INFO] Active configuration (values are masked where appropriate):
-  Section: MANDATORY
-    GOOGLE_GENAI_USE_VERTEXAI: F...e
-    GOOGLE_MODEL: gem...-25
-    DEFAULT_PROMPT: Hel...ved
-    GOOGLE_API_KEY: AIz...qLU
-  Section: SecOps MCP (LOADED)
-    LOAD_SECOPS_MCP: Y
-    CHRONICLE_PROJECT_ID: par...ops
-    CHRONICLE_CUSTOMER_ID: 118...bca
-    CHRONICLE_REGION: US
-  Section: GTI MCP (LOADED)
-    LOAD_GTI_MCP: Y
-    VT_APIKEY: 171...631
-  Section: SecOps SOAR MCP (LOADED)
-    LOAD_SECOPS_SOAR_MCP: Y
-    SOAR_URL: htt...com
-    SOAR_APP_KEY: 8ad...707
-
-[INFO] Attempting to run 'adk web' with the above configuration...
-----------------------------------------------------------------------
-INFO:     Started server process [412930]
-INFO:     Waiting for application startup.
-
-+-----------------------------------------------------------------------------+
-| ADK Web Server started                                                      |
-|                                                                             |
-| For local testing, access at http://localhost:8000.                         |
-+-----------------------------------------------------------------------------+
-
-INFO:     Application startup complete.
-INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
-
-```
-
-Access the Agent 🤖 interface by going to `http://localhost:8000`
-
-> 🪧 **NOTE:**  
-> First response usually takes a bit longer as the agent is loading the tools from the MCP server(s).
-
-> ⚠️ **CAUTION:**  
-> In case the response seems stuck and/or there is an error on the console, create a new session in the ADK Web UI by clicking `+ New Session` in the top right corner. You can also ask a follow up question in the same session like `Are you still there?` or `Can you retry that?`
-
-> 🪧 **NOTE:**  
-> When exiting, shut down the browser tab first and then use `ctrl+c` to exit on the console. 
-
-
-> If you want to use Cline / Cloude Desktop please check the following two sections for configurations
-</details>
 
 ### Using uv (Recommended)
 
