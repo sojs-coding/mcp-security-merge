@@ -33,7 +33,7 @@ The server uses Google's authentication. Make sure you have either:
 3. Used `gcloud auth application-default login`
 
 ## Client Configurations
-The MCP servers from this repo can be used with following clients
+The MCP servers from this repo can be used with the following clients
 1. Cline, Claude Desktop, and other MCP supported clients
 2. [Google ADK(Agent Development Kit)](https://google.github.io/adk-docs/) Agents (a prebuilt agent is provided, details [below](#using-the-prebuilt-google-adk-agent-as-client))
 
@@ -41,7 +41,7 @@ The configuration for Claude Desktop and Cline is the same (provided below for [
 
 ### Using the prebuilt Google ADK agent as client
 
-Please refer to the [README file](./run-with-google-adk/README.md)
+Please refer to the [README file](./run-with-google-adk/README.md) for both - locally running the prebuilt agent and [Cloud Run](https://cloud.google.com/run) deployment.
 
 
 ### Using uv (Recommended)

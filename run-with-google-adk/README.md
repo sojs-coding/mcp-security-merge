@@ -1,10 +1,10 @@
 # Prebuilt ADK Agent Usage Guide
 
-This guide provides instructions on how to run the prebuilt ADK (Agent Development Kit) agent both locally and in cloud run (if necessasary for demos).
+This guide provides instructions on how to run the prebuilt ADK (Agent Development Kit) agent both locally and in cloud run (if necessary for demos).
 
 ## 1. Running Agent locally (Setup time - about 5 minutes)
 
-### Prerequesites
+### Prerequisites
 You need the following to run the agent
 
 1. `python` - v3.11+
@@ -148,7 +148,7 @@ Before you do this, please consider following
     1. Require authentication for your agent (steps provided [below](#restrict-service-to-known-developers--testers))
     2. Implement restrictive logging (steps provided [below](#adjust-logging-verbosity))
 
-### Prerequesites
+### Prerequisites
 
 1. Must have locally run the ADK based agent successfully at least once.
 2. Must have required APIs enabled and proper IAM access ([details](https://cloud.google.com/run/docs/deploying-source-code#before_you_begin))
@@ -157,7 +157,7 @@ Before you do this, please consider following
 In addition to Gemini API costs, running agent will incur cloud costs. Please check [Cloud Run Pricing](https://cloud.google.com/run/pricing).
 
 > ⚠️ **WARNING:**  
-> It is not recommended to run the a Cloud Run service with unauthenticated invocations enabled (we do that initially for verification). Please follow steps to enable [IAM authentication](https://cloud.google.com/run/docs/authenticating/developers) on your service. You ccould also deploy it behind the [Identity Aware Proxy (IAP)](https://cloud.google.com/iap/docs/enabling-cloud-run) - but that is out of scope for this documentation.
+> It is not recommended to run the a Cloud Run service with unauthenticated invocations enabled (we do that initially for verification). Please follow steps to enable [IAM authentication](https://cloud.google.com/run/docs/authenticating/developers) on your service. You could also deploy it behind the [Identity Aware Proxy (IAP)](https://cloud.google.com/iap/docs/enabling-cloud-run) - but that is out of scope for this documentation.
 
 ### Deployment Steps
 
@@ -165,16 +165,13 @@ In addition to Gemini API costs, running agent will incur cloud costs. Please ch
 # Please run these commands from the mcp-security directory
 chmod +x cloudrun_deploy_run.sh
 
-export GOOGLE_CLOUD_PROJECT=your-project-id
-export GOOGLE_CLOUD_LOCATION=your-region
-
-./cloudrun_deploy_run.sh deploy
+bash ./run-with-google-adk/cloudrun_deploy_run.sh deploy
 ```
 Sample output is provided below
 
 ```bash
 # Sample output
-$ ./cloudrun_deploy_run.sh deploy
+$ bash ./run-with-google-adk/cloudrun_deploy_run.sh deploy
 Starting deployment process...
 Adding environment variable: LOAD_SECOPS_MCP
 Adding environment variable: CHRONICLE_PROJECT_ID
@@ -186,30 +183,39 @@ Adding environment variable: LOAD_SECOPS_SOAR_MCP
 Adding environment variable: SOAR_URL
 Adding environment variable: SOAR_APP_KEY
 Adding environment variable: LOAD_SCC_MCP
-Skipping environment variable: GOOGLE_GENAI_USE_VERTEXAI
+Adding environment variable: GOOGLE_GENAI_USE_VERTEXAI
 Adding environment variable: GOOGLE_API_KEY
 Adding environment variable: GOOGLE_MODEL
 Adding environment variable: DEFAULT_PROMPT
-Using environment variables: 
+Adding environment variable: MINIMAL_LOGGING
+Adding environment variable: GOOGLE_CLOUD_PROJECT
+Adding environment variable: GOOGLE_CLOUD_LOCATION
+Using environment variables: LOAD_SECOPS_MCP=Y,
+.
+.
 [REDACTED]
-Building using Dockerfile and deploying container to Cloud Run service [mcp-security-agent-service] in project [YOUR-PROJECT] region [us-central1]
+.
+.
+Temporarily copying files in the top level directory for image creation.
+Building using Dockerfile and deploying container to Cloud Run service [mcp-security-agent-service] in project [REDACTED] region [us-central1]
 ⠛ Building and deploying... Uploading sources.                                                                                                                                               
 ⠏ Building and deploying... Uploading sources.                                                                                                                                               
   ⠏ Uploading sources...                                                                                                                                                                     
   . Creating Revision...                                                                                                                                                                     
   . Routing traffic...                                                                                                                                                                       
   . Setting IAM Policy...                                                                                                                                                                    
-Creating temporary archive of 576 file(s) totalling 11.2 MiB before compression.
+Creating temporary archive of 581 file(s) totalling 11.2 MiB before compression.
 Some files were not included in the source upload.
 ✓ Building and deploying... Done.                                                                                                                                                            
   ✓ Uploading sources...                                                                                                                                                                     
-  ✓ Building Container... Logs are available at [[REDACTED]].          
+  ✓ Building Container... Logs are available at [REDACTED].          
   ✓ Creating Revision...                                                                                                                                                                     
   ✓ Routing traffic...                                                                                                                                                                       
   ✓ Setting IAM Policy...                                                                                                                                                                    
 Done.                                                                                                                                                                                        
-Service [mcp-security-agent-service] revision [mcp-security-agent-service-[REDACTED]] has been deployed and is serving 100 percent of traffic.
+Service [mcp-security-agent-service] revision [mcp-security-agent-[REDACTED]] has been deployed and is serving 100 percent of traffic.
 Service URL: [REDACTED]
+Deleting temporarily copied files in the top level directory for image creation.
 Successfully deployed the service.
 
 ```
@@ -259,4 +265,4 @@ In case the cloud run logs show errors like below, you can consider increasing t
 4. Add resources by updating either Memory/ CPU or both.
 
 ### Adjust Logging Verbosity
-Since the entire context and response from the LLM is printed as logs. You might end up logging some sensitive information. Setting the environment vairable `MINIMAL_LOGGING` to `Y` should fix this issue. This should also reduce cloud logging costs. Mostly applies when the agent is deployed as a cloud run service.
+Since the entire context and response from the LLM is printed as logs. You might end up logging some sensitive information. Setting the environment variable `MINIMAL_LOGGING` to `Y` should fix this issue. This should also reduce cloud logging costs. Please do this once you have verified the service initially. Changes to be made directly on Cloud Run service and it will result in restarting the service. Verify service logs after the change is made.
