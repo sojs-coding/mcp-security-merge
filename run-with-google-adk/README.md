@@ -135,6 +135,66 @@ INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
 
 Access the Agent 🤖 interface by going to `http://localhost:8000`
 
+
+#### Running agent without the web interface
+
+You could also run the agent without the web interface (This version is more efficient than the web console). A basic console based agent is provided. You can use the following command to run it. 
+
+1. Make sure you have set up the environment variables as explained above
+2. To exit the agent, say `bye` (check sample output below)
+
+```bash
+python console-mcp-agent.py
+```
+Sample output 
+
+```
+$ python console-mcp-agent.py 
+2025-04-30 12:15:48,681 - INFO - __main__ - main - Starting SecOps SOAR MCP server
+2025-04-30 12:15:49,027 - INFO - __main__ - get_enabled_integrations_set - Found --integrations flag. Enabling only: {'csv', 'okta'}
+2025-04-30 12:15:49,027 - INFO - __main__ - register_tools - Starting dynamic tool registration...
+2025-04-30 12:15:49,031 - INFO - __main__ - register_tools -     Found register_tools in okta. Registering...
+2025-04-30 12:15:49,090 - INFO - __main__ - register_tools -     Found register_tools in csv. Registering...
+2025-04-30 12:15:49,109 - INFO - __main__ - register_tools - Finished scanning marketplace directory.
+2025-04-30 12:15:49,128 - INFO - mcp.server.lowlevel.server - _handle_request - Processing request of type ListToolsRequest
+[04/30/25 12:15:51] INFO     Successfully initialized Google Cloud Security Center Client.                                                                                       scc_mcp.py:45
+2025-04-30 12:15:51,910 - scc-mcp - INFO - Successfully initialized Google Cloud Security Center Client.
+[04/30/25 12:15:53] INFO     Successfully initialized Google Cloud Asset Inventory Client.                                                                                       scc_mcp.py:54
+2025-04-30 12:15:53,457 - scc-mcp - INFO - Successfully initialized Google Cloud Asset Inventory Client.
+                    INFO     Starting SCC MCP server...                                                                                                                         scc_mcp.py:324
+2025-04-30 12:15:53,466 - scc-mcp - INFO - Starting SCC MCP server...
+                    INFO     Processing request of type ListToolsRequest                                                                                                         server.py:534
+2025-04-30 12:15:53,489 - mcp.server.lowlevel.server - INFO - Processing request of type ListToolsRequest
+>Hello what can you do ?
+[ET 1746015358.597346 PT 1746015366.3145175 R model T CTC]
+Hello there! I am a security assistant that can help you investigate security issues using various tools.
+
+Here are some of the things I can help you with:
+
+*   **Search Security Events:** I can search for security events and logs in Chronicle SIEM based on natural language queries.
+*   **Get Security Alerts:** I can retrieve recent security alerts directly from Chronicle SIEM.
+*   **Look up Entities:** I can look up information about entities like IP addresses, domains, file hashes, or users in Chronicle SIEM for historical context and activity summaries.
+*   **Get IOC Matches:** I can find if any known Indicators of Compromise (IoCs) from threat intelligence feeds have been observed in your Chronicle SIEM logs.
+*   **Get Threat Intelligence:** I can provide summaries and answer questions about threat actors, malware, vulnerabilities (CVEs), tactics, techniques, and procedures (TTPs) using Google's threat intelligence.
+*   **Investigate Cases:** I can list security cases from your SOAR platform, get their full details, list associated alerts and underlying events, and retrieve entities involved in specific alert groups.
+*   **Manage Cases:** I can add comments to a SOAR case or change its priority.
+*   **Get Entity Details:** I can fetch detailed information about entities known to your SOAR platform.
+*   **Search for Threats:** I can search for specific threat actors, malware families, campaigns, reports, or vulnerabilities in Google Threat Intelligence. I can also retrieve details and related entities for these threats, including timelines and MITRE techniques where available.
+*   **Analyze Files, Domains, IP Addresses, and URLs:** I can get comprehensive analysis reports and related entities for these indicators using Google Threat Intelligence and VirusTotal. I can also analyze a file you provide.
+*   **Search for IOCs:** I can search for specific Indicators of Compromise (files, URLs, domains, IPs) in Google Threat Intelligence.
+*   **Find Cloud Vulnerabilities:** I can list top vulnerability findings and get remediation steps for specific findings in your Google Cloud projects using Security Command Center.
+*   **Perform Okta Actions:** Through the SOAR platform, I can perform actions related to Okta users (get, enable, disable, reset password, set password, list groups, list roles) and groups (get, add).
+*   **Search/Save CSV Data:** Through the SOAR platform, I can search for entities or strings in CSV files and save JSON data to a CSV file.
+
+How can I help you with your security investigation today?
+>bye
+[ET 1746015369.553427 PT 1746015371.908041 R model T CTC]
+Goodbye! Let me know if you need help with any security investigations in the future.
+Closing MCP server connection...
+Cleanup complete.
+
+```
+
 > 🪧 **NOTE:**  
 > First response usually takes a bit longer as the agent is loading the tools from the MCP server(s).
 

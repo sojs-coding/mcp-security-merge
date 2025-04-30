@@ -18,12 +18,6 @@
 
 ENV_FILE="./run-with-google-adk/google-mcp-security-agent/.env"
 
-# Check if the file exists
-if [ ! -f "$ENV_FILE" ]; then
-    echo "Error: Environment file not found at '$ENV_FILE'. This script must be run in the top level directory of this repository." >&2
-    exit 1
-fi
-
 # Function to create .env file
 create_env_file() {
   local env_file="$1"
