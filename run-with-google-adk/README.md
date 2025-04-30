@@ -230,7 +230,7 @@ In addition to Gemini API costs, running agent will incur cloud costs. Please ch
 
 ```bash
 # Please run these commands from the mcp-security directory
-chmod +x cloudrun_deploy_run.sh
+chmod +x ./run-with-google-adk/cloudrun_deploy_run.sh
 
 bash ./run-with-google-adk/cloudrun_deploy_run.sh deploy
 ```
