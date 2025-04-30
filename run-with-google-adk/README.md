@@ -135,15 +135,25 @@ INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
 
 Access the Agent 🤖 interface by going to `http://localhost:8000`
 
+> 🪧 **NOTE:**  
+> First response usually takes a bit longer as the agent is loading the tools from the MCP server(s).
+
+> ⚠️ **CAUTION:**  
+> In case the response seems stuck and/or there is an error on the console, create a new session in the ADK Web UI by clicking `+ New Session` in the top right corner. You can also ask a follow up question in the same session like `Are you still there?` or `Can you retry that?`. You can also try switching `Token Streaming` on.
+
+> 🪧 **NOTE:**  
+> When exiting, shut down the browser tab first and then use `ctrl+c` to exit on the console. 
+
 
 #### Running agent without the web interface
 
-You could also run the agent without the web interface (This version is more efficient than the web console). A basic console based agent is provided. You can use the following command to run it. 
+You can also run the agent without the web interface (This version is more efficient than the web interface). A basic console based agent is provided. You can use the following command to run it. 
 
-1. Make sure you have set up the environment variables as explained above
+1. Make sure you have set up the environment variables in `./google-mcp-security-agent/.env` as explained above
 2. To exit the agent, say `bye` (check sample output below)
 
 ```bash
+# make sure you have updated the ./google-mcp-security-agent/.env file
 python console-mcp-agent.py
 ```
 Sample output 
@@ -195,14 +205,7 @@ Cleanup complete.
 
 ```
 
-> 🪧 **NOTE:**  
-> First response usually takes a bit longer as the agent is loading the tools from the MCP server(s).
 
-> ⚠️ **CAUTION:**  
-> In case the response seems stuck and/or there is an error on the console, create a new session in the ADK Web UI by clicking `+ New Session` in the top right corner. You can also ask a follow up question in the same session like `Are you still there?` or `Can you retry that?`. You can also try switching `Token Streaming` on.
-
-> 🪧 **NOTE:**  
-> When exiting, shut down the browser tab first and then use `ctrl+c` to exit on the console. 
 
 ## 2. Running Agent as a Cloud Run Service
 
