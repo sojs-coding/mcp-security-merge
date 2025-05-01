@@ -1,0 +1,137 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+import typing
+
+from mcp.server.fastmcp import Context
+
+from .. import utils
+from ..server import server, vt_client
+
+
+@server.tool()
+async def list_threat_profiles(
+    ctx: Context, limit: int = 10
+) -> typing.List[typing.Dict[str, typing.Any]]:
+  """List your Threat Profiles at Google Threat Intelligence.
+
+  Threat Profiles filter all of Google TI's threat intelligence
+  so you can focus only on the threats that matter most
+  to your organization.
+
+  Threat Profiles let you apply top-level filters
+  for Target Industries and Target Regions to immediately provide
+  a more focused view of relevant threats.
+
+  When searching for threats, we must use this tool first to check 
+  if there is any Threat Profile that matches the user query 
+  before peforming a general search using the `search_threats` tool.
+
+  Recommendations from Threat Profiles are more relevants to users 
+  than generic search threats. Use them as long as 
+  they match user's query.
+
+  Returns:
+    List of Threat Profiles.
+  """
+  res = await utils.consume_vt_iterator(
+      vt_client(ctx), "/threat_profiles", limit=limit
+  )
+  return res
+
+
+@server.tool()
+async def get_threat_profile(
+    profile_id: str, ctx: Context
+) -> typing.Dict[str, typing.Any]:
+  """Get Threat Profile object.
+
+  Args:
+    profile_id (str): Threat Profile identifier at Google Threat Intelligence.
+
+  Returns:
+    Threat Profile object.
+  """
+  res = await utils.fetch_object(
+      vt_client(ctx),
+      "threat_profiles",
+      "threat_profile",
+      profile_id,
+  )
+  return res
+
+
+@server.tool()
+async def get_threat_profile_recommendations(
+    profile_id: str, ctx: Context, limit: int = 10
+) -> typing.List[typing.Dict[str, typing.Any]]:
+  """Returns the list of objects associated to a certain Threat Profile.
+
+  Each of these objects has one of the following types types: Threat Actors,
+  Malware Families, Software or Toolkits, Campaigns, IoC Collections,
+  Reports and Vulnerabilities.
+
+  We can distinguish between two other types of objects based on how
+  they were associated with the Threat Profile:
+
+  - **Recommended objects** are automatically recommended or assigned to
+    a Threat Profile based on our proprietary ML that takes into account
+    the Threat Profile's configured interests such as the targeted industries,
+    target regions, source regions, malware roles and actor motivations
+    to recommend the most relevant threats. These objects are identified
+    by the presence of "source": "SOURCE_RECOMMENDATION"
+    within the "context_attributes" response parameter below.
+  - **Added objects** are assigned or added by users to a Threat Profile,
+    when users find other relevant threats not automatically recommended
+    by our ML module. These objects are identified by the presence of
+    "source": "SOURCE_DIRECT_FOLLOW" within the "context_attributes"
+    response parameter below.
+
+    Args:
+      profile_id (str): Threat Profile identifier at Google Threat Intelligence.
+
+    Returns:
+      List of Threat (collection) objects associated to the Threat Profile.
+  """
+  res = await utils.consume_vt_iterator(
+      vt_client(ctx), f"/threat_profiles/{profile_id}/recommendations", limit=limit
+  )
+  return res
+
+
+@server.tool()
+async def get_threat_profile_associations_timeline(
+    profile_id: str, ctx: Context, limit: int = 10
+) -> typing.List[typing.Dict[str, typing.Any]]:
+  """Retrieves the associations timeline for the given Threat Profile.
+
+  Some important response attributes:
+    - event_type (str): the type of the timeline association such as Alias, Motivation,
+                        Malware, Actor, Toolkit, Report, Campaign, etc.
+    - event_entity (str): The name or value of the timeline association.
+    - first_seen (int): Unix epoch UTC time (seconds) when the association 
+                        between the object and the threat profile was made.
+    - last_seen (int): Unix epoch UTC time (seconds) of most recent observed 
+                       relationship between the object and the threat profile.
+    - name (str): name of the object directly associated with the threat profile.
+    - link (str): URL of the object directly associated with the threat profile
+
+  Returns:
+    List of Threat Profiles.
+  """
+  res = await utils.consume_vt_iterator(
+      vt_client(ctx),
+      f"/threat_profiles/{profile_id}/timeline/associations",
+      limit=limit,
+  )
+  return res
