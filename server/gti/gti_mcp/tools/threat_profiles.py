@@ -75,7 +75,7 @@ async def get_threat_profile(
 async def get_threat_profile_recommendations(
     profile_id: str, ctx: Context, limit: int = 10
 ) -> typing.List[typing.Dict[str, typing.Any]]:
-  """Returns the list of objects associated to a certain Threat Profile.
+  """Returns the list of objects associated to a given Threat Profile.
 
   Each of these objects has one of the following types types: Threat Actors,
   Malware Families, Software or Toolkits, Campaigns, IoC Collections,

@@ -42,6 +42,13 @@ Threat Intelligence suite.
 - **`get_url_report(url)`**: Retrieves a comprehensive analysis report for a URL.
 - **`get_entities_related_to_an_url(url, relationship_name)`**: Gets related entities for a given URL.
 
+### Threat Profiles
+
+- **`list_threat_profiles`**: List your Threat Profiles at Google Threat Intelligence.
+- **`get_threat_profile(profile_id)`**: Get Threat Profile object.
+- **`get_threat_profile_recommendations(profile_id)`**: Returns the list of objects associated to the given Threat Profile.
+- **`get_threat_profile_associations_timeline(profile_id)`**: Retrieves the associations timeline for the given Threat Profile.
+
 ## Configuration
 
 ### MCP Server Configuration
