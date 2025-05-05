@@ -105,7 +105,7 @@ async def get_entities_related_to_a_hunting_ruleset(
 ) -> typing.Dict[str, typing.Any]:
   """Retrieve entities related to the the given Hunting Ruleset.
 
-    The following table shows a summary of available relationships for collection objects.
+    The following table shows a summary of available relationships for Hunting ruleset objects.
 
     | Relationship         | Return object type                                |
     | :------------------- | :------------------------------------------------ |
