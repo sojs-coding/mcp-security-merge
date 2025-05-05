@@ -50,9 +50,8 @@ The default `.env` file is shown below.
 
 1. Update the variables as needed in your favorite editor. You can choose to load some or all of the MCP servers available using the load environment variable at the start of each section. Don't use quotes for values except for `DEFAULT_PROMPT`. 
 2. Make sure that variables in the `MANDATORY` section have proper values (make sure you get and update the `GOOGLE_API_KEY` using these [instructions](https://ai.google.dev/gemini-api/docs/api-key)) 
-3. The value of the variable `GOOGLE_GENAI_USE_VERTEXAI` is set to "False" always (As we want to use the Google [Gen AI SDK](https://cloud.google.com/vertex-ai/generative-ai/docs/sdks/overview) instead of the [Vertex AI SDK](https://cloud.google.com/vertex-ai/docs/python-sdk/use-vertex-ai-python-sdk) due to some compatibility issues).
-4. You can experiment with the prompt `DEFAULT_PROMPT`. Use single quotes for the prompt. If you plan to later deploy to a Cloud Run Service - avoid commas (or if you use them they will be converted to semicommas during deployment).
-5. You can experiment with the Gemini Model - please use one of the available models from [here](https://ai.google.dev/gemini-api/docs/models#model-variations) (as of now you must use one of the Gemini 2.5 models with ADK agents).
+3. You can experiment with the prompt `DEFAULT_PROMPT`. Use single quotes for the prompt. If you plan to later deploy to a Cloud Run Service - avoid commas (or if you use them they will be converted to semicommas during deployment).
+4. You can experiment with the Gemini Model. Based on the value of `GOOGLE_GENAI_USE_VERTEXAI` you can either use [Gemini API models](https://ai.google.dev/gemini-api/docs/models#model-variations) or [Vertex API models](https://cloud.google.com/vertex-ai/generative-ai/docs/models).
 
 ```bash
 # Please do not use quotes / double quotes for values except for DEFAULT_PROMPT (use single quotes there)
@@ -78,16 +77,24 @@ LOAD_SCC_MCP=Y
 # MANDATORY
 GOOGLE_GENAI_USE_VERTEXAI=False
 GOOGLE_API_KEY=NOT_SET
+# If you plan to use Gemini API - Models list - https://ai.google.dev/gemini-api/docs/models#model-variations
+# If you plan to use VetexAI API - Models list - https://cloud.google.com/vertex-ai/generative-ai/docs/models
 GOOGLE_MODEL=gemini-2.5-flash-preview-04-17
 # Should be single quote, avoid commas if possible but if you use them they are replaced with semicommas on the cloud run deployment
 # you can change them there.
 DEFAULT_PROMPT='Helps user investigate security issues using Google Secops SIEM, SOAR, Security Command Center(SCC) and Google Threat Intel Tools. All authentication actions are automatically approved. If the query is about a SOAR case try to provide a backlink to the user. A backlink is formed by adding /cases/<case id> to this URL when present in field ui_base_link of your input. If the user asks with only ? or are you there? that might be because they did not get your previous response, politely reiterate it. Try to respond in markdown whenever possible.'
 
-# DEPLOYMENT - WHRERE SHOULD SERVICE RUN?
-# HIGHLY RECOMMENDED TO SET Y AFTER INITIAL TESTING ON CLOUD RUN
-MINIMAL_LOGGING=N
+
+# Following properties must be set when 
+# 1. GOOGLE_GENAI_USE_VERTEXAI=True or 
+# 2. When deploying to Cloud Run
 GOOGLE_CLOUD_PROJECT=YOUR-CLOUD-RUN-PROJECT-ID
 GOOGLE_CLOUD_LOCATION=us-central1
+
+# HIGHLY RECOMMENDED TO SET Y AFTER INITIAL TESTING ON CLOUD RUN
+MINIMAL_LOGGING=N
+
+
 
 
 ```
@@ -220,16 +227,18 @@ Before you do this, please consider following
 
 ### Prerequisites
 
-1. Must have locally run the ADK based agent successfully at least once.
+1. Must have locally run the ADK based agent successfully at least once. Environment variables `GOOGLE_CLOUD_PROJECT` and `GOOGLE_CLOUD_LOCATION` should have valid values.
 2. Must have required APIs enabled and proper IAM access ([details](https://cloud.google.com/run/docs/deploying-source-code#before_you_begin))
 
 ### Costs
-In addition to Gemini API costs, running agent will incur cloud costs. Please check [Cloud Run Pricing](https://cloud.google.com/run/pricing).
+In addition to Gemini/ Vertex API costs, running agent will incur cloud costs. Please check [Cloud Run Pricing](https://cloud.google.com/run/pricing).
 
 > ⚠️ **WARNING:**  
 > It is not recommended to run the a Cloud Run service with unauthenticated invocations enabled (we do that initially for verification). Please follow steps to enable [IAM authentication](https://cloud.google.com/run/docs/authenticating/developers) on your service. You could also deploy it behind the [Identity Aware Proxy (IAP)](https://cloud.google.com/iap/docs/enabling-cloud-run) - but that is out of scope for this documentation.
 
 ### Deployment Steps
+> 🪧 **NOTE:**  
+> It is recommended to switch to Vertex AI (with `GOOGLE_GENAI_USE_VERTEXAI=True`) when deploying
 
 ```bash
 # Please run these commands from the mcp-security directory
