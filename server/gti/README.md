@@ -42,6 +42,11 @@ Threat Intelligence suite.
 - **`get_url_report(url)`**: Retrieves a comprehensive analysis report for a URL.
 - **`get_entities_related_to_an_url(url, relationship_name)`**: Gets related entities for a given URL.
 
+### Hunting
+
+- **`get_hunting_ruleset`**: Get a Hunting Ruleset object from Google Threat Intelligence
+- **`get_entities_related_to_a_hunting_ruleset`**:  Retrieve entities related to the the given Hunting Ruleset.
+
 ## Configuration
 
 ### MCP Server Configuration

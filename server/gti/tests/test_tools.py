@@ -207,6 +207,23 @@ async def test_server_connection():
                 }
             },
         ),
+        (
+            "get_hunting_ruleset",
+            {"ruleset_id": "ruleset_id"},
+            "/api/v3/intelligence/hunting_rulesets/ruleset_id",
+            {
+                "data": {
+                    "id": "ruleset_id",
+                    "type": "hunting_ruleset",
+                    "attributes": {"foo": "foo", "bar": "bar"},
+                }
+            },
+            {
+                "id": "ruleset_id",
+                "type": "hunting_ruleset",
+                "attributes": {"foo": "foo", "bar": "bar"},
+            },
+        ),
     ],
     indirect=["vt_endpoint", "vt_object_response"],
 )
@@ -275,6 +292,17 @@ async def test_get_reports(
             "get_entities_related_to_a_collection",
             {"id": "collection_id", "relationship_name": "associations"},
             "/api/v3/collections/collection_id/relationship/associations",
+            {
+                "data": [{"type": "object", "id": "obj-id", "attributes": {"foo": "foo"}}],
+            },
+            {"type": "object", "id": "obj-id", "attributes": {"foo": "foo"}},
+        ),  
+        (
+            "get_entities_related_to_a_hunting_ruleset",
+            {"ruleset_id": "ruleset_id", 
+             "relationship_name": "hunting_notification_files"},
+            "/api/v3/intelligence/hunting_rulesets/ruleset_id/"
+            "relationship/hunting_notification_files",
             {
                 "data": [{"type": "object", "id": "obj-id", "attributes": {"foo": "foo"}}],
             },
