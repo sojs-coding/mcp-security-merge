@@ -299,8 +299,8 @@ async def test_get_reports(
         ),  
         (
             "get_threat_profile_recommendations",
-            {"profile_id": "profile_id", "relationship_name": "associations"},
-            "/api/v3/threat_profiles/profile_id/recommendations",
+            {"profile_id": "profile_id"},
+            "/api/v3/threat_profiles/profile_id/relationship/recommendations",
             {
                 "data": [{"type": "object", "id": "obj-id", "attributes": {"foo": "foo"}}],
             },
@@ -308,7 +308,7 @@ async def test_get_reports(
         ),
         (
             "get_threat_profile_associations_timeline",
-            {"profile_id": "profile_id", "relationship_name": "associations"},
+            {"profile_id": "profile_id"},
             "/api/v3/threat_profiles/profile_id/timeline/associations",
             {
                 "data": [{"type": "object", "id": "obj-id", "attributes": {"foo": "foo"}}],
