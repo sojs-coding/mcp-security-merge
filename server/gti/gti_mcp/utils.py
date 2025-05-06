@@ -17,7 +17,8 @@ import vt
 import typing
 
 
-async def consume_vt_iterator(vt_client: vt.Client, endpoint: str, params: dict | None, limit: int = 10):
+async def consume_vt_iterator(
+    vt_client: vt.Client, endpoint: str, params: dict | None = None, limit: int = 10):
   """Consumes a vt.Iterator iterator and return the list of objects."""
   res = []
   async for obj in vt_client.iterator(endpoint, params=params, limit=limit):

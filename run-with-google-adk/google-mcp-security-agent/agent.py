@@ -15,6 +15,7 @@ from google.adk.agents.llm_agent import LlmAgent
 from google.adk.tools.mcp_tool.mcp_toolset import MCPToolset, StdioServerParameters
 import os
 import logging
+from contextlib import AsyncExitStack
 
 logging.basicConfig(
     level=logging.INFO)
@@ -33,7 +34,7 @@ async def get_all_tools():
   gti_tools = []
   secops_soar_tools = []
   scc_tools = []  # Initialize scc_tools
-  exit_stack = None
+  exit_stack = AsyncExitStack()
   uv_dir_prefix="../server"
   env_file_path = "../../../run-with-google-adk/google-mcp-security-agent/.env"
 
@@ -103,9 +104,40 @@ async def get_all_tools():
   logging.info("MCP Toolsets created successfully.")
   return secops_tools+gti_tools+secops_soar_tools+scc_tools, exit_stack
 
+def make_tools_gemini_compatible(tools):
+  """
+  This function makes the schema compatible with Gemini/Vertex AI API
+  It is only needed when API used is Gemini and model is other than 2.5 models
+  It is however needed for ALL models when API used is VertexAI
+  """
+  for tool in tools:
+    for key in tool.mcp_tool.inputSchema.keys():
+      if key == "properties":
+          for prop_name in tool.mcp_tool.inputSchema["properties"].keys():
+            if "anyOf" in tool.mcp_tool.inputSchema["properties"][prop_name].keys():
+              if (tool.mcp_tool.inputSchema["properties"][prop_name]["anyOf"][0]["type"] == "array"):
+                tool.mcp_tool.inputSchema["properties"][prop_name]["type"] = tool.mcp_tool.inputSchema["properties"][prop_name]["anyOf"][0]["items"]["type"]
+              else:
+                 tool.mcp_tool.inputSchema["properties"][prop_name]["type"] = tool.mcp_tool.inputSchema["properties"][prop_name]["anyOf"][0]["type"] 
+              tool.mcp_tool.inputSchema["properties"][prop_name].pop("anyOf")
+
+  return tools
+
 async def create_agent():
   """Gets tools from MCP Server."""
   tools, exit_stack = await get_all_tools()
+
+  # Adding Gemini compatibility for non 2.5 models.
+  # Vertex AI does not support anyOf schema type.
+  # GenAI API supoprts it for models version >= 2.5
+  # If you plan to use Gemini API - Models list - https://ai.google.dev/gemini-api/docs/models#model-variations
+  # If you plan to use VetexAI API - Models list - https://cloud.google.com/vertex-ai/generative-ai/docs/models
+  model_version = os.environ.get("GOOGLE_MODEL").split("-")[1]
+  if float(model_version) < 2.5 or os.environ.get("GOOGLE_GENAI_USE_VERTEXAI").upper() == "TRUE": 
+    logging.error(f"Model - {os.environ.get('GOOGLE_MODEL')} needs Gemini compatible tools, updating schema ...")
+    tools = make_tools_gemini_compatible(tools)     
+  else:
+    logging.info(f"Model - {os.environ.get('GOOGLE_MODEL')} does not need updating schema") 
 
   agent = LlmAgent(
       model=os.environ.get("GOOGLE_MODEL"), 
