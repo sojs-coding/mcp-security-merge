@@ -67,6 +67,7 @@ async def get_security_alerts(
     Next Steps (using MCP-enabled tools):
         - Analyze the returned alerts for priority and relevance.
         - For high-priority alerts, check if a corresponding case exists in your case management/SOAR system.
+        - If no Alerts are found, expand the filter for this tool by increasing the max_alerts incremently until you are confident there are no recent Alerts
         - If no case exists, consider creating one or initiating investigation directly.
         - Use entity lookup tools (like `lookup_entity`) on indicators found within the alert details.
         - Use SIEM event search tools (like `search_security_events`) to find related raw logs.
@@ -224,6 +225,7 @@ async def do_update_security_alert(
 Modifies specific fields of an existing security alert within Chronicle based on its ID. This function allows for updates to an alert's status, severity, verdict, assigned scores, comments, and other metadata. This is typically performed after an investigation, triage, or automated analysis provides new insights or conclusions about the alert. At least one of the optional fields related to alert attributes (e.g., status, severity, comment) should be provided to perform a meaningful update.
 
 **Workflow Integration:**
+-   Utilize when SOAR is not a core technology the investigator uses
 -   Utilize after an initial investigation of an alert (e.g., using `get_chronicle_alert_details` or other analytical tools) to record findings or change its state.
 -   Incorporate into automated or semi-automated triage workflows where alert properties are updated based on enrichment data, external threat intelligence, or predefined logic.
 -   Use to reflect the outcome of a manual investigation, such as marking an alert as a false positive, confirming it as a true positive, adjusting its severity, or setting a final verdict.
@@ -231,6 +233,7 @@ Modifies specific fields of an existing security alert within Chronicle based on
 -   Helps in maintaining an accurate and up-to-date view of alert lifecycle and analyst findings directly within Chronicle.
 
 **Use Cases:**
+-   SOAR is not used for alert disposition
 -   Change the lifecycle status of an alert (e.g., from "NEW" to "REVIEWED", or to "CLOSED"). Valid statuses include: "STATUS_UNSPECIFIED", "NEW", "REVIEWED", "CLOSED", "OPEN".
 -   Adjust the severity (as an integer value, 0-100) or priority (e.g., "PRIORITY_LOW", "PRIORITY_MEDIUM", "PRIORITY_HIGH") of an alert based on new information or impact assessment. Valid priorities include: "PRIORITY_UNSPECIFIED", "PRIORITY_INFO", "PRIORITY_LOW", "PRIORITY_MEDIUM", "PRIORITY_HIGH", "PRIORITY_CRITICAL".
 -   Set a definitive verdict on an alert (e.g., "TRUE_POSITIVE", "FALSE_POSITIVE") after detailed analysis. Valid verdicts include: "VERDICT_UNSPECIFIED", "TRUE_POSITIVE", "FALSE_POSITIVE".
