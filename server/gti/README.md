@@ -47,6 +47,13 @@ Threat Intelligence suite.
 - **`get_hunting_ruleset`**: Get a Hunting Ruleset object from Google Threat Intelligence
 - **`get_entities_related_to_a_hunting_ruleset`**:  Retrieve entities related to the the given Hunting Ruleset.
 
+### Threat Profiles
+
+- **`list_threat_profiles`**: List your Threat Profiles at Google Threat Intelligence.
+- **`get_threat_profile(profile_id)`**: Get Threat Profile object.
+- **`get_threat_profile_recommendations(profile_id)`**: Returns the list of objects associated to the given Threat Profile.
+- **`get_threat_profile_associations_timeline(profile_id)`**: Retrieves the associations timeline for the given Threat Profile.
+
 ## Configuration
 
 ### MCP Server Configuration

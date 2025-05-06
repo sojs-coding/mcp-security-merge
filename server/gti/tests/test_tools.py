@@ -208,6 +208,23 @@ async def test_server_connection():
             },
         ),
         (
+            "get_threat_profile",
+            {"profile_id": "profile_id"},
+            "/api/v3/threat_profiles/profile_id",
+            {
+                "data": {
+                    "id": "profile_id",
+                    "type": "threat_profile",
+                    "attributes": {"foo": "foo", "bar": "bar"},
+                }
+            },
+            {
+                "id": "profile_id",
+                "type": "threat_profile",
+                "attributes": {"foo": "foo", "bar": "bar"},
+            }
+        ),
+        (
             "get_hunting_ruleset",
             {"ruleset_id": "ruleset_id"},
             "/api/v3/intelligence/hunting_rulesets/ruleset_id",
@@ -298,6 +315,24 @@ async def test_get_reports(
             {"type": "object", "id": "obj-id", "attributes": {"foo": "foo"}},
         ),  
         (
+            "get_threat_profile_recommendations",
+            {"profile_id": "profile_id"},
+            "/api/v3/threat_profiles/profile_id/relationship/recommendations",
+            {
+                "data": [{"type": "object", "id": "obj-id", "attributes": {"foo": "foo"}}],
+            },
+            {"type": "object", "id": "obj-id", "attributes": {"foo": "foo"}},
+        ),
+        (
+            "get_threat_profile_associations_timeline",
+            {"profile_id": "profile_id"},
+            "/api/v3/threat_profiles/profile_id/timeline/associations",
+            {
+                "data": [{"type": "object", "id": "obj-id", "attributes": {"foo": "foo"}}],
+            },
+            {"type": "object", "id": "obj-id", "attributes": {"foo": "foo"}},
+        ),  
+        (
             "get_entities_related_to_a_hunting_ruleset",
             {"ruleset_id": "ruleset_id", 
              "relationship_name": "hunting_notification_files"},
@@ -358,6 +393,15 @@ async def test_get_entities_related(
             "get_collection_mitre_tree",
             {"id": "collection_id"},
             "/api/v3/collections/collection_id/mitre_tree",
+            {
+                "data": [{"type": "object", "id": "obj-id", "attributes": {"foo": "foo"}}],
+            },
+            {"type": "object", "id": "obj-id", "attributes": {"foo": "foo"}}
+        ), 
+        (
+            "list_threat_profiles",
+            {},
+            "/api/v3/threat_profiles",
             {
                 "data": [{"type": "object", "id": "obj-id", "attributes": {"foo": "foo"}}],
             },

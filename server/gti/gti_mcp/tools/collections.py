@@ -198,7 +198,7 @@ async def search_threats(
     if collection_type not in COLLECTION_TYPES:
       raise ValueError(
           f"unknown collection_type. Available are {','.join(COLLECTION_TYPES)}")
-    filter += f"collection_type:{collection_type}"
+    filter += f"collection_type:{collection_type} "
   if query:
     filter += query
   res = await utils.consume_vt_iterator(
