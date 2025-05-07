@@ -235,6 +235,12 @@ async def security_examples(
   except KeyboardInterrupt:
     print('\nInteractive query cancelled.')
 
+# Example 8: Search security rules
+  print('\nExample 8: Search security rules')
+  rules = await search_security_rules(
+      query=".*", project_id=project_id, customer_id=customer_id, region=region
+  )
+  print(rules)
 
 async def main() -> None:
   """Parse command line arguments and run security examples."""
@@ -285,6 +291,7 @@ from secops_mcp import (
     lookup_entity,
     list_security_rules,
     get_ioc_matches,
+    search_security_rules
 )
 
 if __name__ == '__main__':

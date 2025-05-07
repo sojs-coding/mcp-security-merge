@@ -68,6 +68,58 @@ async def list_security_rules(
         logger.error(f'Error listing security rules: {str(e)}', exc_info=True)
         return {'error': str(e), 'rules': []}
 
+@server.tool()
+async def search_security_rules(
+    query: str,
+    project_id: str = None,
+    customer_id: str = None,
+    region: str = None,
+) -> Dict[str, Any]:
+    """Search security detection rules configured in Chronicle SIEM.
+
+    Retrieves the definitions of detection rules currently active or configured
+    within the Chronicle SIEM instance based on a regex pattern.
+    
+    **Workflow Integration:**
+    - Useful for understanding the detection capabilities currently deployed in the SIEM.
+    - Can help identify the specific rule that generated a SIEM alert (obtained via SIEM alert tools
+      or from case management/SOAR system details).
+    - Provides context for rule tuning, development, or understanding alert logic.
+
+    **Use Cases:**
+    - Review the logic or scope of a specific detection rule identified from an alert.
+    - Audit the set of active detection rules within the SIEM.
+    - Understand which rules might be relevant to a particular threat scenario or TTP.
+
+    **Examples:**
+    - Searching for all rules related to a specific MITRE technique like "TA0005" for defense evasion detections.
+    - Searching for static data coded into detections like a specific hostname or IP address like "192.168.1.1".
+    - Searching for rules that reference a specific log_type like "WORKSPACE"
+
+    Args:
+        query (str): Regex string to use for searching SecOps rules.
+        project_id (Optional[str]): Google Cloud project ID. Defaults to environment configuration.
+        customer_id (Optional[str]): Chronicle customer ID. Defaults to environment configuration.
+        region (Optional[str]): Chronicle region (e.g., "us", "europe"). Defaults to environment configuration.
+
+    Returns:
+        Dict[str, Any]: Raw response from the Chronicle API, typically containing a list
+                        of rule objects with their definitions and metadata. Returns an
+                        error structure if the API call fails.
+
+    Next Steps (using MCP-enabled tools):
+        - Analyze the rule definition (e.g., the YARA-L code) to understand its trigger conditions.
+        - Correlate rule details with specific alerts retrieved from the SIEM or case management system.
+        - Use insights for rule optimization, false positive analysis, or developing related detections.
+        - Document relevant rule information in associated cases using a case management tool.
+    """
+    try:
+        chronicle = get_chronicle_client(project_id, customer_id, region)
+        rules_response = chronicle.search_rules(query)
+        return rules_response
+    except Exception as e:
+        logger.error(f'Error searching security rules: {str(e)}', exc_info=True)
+        return {'error': str(e), 'rules': []}
 
 @server.tool()
 async def get_rule_detections(

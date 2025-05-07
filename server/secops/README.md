@@ -20,6 +20,9 @@ Chronicle Security Operations suite.
 - **`list_security_rules(project_id=None, customer_id=None, region=None)`**
     - Lists security detection rules from Chronicle.
 
+- **`search_security_rules(query, project_id=None, customer_id=None, region=None)`**
+    - Searches security detection rules from Chronicle using regex.
+
 - **`get_ioc_matches(project_id=None, customer_id=None, hours_back=24, max_matches=20, region=None)`**
     - Retrieves Indicators of Compromise (IoCs) matches from Chronicle within a specified time range.
 
@@ -34,7 +37,8 @@ The MCP server provides the following capabilities:
 2.  **Get Security Alerts**: Retrieve security alerts
 3.  **Lookup Entity**: Look up entity information (IP, domain, hash, etc.)
 4.  **List Security Rules**: List detection rules
-5.  **Get IoC Matches**: Get Indicators of Compromise matches
+5.  **Search Security Rules**: Searches detection rules using regex
+6.  **Get IoC Matches**: Get Indicators of Compromise matches
 
 ### Example
 
