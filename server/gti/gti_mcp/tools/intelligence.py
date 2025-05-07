@@ -19,6 +19,11 @@ from .. import utils
 from ..server import server, vt_client
 
 
+HUNTING_RULESET_RELATIONSHIPS = [
+    "hunting_notification_files",
+]
+
+
 @server.tool()
 async def search_iocs(query: str, ctx: Context, limit: int = 10, order_by: str = "last_submission_date-") -> typing.List[typing.Dict[str, typing.Any]]:
   """Search Indicators of Compromise (IOC) in the Google Threat Intelligence platform.
@@ -59,3 +64,66 @@ async def search_iocs(query: str, ctx: Context, limit: int = 10, order_by: str =
           "order": order_by},
       limit=limit)
   return res
+
+
+@server.tool()
+async def get_hunting_ruleset(ruleset_id: str, ctx: Context) -> typing.Dict[str, typing.Any]:
+  """Get a Hunting Ruleset object from Google Threat Intelligence.
+
+  A Hunting Ruleset object describes a user's hunting ruleset. It may contain multiple
+  Yara rules. 
+
+  The content of the Yara rules is in the `rules` attribute.
+
+  Some important object attributes:
+    - creation_date: creation date as UTC timestamp.
+    - modification_date (int): last modification date as UTC timestamp.
+    - name (str): ruleset name.
+    - rule_names (list[str]): contains the names of all rules in the ruleset.
+    - number_of_rules (int): number of rules in the ruleset.
+    - rules (str): rule file contents.
+    - tags (list[str]): ruleset's custom tags.
+    
+  Args:
+    ruleset_id (required): Hunting ruleset identifier.
+
+  Returns:
+    Hunting Ruleset object.
+  """
+  res = await utils.fetch_object(
+      vt_client(ctx),
+      "intelligence/hunting_rulesets",
+      "hunting_ruleset",
+      ruleset_id,
+  )
+  return res
+
+
+@server.tool()
+async def get_entities_related_to_a_hunting_ruleset(
+    ruleset_id: str, relationship_name: str, ctx: Context
+) -> typing.Dict[str, typing.Any]:
+  """Retrieve entities related to the the given Hunting Ruleset.
+
+    The following table shows a summary of available relationships for Hunting ruleset objects.
+
+    | Relationship         | Return object type                                |
+    | :------------------- | :------------------------------------------------ |
+    | hunting_notification_files | Files that matched with the ruleset filters |
+
+    Args:
+      ruleset_id (required): Hunting ruleset identifier.
+      relationship_name (required): Relationship name.
+    Returns:
+      List of objects related to the Hunting ruleset.
+  """
+  if not relationship_name in HUNTING_RULESET_RELATIONSHIPS:
+      return {
+          "error": f"Relationship {relationship_name} does not exist. "
+          f"Available relationships are: {','.join(HUNTING_RULESET_RELATIONSHIPS)}"
+      }
+
+  res = await utils.fetch_object_relationships(
+      vt_client(ctx), "intelligence/hunting_rulesets", ruleset_id, [relationship_name])
+  return res.get(relationship_name, [])
+

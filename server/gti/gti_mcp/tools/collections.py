@@ -34,6 +34,7 @@ COLLECTION_RELATIONSHIPS = [
     "vulnerabilities",
     "reports",
     "suspected_threat_actors",
+    "hunting_rulesets",
 ]
 
 COLLECTION_KEY_RELATIONSHIPS = [
@@ -98,6 +99,7 @@ async def get_entities_related_to_a_collection(
     | vulnerabilities      | List of related vulnerabilities                   |
     | reports              | List of reports                                   |
     | suspected_threat_actors | List of related suspected threat actors        |
+    | hunting_rulesets     | Google Threat Intelligence Yara rules that identify the given collection |
 
     Args:
       id (required): Collection identifier.

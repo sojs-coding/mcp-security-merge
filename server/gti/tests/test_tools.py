@@ -224,6 +224,23 @@ async def test_server_connection():
                 "attributes": {"foo": "foo", "bar": "bar"},
             }
         ),
+        (
+            "get_hunting_ruleset",
+            {"ruleset_id": "ruleset_id"},
+            "/api/v3/intelligence/hunting_rulesets/ruleset_id",
+            {
+                "data": {
+                    "id": "ruleset_id",
+                    "type": "hunting_ruleset",
+                    "attributes": {"foo": "foo", "bar": "bar"},
+                }
+            },
+            {
+                "id": "ruleset_id",
+                "type": "hunting_ruleset",
+                "attributes": {"foo": "foo", "bar": "bar"},
+            },
+        ),
     ],
     indirect=["vt_endpoint", "vt_object_response"],
 )
@@ -310,6 +327,17 @@ async def test_get_reports(
             "get_threat_profile_associations_timeline",
             {"profile_id": "profile_id"},
             "/api/v3/threat_profiles/profile_id/timeline/associations",
+            {
+                "data": [{"type": "object", "id": "obj-id", "attributes": {"foo": "foo"}}],
+            },
+            {"type": "object", "id": "obj-id", "attributes": {"foo": "foo"}},
+        ),  
+        (
+            "get_entities_related_to_a_hunting_ruleset",
+            {"ruleset_id": "ruleset_id", 
+             "relationship_name": "hunting_notification_files"},
+            "/api/v3/intelligence/hunting_rulesets/ruleset_id/"
+            "relationship/hunting_notification_files",
             {
                 "data": [{"type": "object", "id": "obj-id", "attributes": {"foo": "foo"}}],
             },
