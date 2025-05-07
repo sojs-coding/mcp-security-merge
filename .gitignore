@@ -181,3 +181,9 @@ secops-wrapper/
 config.py
 llm.py
 config.json
+
+# Firebase Studio
+.idx/
+
+# Visual Studio Code
+.vscode/
