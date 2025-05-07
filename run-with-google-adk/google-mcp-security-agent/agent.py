@@ -33,6 +33,7 @@ async def get_all_tools():
   secops_tools = []
   gti_tools = []
   secops_soar_tools = []
+  scc_tools = []  # Initialize scc_tools
   exit_stack = AsyncExitStack()
   uv_dir_prefix="../server"
   env_file_path = "../../../run-with-google-adk/google-mcp-security-agent/.env"

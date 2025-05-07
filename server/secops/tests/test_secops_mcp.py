@@ -21,9 +21,9 @@ import pytest
 from mcp.server.fastmcp import FastMCP
 
 from secops_mcp.tools.security_events import search_security_events
-from secops_mcp.tools.security_alerts import get_security_alerts
+from secops_mcp.tools.security_alerts import get_security_alerts, get_security_alert_by_id, do_update_security_alert
 from secops_mcp.tools.entity_lookup import lookup_entity
-from secops_mcp.tools.security_rules import list_security_rules
+from secops_mcp.tools.security_rules import list_security_rules, get_rule_detections, list_rule_errors
 from secops_mcp.tools.ioc_matches import get_ioc_matches
 from secops_mcp.tools.threat_intel import get_threat_intel
 
@@ -362,3 +362,83 @@ class TestChronicleSecOpsMCP:
         
         # Should be about lateral movement
         assert "lateral movement" in result.lower() or "network" in result.lower() 
+
+
+    @pytest.mark.asyncio
+    async def test_get_rule_detections(self, chronicle_config: Dict[str, str]) -> None:
+        """Test listing detections by rule id.
+        
+        Args:
+            chronicle_config: Dictionary with Chronicle configuration
+        """
+        rule_id = "ru_<insert rule_id>"
+
+        result = await get_rule_detections(
+            rule_id,
+            project_id=chronicle_config["CHRONICLE_PROJECT_ID"],
+            customer_id=chronicle_config["CHRONICLE_CUSTOMER_ID"],
+            region=chronicle_config["CHRONICLE_REGION"],
+        )
+        
+        # This should return either a valid response or an error dict
+        assert isinstance(result, dict)
+
+    @pytest.mark.asyncio
+    async def test_get_rule_detection_errors(self, chronicle_config: Dict[str, str]) -> None:
+        """Test listing errors for detection rules.
+        
+        Args:
+            chronicle_config: Dictionary with Chronicle configuration
+        """
+        rule_id = "ru_<insert rule_id>"
+
+        result = await list_rule_errors(
+            rule_id,
+            project_id=chronicle_config["CHRONICLE_PROJECT_ID"],
+            customer_id=chronicle_config["CHRONICLE_CUSTOMER_ID"],
+            region=chronicle_config["CHRONICLE_REGION"],
+        )
+        
+        # This should return either a valid response or an error dict
+        assert isinstance(result, dict)
+
+    @pytest.mark.asyncio
+    async def test_do_update_security_alert(self, chronicle_config: Dict[str, str]) -> None:
+        """Test updating Alert details by alert id
+        
+        Args:
+            chronicle_config: Dictionary with Chronicle configuration
+        """
+        alert_id = "de_<insert_detection_id>"
+
+        result = await do_update_security_alert(
+            project_id=chronicle_config["CHRONICLE_PROJECT_ID"],
+            customer_id=chronicle_config["CHRONICLE_CUSTOMER_ID"],
+            region=chronicle_config["CHRONICLE_REGION"],
+            comment = "Hello from SecOps MCP",
+            priority="PRIORITY_MEDIUM",
+            severity=50,
+            alert_id=alert_id
+        )
+        
+        # This should return either a valid response or an error dict
+        assert isinstance(result, dict)
+
+    @pytest.mark.asyncio
+    async def test_get_security_alert_by_id(self, chronicle_config: Dict[str, str]) -> None:
+        """Test listing errors for detection rules.
+        
+        Args:
+            chronicle_config: Dictionary with Chronicle configuration
+        """
+        alert_id = "de_<insert_detection_id>"
+
+        result = await get_security_alert_by_id(
+            project_id=chronicle_config["CHRONICLE_PROJECT_ID"],
+            customer_id=chronicle_config["CHRONICLE_CUSTOMER_ID"],
+            region=chronicle_config["CHRONICLE_REGION"],
+            alert_id=alert_id
+        )
+        
+        # This should return either a valid response or an error dict
+        assert isinstance(result, dict)
