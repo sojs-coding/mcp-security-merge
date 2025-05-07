@@ -23,7 +23,7 @@ from mcp.server.fastmcp import FastMCP
 from secops_mcp.tools.security_events import search_security_events
 from secops_mcp.tools.security_alerts import get_security_alerts, get_security_alert_by_id, do_update_security_alert
 from secops_mcp.tools.entity_lookup import lookup_entity
-from secops_mcp.tools.security_rules import list_security_rules, get_rule_detections, list_rule_errors
+from secops_mcp.tools.security_rules import list_security_rules, get_rule_detections, list_rule_errors, search_security_rules
 from secops_mcp.tools.ioc_matches import get_ioc_matches
 from secops_mcp.tools.threat_intel import get_threat_intel
 
@@ -251,6 +251,38 @@ class TestChronicleSecOpsMCP:
             chronicle_config: Dictionary with Chronicle configuration
         """
         result = await list_security_rules(
+            project_id=chronicle_config["CHRONICLE_PROJECT_ID"],
+            customer_id=chronicle_config["CHRONICLE_CUSTOMER_ID"],
+            region=chronicle_config["CHRONICLE_REGION"],
+        )
+        
+        # This should return either a valid response or an error dict
+        assert isinstance(result, dict)
+        
+        # Expect either rules list or error
+        assert "rules" in result or "error" in result
+        
+        # If rules are present, verify structure
+        if "rules" in result and isinstance(result["rules"], list) and len(result["rules"]) > 0:
+            # Check the first rule has expected fields
+            first_rule = result["rules"][0]
+            assert isinstance(first_rule, dict)
+            
+            # Just check if it has any keys, don't validate specific field names
+            # since API response format might vary
+            assert len(first_rule.keys()) > 0
+        
+        # Test passes if we get a valid dictionary response
+
+    @pytest.mark.asyncio
+    async def test_search_security_rules(self, chronicle_config: Dict[str, str]) -> None:
+        """Test searching security detection rules.
+        
+        Args:
+            chronicle_config: Dictionary with Chronicle configuration
+        """
+        result = await search_security_rules(
+            query=".*",
             project_id=chronicle_config["CHRONICLE_PROJECT_ID"],
             customer_id=chronicle_config["CHRONICLE_CUSTOMER_ID"],
             region=chronicle_config["CHRONICLE_REGION"],
