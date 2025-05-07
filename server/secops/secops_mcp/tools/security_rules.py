@@ -79,7 +79,7 @@ async def search_security_rules(
 
     Retrieves the definitions of detection rules currently active or configured
     within the Chronicle SIEM instance based on a regex pattern.
-
+    
     **Workflow Integration:**
     - Useful for understanding the detection capabilities currently deployed in the SIEM.
     - Can help identify the specific rule that generated a SIEM alert (obtained via SIEM alert tools
@@ -90,6 +90,9 @@ async def search_security_rules(
     - Review the logic or scope of a specific detection rule identified from an alert.
     - Audit the set of active detection rules within the SIEM.
     - Understand which rules might be relevant to a particular threat scenario or TTP.
+    - Searching for all rules related to a specific MITRE technique like "TA0005" for defense evasion detections.
+    - Searching for static data coded into detections like a specific hostname or IP address like "192.168.1.1".
+    - Searching for rules that reference a specific log_type like "WORKSPACE"
 
     Args:
         query (str): Regex query to use for searching SecOps rules.
