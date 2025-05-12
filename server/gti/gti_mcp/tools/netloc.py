@@ -104,7 +104,7 @@ async def get_domain_report(domain: str, ctx: Context) -> typing.Dict[str, typin
       domain,
       relationships=DOMAIN_KEY_RELATIONSHIPS,
       params={"exclude_attributes": "last_analysis_results"})
-  return res
+  return utils.sanitize_response(res)
 
 
 @server.tool()
@@ -160,7 +160,7 @@ async def get_entities_related_to_a_domain(domain: str, relationship_name: str, 
 
   res = await utils.fetch_object_relationships(
       vt_client(ctx), "domains", domain, [relationship_name])
-  return res.get(relationship_name, [])
+  return utils.sanitize_response(res.get(relationship_name, []))
 
 
 @server.tool()
@@ -178,7 +178,7 @@ async def get_ip_address_report(ip_address: str, ctx: Context) -> typing.Dict[st
       "ip", ip_address,
       relationships=IP_KEY_RELATIONSHIPS,
       params={"exclude_attributes": "last_analysis_results"})
-  return res
+  return utils.sanitize_response(res)
 
 
 @server.tool()
@@ -225,4 +225,4 @@ async def get_entities_related_to_an_ip_address(ip_address: str, relationship_na
 
   res = await utils.fetch_object_relationships(
       vt_client(ctx), "ip_addresses", ip_address, [relationship_name])
-  return res.get(relationship_name, [])
+  return utils.sanitize_response(res.get(relationship_name, []))

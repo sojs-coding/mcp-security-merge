@@ -96,3 +96,24 @@ async def fetch_object_relationships(
       data[name].append(obj_dict)
 
   return data
+
+
+def sanitize_response(data: typing.Any) -> typing.Any:
+  """Removes empty dictionaries and lists recursively from a response."""
+  if isinstance(data, dict):
+    sanitized_dict = {}
+    for key, value in data.items():
+      sanitized_value = sanitize_empty_collections(value)
+      if sanitized_value is not None:
+        sanitized_dict[key] = sanitized_value
+    return sanitized_dict if sanitized_dict else None
+  elif isinstance(data, list):
+    sanitized_list = []
+    for item in data:
+      sanitized_item = sanitize_empty_collections(item)
+      if sanitized_item is not None:
+        sanitized_list.append(sanitized_item)
+    return sanitized_list if sanitized_list else None
+  else:
+    return data
+

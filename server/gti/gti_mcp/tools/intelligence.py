@@ -63,7 +63,7 @@ async def search_iocs(query: str, ctx: Context, limit: int = 10, order_by: str =
           "query": query,
           "order": order_by},
       limit=limit)
-  return res
+  return utils.sanitize_response(res)
 
 
 @server.tool()
@@ -96,7 +96,7 @@ async def get_hunting_ruleset(ruleset_id: str, ctx: Context) -> typing.Dict[str,
       "hunting_ruleset",
       ruleset_id,
   )
-  return res
+  return utils.sanitize_response(res)
 
 
 @server.tool()
@@ -125,5 +125,5 @@ async def get_entities_related_to_a_hunting_ruleset(
 
   res = await utils.fetch_object_relationships(
       vt_client(ctx), "intelligence/hunting_rulesets", ruleset_id, [relationship_name])
-  return res.get(relationship_name, [])
+  return utils.sanitize_response(res.get(relationship_name, []))
 

@@ -100,7 +100,7 @@ async def get_file_report(hash: str, ctx: Context) -> typing.Dict[str, typing.An
       relationships=FILE_KEY_RELATIONSHIPS,
       params={"exclude_attributes": "last_analysis_results"}
   )
-  return res
+  return utils.sanitize_response(res)
 
 
 @server.tool()
@@ -175,7 +175,7 @@ async def get_entities_related_to_a_file(
 
     res = await utils.fetch_object_relationships(
         vt_client(ctx), "files", hash, [relationship_name])
-    return res.get(relationship_name, [])
+    return utils.sanitize_response(res.get(relationship_name, []))
 
 
 @server.tool()
@@ -209,7 +209,7 @@ async def get_file_behavior_report(
           "associations",
       ],
   )
-  return res
+  return utils.sanitize_response(res)
 
 
 @server.tool()
@@ -224,7 +224,7 @@ async def get_file_behavior_summary(hash: str, ctx: Context) -> typing.Dict[str,
 
   res = await vt_client(ctx).get_async(f"/files/{hash}/behaviour_summary")
   res = await res.json_async()
-  return res["data"]
+  return utils.sanitize_response(res["data"])
 
 
 @server.tool()
@@ -244,4 +244,4 @@ async def analyse_file(file_path: str, ctx: Context):
 
   res = await vt_client(ctx).wait_for_analysis_completion(analysis)
   logging.info(f"Analysis has completed with ID %s", res.id)
-  return res.to_dict()
+  return utils.sanitize_response(res.to_dict())

@@ -115,7 +115,7 @@ async def get_entities_related_to_a_collection(
 
   res = await utils.fetch_object_relationships(
       vt_client(ctx), "collections", id, [relationship_name])
-  return res.get(relationship_name, [])
+  return utils.sanitize_response(res.get(relationship_name, []))
 
 
 async def _search_threats_by_collection_type(
@@ -151,7 +151,7 @@ async def _search_threats_by_collection_type(
       },
       limit=limit,
   )
-  return [o.to_dict() for o in res]
+  return utils.sanitize_response([o.to_dict() for o in res])
 
 
 @server.tool()
@@ -212,7 +212,7 @@ async def search_threats(
       },
       limit=limit,
   )
-  res = [o.to_dict() for o in res]
+  res = utils.sanitize_response([o.to_dict() for o in res])
   return res
 
 
@@ -373,7 +373,7 @@ async def get_collection_timeline_events(id: str, ctx: Context):
   """
   data = await vt_client(ctx).get_async(f"/collections/{id}/timeline/events")
   data = await data.json_async()
-  return data["data"]
+  return utils.sanitize_response(data["data"])
 
 
 @server.tool()
@@ -387,5 +387,5 @@ async def get_collection_mitre_tree(id: str, ctx: Context) -> typing.Dict:
   """
   data = await vt_client(ctx).get_async(f"/collections/{id}/mitre_tree")
   data = await data.json_async()
-  return data["data"]
+  return utils.sanitize_response(data["data"])
 

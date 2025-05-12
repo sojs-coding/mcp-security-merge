@@ -86,7 +86,7 @@ async def get_url_report(url: str, ctx: Context) -> typing.Dict[str, typing.Any]
       url_id,
       ["associations"],
       params={"exclude_attributes": "last_analysis_results"})
-  return res
+  return utils.sanitize_response(res)
 
 
 @server.tool()
@@ -144,4 +144,4 @@ async def get_entities_related_to_an_url(url: str, relationship_name: str, ctx: 
   url_id = url_to_base64(url)
   res = await utils.fetch_object_relationships(
       vt_client(ctx), "urls", url_id, [relationship_name])
-  return res.get(relationship_name, [])
+  return utils.sanitize_response(res.get(relationship_name, []))
