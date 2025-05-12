@@ -60,7 +60,8 @@ def register_tools(mcp: FastMCP):
         """
         if next_page_token:
             return await bindings.http_client.get(
-                Endpoints.BASE_CASE_URL, params={"pageToken": next_page_token}
+                Endpoints.BASE_CASE_URL,
+                params={"$expand": "tags", "pageToken": next_page_token},
             )
         return await bindings.http_client.get(Endpoints.BASE_CASE_URL)
 
