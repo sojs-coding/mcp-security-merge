@@ -103,17 +103,19 @@ def sanitize_response(data: typing.Any) -> typing.Any:
   if isinstance(data, dict):
     sanitized_dict = {}
     for key, value in data.items():
-      sanitized_value = sanitize_empty_collections(value)
+      sanitized_value = sanitize_response(value)
       if sanitized_value is not None:
         sanitized_dict[key] = sanitized_value
     return sanitized_dict if sanitized_dict else None
   elif isinstance(data, list):
     sanitized_list = []
     for item in data:
-      sanitized_item = sanitize_empty_collections(item)
+      sanitized_item = sanitize_response(item)
       if sanitized_item is not None:
         sanitized_list.append(sanitized_item)
     return sanitized_list if sanitized_list else None
+  elif isinstance(data, str):
+    return data if data else None
   else:
     return data
 
