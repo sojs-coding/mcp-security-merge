@@ -47,7 +47,7 @@ async def list_threat_profiles(
   res = await utils.consume_vt_iterator(
       vt_client(ctx), "/threat_profiles", limit=limit
   )
-  return [o.to_dict() for o in res]
+  return utils.sanitize_response([o.to_dict() for o in res])
 
 
 @server.tool()
@@ -94,7 +94,7 @@ async def get_threat_profile(
       "threat_profile",
       profile_id,
   )
-  return res
+  return utils.sanitize_response(res)
 
 
 @server.tool()
@@ -137,7 +137,7 @@ async def get_threat_profile_recommendations(
   """
   res = await utils.fetch_object_relationships(
       vt_client(ctx), "threat_profiles", profile_id, ['recommendations'])
-  return res.get('recommendations', [])
+  return utils.sanitize_response(res.get('recommendations', []))
 
 
 @server.tool()
@@ -165,4 +165,4 @@ async def get_threat_profile_associations_timeline(
       f"/threat_profiles/{profile_id}/timeline/associations",
       limit=limit,
   )
-  return [o.to_dict() for o in res]
+  return utils.sanitize_response([o.to_dict() for o in res])

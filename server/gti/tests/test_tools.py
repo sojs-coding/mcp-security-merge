@@ -274,7 +274,7 @@ async def test_get_reports(
             {"hash": "275a021bbfb6489e54d471899f7db9d1663fc695ec2fe2a2c4538aabf651fd0f", "relationship_name": "associations"},
             "/api/v3/files/275a021bbfb6489e54d471899f7db9d1663fc695ec2fe2a2c4538aabf651fd0f/relationship/associations",
             {
-                "data": [{"type": "object", "id": "obj-id", "attributes": {"foo": "foo"}}],
+                "data": [{"type": "object", "id": "obj-id", "attributes": {"foo": "foo", "bar": ""}}],
             },
             {"type": "object", "id": "obj-id", "attributes": {"foo": "foo"}},
         ), 
@@ -283,7 +283,7 @@ async def test_get_reports(
             {"domain": "theevil.com", "relationship_name": "associations"},
             "/api/v3/domains/theevil.com/relationship/associations",
             {
-                "data": [{"type": "object", "id": "obj-id", "attributes": {"foo": "foo"}}],
+                "data": [{"type": "object", "id": "obj-id", "attributes": {"foo": "foo", "bar": ""}}],
             },
             {"type": "object", "id": "obj-id", "attributes": {"foo": "foo"}},
         ),   
@@ -292,7 +292,7 @@ async def test_get_reports(
             {"ip_address": "8.8.8.8", "relationship_name": "associations"},
             "/api/v3/ip_addresses/8.8.8.8/relationship/associations",
             {
-                "data": [{"type": "object", "id": "obj-id", "attributes": {"foo": "foo"}}],
+                "data": [{"type": "object", "id": "obj-id", "attributes": {"foo": "foo", "bar": ""}}],
             },
             {"type": "object", "id": "obj-id", "attributes": {"foo": "foo"}},
         ), 
@@ -301,7 +301,7 @@ async def test_get_reports(
             {"url": "http://theevil.com/", "relationship_name": "associations"},
             "/api/v3/urls/aHR0cDovL3RoZWV2aWwuY29tLw/relationship/associations",
             {
-                "data": [{"type": "object", "id": "obj-id", "attributes": {"foo": "foo"}}],
+                "data": [{"type": "object", "id": "obj-id", "attributes": {"foo": "foo", "bar": ""}}],
             },
             {"type": "object", "id": "obj-id", "attributes": {"foo": "foo"}},
         ),
@@ -310,7 +310,7 @@ async def test_get_reports(
             {"id": "collection_id", "relationship_name": "associations"},
             "/api/v3/collections/collection_id/relationship/associations",
             {
-                "data": [{"type": "object", "id": "obj-id", "attributes": {"foo": "foo"}}],
+                "data": [{"type": "object", "id": "obj-id", "attributes": {"foo": "foo", "bar": ""}}],
             },
             {"type": "object", "id": "obj-id", "attributes": {"foo": "foo"}},
         ),  
@@ -319,7 +319,7 @@ async def test_get_reports(
             {"profile_id": "profile_id"},
             "/api/v3/threat_profiles/profile_id/relationship/recommendations",
             {
-                "data": [{"type": "object", "id": "obj-id", "attributes": {"foo": "foo"}}],
+                "data": [{"type": "object", "id": "obj-id", "attributes": {"foo": "foo", "bar": ""}}],
             },
             {"type": "object", "id": "obj-id", "attributes": {"foo": "foo"}},
         ),
@@ -328,7 +328,7 @@ async def test_get_reports(
             {"profile_id": "profile_id"},
             "/api/v3/threat_profiles/profile_id/timeline/associations",
             {
-                "data": [{"type": "object", "id": "obj-id", "attributes": {"foo": "foo"}}],
+                "data": [{"type": "object", "id": "obj-id", "attributes": {"foo": "foo", "bar": ""}}],
             },
             {"type": "object", "id": "obj-id", "attributes": {"foo": "foo"}},
         ),  
@@ -339,7 +339,7 @@ async def test_get_reports(
             "/api/v3/intelligence/hunting_rulesets/ruleset_id/"
             "relationship/hunting_notification_files",
             {
-                "data": [{"type": "object", "id": "obj-id", "attributes": {"foo": "foo"}}],
+                "data": [{"type": "object", "id": "obj-id", "attributes": {"foo": "foo", "bar": ""}}],
             },
             {"type": "object", "id": "obj-id", "attributes": {"foo": "foo"}},
         ),     
@@ -376,7 +376,7 @@ async def test_get_entities_related(
             {"hash": "275a021bbfb6489e54d471899f7db9d1663fc695ec2fe2a2c4538aabf651fd0f"},
             "/api/v3/files/275a021bbfb6489e54d471899f7db9d1663fc695ec2fe2a2c4538aabf651fd0f/behaviour_summary",
             {
-                "data": [{"type": "object", "id": "obj-id", "attributes": {"foo": "foo"}}],
+                "data": [{"type": "object", "id": "obj-id", "attributes": {"foo": "foo", "bar": ""}}],
             },
             {"type": "object", "id": "obj-id", "attributes": {"foo": "foo"}}
         ), 
@@ -385,7 +385,7 @@ async def test_get_entities_related(
             {"id": "collection_id"},
             "/api/v3/collections/collection_id/timeline/events",
             {
-                "data": [{"type": "object", "id": "obj-id", "attributes": {"foo": "foo"}}],
+                "data": [{"type": "object", "id": "obj-id", "attributes": {"foo": "foo", "bar": ""}}],
             },
             {"type": "object", "id": "obj-id", "attributes": {"foo": "foo"}}
         ),
@@ -394,7 +394,7 @@ async def test_get_entities_related(
             {"id": "collection_id"},
             "/api/v3/collections/collection_id/mitre_tree",
             {
-                "data": [{"type": "object", "id": "obj-id", "attributes": {"foo": "foo"}}],
+                "data": [{"type": "object", "id": "obj-id", "attributes": {"foo": "foo", "bar": ""}}],
             },
             {"type": "object", "id": "obj-id", "attributes": {"foo": "foo"}}
         ), 
@@ -403,7 +403,7 @@ async def test_get_entities_related(
             {},
             "/api/v3/threat_profiles",
             {
-                "data": [{"type": "object", "id": "obj-id", "attributes": {"foo": "foo"}}],
+                "data": [{"type": "object", "id": "obj-id", "attributes": {"foo": "foo", "bar": ""}}],
             },
             {"type": "object", "id": "obj-id", "attributes": {"foo": "foo"}}
         ), 
@@ -481,7 +481,7 @@ async def test_get_simple_tools(
                     "type": "collection",
                     "attributes": {"foo": "foo", "bar": "bar"},
                     "relationships": {
-                    rel_name: [{"type": "object", "id": "obj-id", "attributes": {"foo": "foo"}}]
+                    rel_name: [{"type": "object", "id": "obj-id", "attributes": {"foo": "foo", "bar": ""}}]
                         for rel_name in tools.COLLECTION_KEY_RELATIONSHIPS
                     }
                 }]
@@ -491,7 +491,7 @@ async def test_get_simple_tools(
                 "type": "collection",
                 "attributes": {"foo": "foo", "bar": "bar"},
                 "relationships": {
-                    rel_name: [{"type": "object", "id": "obj-id", "attributes": {"foo": "foo"}}]
+                    rel_name: [{"type": "object", "id": "obj-id", "attributes": {"foo": "foo", "bar": ""}}]
                     for rel_name in tools.COLLECTION_KEY_RELATIONSHIPS
                 }
             },
