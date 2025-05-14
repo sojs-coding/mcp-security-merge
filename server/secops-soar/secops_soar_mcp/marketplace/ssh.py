@@ -24,7 +24,7 @@ def register_tools(mcp: FastMCP):
     # This function registers all tools (actions) for the SSH integration.
 
     @mcp.tool()
-    async def ssh_terminate_process(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], remote_server: Annotated[str, Field(..., description="Remote server address(e.g: x.x.x.x)")], remote_username: Annotated[str, Field(..., description="")], remote_password: Annotated[str, Field(..., description="")], process: Annotated[str, Field(..., description="Process to terminate.")], remote_port: Annotated[Optional[str], Field(default=None, description="")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
+    async def ssh_terminate_process(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], remote_server: Annotated[str, Field(..., description="Remote server address(e.g: x.x.x.x)")], remote_username: Annotated[str, Field(..., description="")], remote_password: Annotated[str, Field(..., description="")], process: Annotated[str, Field(..., description="Process to terminate.")], remote_port: Annotated[str, Field(default=None, description="")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """Terminate process on a remote machine
 
         Returns:
@@ -104,12 +104,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def ssh_reboot_machine(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], remote_server: Annotated[str, Field(..., description="Remote server address(e.g: x.x.x.x).")], remote_username: Annotated[str, Field(..., description="")], remote_password: Annotated[str, Field(..., description="")], remote_port: Annotated[Optional[str], Field(default=None, description="The default port will be 22.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """ Reboot remote server
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def ssh_reboot_machine(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], remote_server: Annotated[str, Field(..., description="Remote server address(e.g: x.x.x.x).")], remote_username: Annotated[str, Field(..., description="")], remote_password: Annotated[str, Field(..., description="")], remote_port: Annotated[str, Field(default=None, description="The default port will be 22.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Reboot remote server
+
+Action Parameters: Remote Server: Remote server address (example: x.x.x.x)., Remote Username: , Remote Password: , Remote Port: The default port will be 22.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -183,12 +186,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def ssh_logoff_user(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], remote_server: Annotated[str, Field(..., description="Remote server address(e.g: x.x.x.x)")], remote_username: Annotated[str, Field(..., description="")], remote_password: Annotated[str, Field(..., description="")], logoff_username: Annotated[str, Field(..., description="The username to log off.")], remote_port: Annotated[Optional[str], Field(default=None, description="The default port will be 22.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Log off remote user
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def ssh_logoff_user(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], remote_server: Annotated[str, Field(..., description="Remote server address(e.g: x.x.x.x)")], remote_username: Annotated[str, Field(..., description="")], remote_password: Annotated[str, Field(..., description="")], logoff_username: Annotated[str, Field(..., description="The username to log off.")], remote_port: Annotated[str, Field(default=None, description="The default port will be 22.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Log off remote user
+
+Action Parameters: Remote Server: Remote server address (example: x.x.x.x)., Remote Username: , Remote Password: , Remote Port: The default port will be 22., Logoff Username: The username to log off.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -337,12 +343,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def ssh_execute_program(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], remote_server: Annotated[str, Field(..., description="Remote server address(e.g: x.x.x.x).")], remote_username: Annotated[str, Field(..., description="")], remote_password: Annotated[str, Field(..., description="")], remote_program_path: Annotated[str, Field(..., description="The path to the program in the remote host.")], remote_port: Annotated[Optional[str], Field(default=None, description="")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Run script on a remote machine
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def ssh_execute_program(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], remote_server: Annotated[str, Field(..., description="Remote server address(e.g: x.x.x.x).")], remote_username: Annotated[str, Field(..., description="")], remote_password: Annotated[str, Field(..., description="")], remote_program_path: Annotated[str, Field(..., description="The path to the program in the remote host.")], remote_port: Annotated[str, Field(default=None, description="")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Run script on a remote machine
+
+Action Parameters: Remote Server: Remote server address (example: x.x.x.x)., Remote Username: , Remote Password: , Remote Port: , Remote Program Path: The path to the program in the remote host.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -417,12 +426,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def ssh_list_processes(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], remote_server: Annotated[str, Field(..., description="Remote server address(e.g: x.x.x.x).")], remote_username: Annotated[str, Field(..., description="")], remote_password: Annotated[str, Field(..., description="")], remote_port: Annotated[Optional[str], Field(default=None, description="The default port will be 22.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """List running processes on a remote machine
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def ssh_list_processes(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], remote_server: Annotated[str, Field(..., description="Remote server address(e.g: x.x.x.x).")], remote_username: Annotated[str, Field(..., description="")], remote_password: Annotated[str, Field(..., description="")], remote_port: Annotated[str, Field(default=None, description="The default port will be 22.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+List running processes on a remote machine
+
+Action Parameters: Remote Server: Remote server address (example: x.x.x.x)., Remote Username: , Remote Password: , Remote Port: The default port will be 22.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -496,12 +508,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def ssh_list_iptables_rules(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], remote_server: Annotated[str, Field(..., description="Remote server address(e.g: x.x.x.x)")], remote_username: Annotated[str, Field(..., description="")], remote_password: Annotated[str, Field(..., description="")], remote_port: Annotated[Optional[str], Field(default=None, description="The default port will be 22.")], chain: Annotated[Optional[str], Field(default=None, description="The iptables chain that you wish to see (e.g: INPUT, OUTPUT, etc.)")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """List iptables rules on a remote machine
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def ssh_list_iptables_rules(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], remote_server: Annotated[str, Field(..., description="Remote server address(e.g: x.x.x.x)")], remote_username: Annotated[str, Field(..., description="")], remote_password: Annotated[str, Field(..., description="")], remote_port: Annotated[str, Field(default=None, description="The default port will be 22.")], chain: Annotated[str, Field(default=None, description="The iptables chain that you wish to see (e.g: INPUT, OUTPUT, etc.)")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+List iptables rules on a remote machine
+
+Action Parameters: Remote Server: Remote server address (example: x.x.x.x)., Remote Username: , Remote Password: , Remote Port: The default port will be 22., Chain: The IPtables chain that you wish to see (example: INPUT, OUTPUT, etc.).
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -577,12 +592,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def ssh_run_command(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], remote_server: Annotated[str, Field(..., description="Remote server address(e.g: x.x.x.x).")], remote_username: Annotated[str, Field(..., description="")], remote_password: Annotated[str, Field(..., description="")], command: Annotated[str, Field(..., description="Command content(e.g: ifconfig).")], remote_port: Annotated[Optional[str], Field(default=None, description="")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Run command on a remote machine
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def ssh_run_command(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], remote_server: Annotated[str, Field(..., description="Remote server address(e.g: x.x.x.x).")], remote_username: Annotated[str, Field(..., description="")], remote_password: Annotated[str, Field(..., description="")], command: Annotated[str, Field(..., description="Command content(e.g: ifconfig).")], remote_port: Annotated[str, Field(default=None, description="")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Run command on a remote machine
+
+Action Parameters: Remote Server: Remote server address (example: x.x.x.x)., Remote Username: , Remote Password: , Remote Port: , Command: Command content (example: ifconfig).
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -657,12 +675,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def ssh_list_connections(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], remote_server: Annotated[str, Field(..., description="Remote server address(e.g: x.x.x.x).")], remote_username: Annotated[str, Field(..., description="")], remote_password: Annotated[str, Field(..., description="")], remote_port: Annotated[Optional[str], Field(default=None, description="")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """List all  connections on a remote machine
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def ssh_list_connections(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], remote_server: Annotated[str, Field(..., description="Remote server address(e.g: x.x.x.x).")], remote_username: Annotated[str, Field(..., description="")], remote_password: Annotated[str, Field(..., description="")], remote_port: Annotated[str, Field(default=None, description="")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+List all  connections on a remote machine
+
+Action Parameters: Remote Server: Remote server address (example: x.x.x.x)., Remote Username: , Remote Password: , Remote Port:
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -736,12 +757,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def ssh_block_ip_address_in_iptables(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], remote_server: Annotated[str, Field(..., description="Remote server address(e.g: x.x.x.x).")], remote_username: Annotated[str, Field(..., description="")], remote_password: Annotated[str, Field(..., description="")], block_ip_address: Annotated[str, Field(..., description="IP address to block(e.g: x.x.x.x).")], remote_port: Annotated[Optional[str], Field(default=None, description="")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Add rule to iptables to block IP address
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def ssh_block_ip_address_in_iptables(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], remote_server: Annotated[str, Field(..., description="Remote server address(e.g: x.x.x.x).")], remote_username: Annotated[str, Field(..., description="")], remote_password: Annotated[str, Field(..., description="")], block_ip_address: Annotated[str, Field(..., description="IP address to block(e.g: x.x.x.x).")], remote_port: Annotated[str, Field(default=None, description="")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Add rule to iptables to block IP address
+
+Action Parameters: Remote Server: Remote server address., Remote Username: , Remote Password: , Remote Port: , Block IP Address: IP address to block.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -816,12 +840,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def ssh_shutdown_machine(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], remote_server: Annotated[str, Field(..., description="Remote server address(e.g: x.x.x.x)")], remote_username: Annotated[str, Field(..., description="")], remote_password: Annotated[str, Field(..., description="")], wait_time: Annotated[str, Field(..., description="Time to wait before shutdown in minutes(e.g: now).")], remote_port: Annotated[Optional[str], Field(default=None, description="The default port will be 22.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Shutdown remote machine
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def ssh_shutdown_machine(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], remote_server: Annotated[str, Field(..., description="Remote server address(e.g: x.x.x.x)")], remote_username: Annotated[str, Field(..., description="")], remote_password: Annotated[str, Field(..., description="")], wait_time: Annotated[str, Field(..., description="Time to wait before shutdown in minutes(e.g: now).")], remote_port: Annotated[str, Field(default=None, description="The default port will be 22.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Shutdown remote machine
+
+Action Parameters: Remote Server: Remote server address (example: x.x.x.x)., Remote Username: , Remote Password: , Remote Port: The default port will be 22., Wait Time: Time to wait before shutdown in minutes (example: now).
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -896,12 +923,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def ssh_delete_firewall_rule(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], remote_server: Annotated[str, Field(..., description="Remote server address(e.g: x.x.x.x).")], remote_username: Annotated[str, Field(..., description="")], remote_password: Annotated[str, Field(..., description="")], i_ptables_rule: Annotated[str, Field(..., description="Rule value(e.g: INPUT -s 10.0.0.10 -j DROP)")], remote_port: Annotated[Optional[str], Field(default=None, description="")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Delete iptables Firewall rule (Example: INPUT -s 10.0.0.10 -j DROP)
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def ssh_delete_firewall_rule(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], remote_server: Annotated[str, Field(..., description="Remote server address(e.g: x.x.x.x).")], remote_username: Annotated[str, Field(..., description="")], remote_password: Annotated[str, Field(..., description="")], i_ptables_rule: Annotated[str, Field(..., description="Rule value(e.g: INPUT -s 10.0.0.10 -j DROP)")], remote_port: Annotated[str, Field(default=None, description="")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Delete iptables Firewall rule (Example: INPUT -s 10.0.0.10 -j DROP)
+
+Action Parameters: Remote Server: , Remote Username: , Remote Password: , Remote Port: , IPtables Rule: Rule value (example: INPUT -s 10.0.0.10 -j DROP).
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None

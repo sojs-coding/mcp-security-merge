@@ -175,11 +175,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def twilio_send_sms(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], phone_number: Annotated[str, Field(..., description="Target phone number.The phone number must include a dial code.")], message: Annotated[str, Field(..., description="Message content.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Send SMS
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Send SMS
+
+Action Parameters: Phone Number: Target phone number.The phone number must include a dial code., Message: Message content.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None

@@ -25,11 +25,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def sophos_list_alert_actions(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], alert_id: Annotated[str, Field(..., description="Specify the ID of the alert for which you want to retrieve details.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Retrieve actions that can be executed on the alert in Sophos.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Retrieve actions that can be executed on the alert in Sophos.
+
+Action Parameters: Alert ID: Specify the ID of the alert for which you want to retrieve details.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -100,11 +103,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def sophos_add_entities_to_blocklist(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], comment: Annotated[str, Field(..., description="Specify the comment explaining why the hash was sent to blocklist.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Add entities to blocklist in Sophos. Supported entities: Filehash. Note: Only SHA-256 hashes are supported.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Add entities to blocklist in Sophos. Supported entities: Filehash. Note: Only SHA-256 hashes are supported.
+
+Action Parameters: Comment: Specify the comment explaining why the hash was sent to blocklist.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -396,7 +402,7 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def sophos_enrich_entities(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], create_insights: Annotated[Optional[bool], Field(default=None, description="If enabled, action will create an insight containing all of the retrieved information about the entity.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
+    async def sophos_enrich_entities(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], create_insights: Annotated[bool, Field(default=None, description="If enabled, action will create an insight containing all of the retrieved information about the entity.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """Enrich entities using information from Sophos. Supported entities: Hostname, IP Address, File hash.
 
         Returns:
@@ -473,11 +479,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def sophos_add_entities_to_allowlist(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], comment: Annotated[str, Field(..., description="Specify the comment explaining why the hash was sent to allowlist.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Add entities to allowlist in Sophos. Supported entities: Filehash. Note: Only SHA-256 hashes are supported.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Add entities to allowlist in Sophos. Supported entities: Filehash. Note: Only SHA-256 hashes are supported.
+
+Action Parameters: Comment: Specify the comment explaining why the hash was sent to allowlist.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -548,11 +557,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def sophos_isolate_endpoint(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], comment: Annotated[str, Field(..., description="Specify the comment explaining why the isolation is needed.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Isolate endpoints in Sophos. Supported entities: IP Address, Hostname. Note: Action is running as async, please adjust script timeout value in Siemplify IDE for action as needed.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Isolate endpoints in Sophos. Supported entities: IP Address, Hostname. Note: Action is running as async, please adjust script timeout value in Siemplify IDE for action as needed.
+
+Action Parameters: Comment: Specify the comment explaining why the isolation is needed.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -622,7 +634,7 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def sophos_execute_alert_actions(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], alert_id: Annotated[str, Field(..., description="Specify the ID of the alert on which you want to execute the action.")], action: Annotated[List[Any], Field(..., description="Specify an action that should be executed on the alert.")], message: Annotated[Optional[str], Field(default=None, description="Specify a message explaining why the action was executed.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
+    async def sophos_execute_alert_actions(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], alert_id: Annotated[str, Field(..., description="Specify the ID of the alert on which you want to execute the action.")], action: Annotated[List[Any], Field(..., description="Specify an action that should be executed on the alert.")], message: Annotated[str, Field(default=None, description="Specify a message explaining why the action was executed.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """Initiate action execution on the alert in Sophos. Use action "List Alert Actions" to get a list of available actions for the alert.
 
         Returns:
@@ -700,12 +712,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def sophos_get_events_log(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], timeframe: Annotated[str, Field(..., description="Specify how many hours backwards events should be retrieved. Note: if the user provides more than 24 hours, action will still use 24.")], max_events_to_return: Annotated[Optional[str], Field(default=None, description="Specify how many events to return per entity. Maximum: 1000")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Retrieve logs related to the endpoints in Sophos. Supported entities: IP Address, Hostname. Note: events are accessible from API only for 24 hours. Requires valid “SIEM API Root”, “API Key” and “Base 64 Auth Payload” provided in the integration configuration.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def sophos_get_events_log(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], timeframe: Annotated[str, Field(..., description="Specify how many hours backwards events should be retrieved. Note: if the user provides more than 24 hours, action will still use 24.")], max_events_to_return: Annotated[str, Field(default=None, description="Specify how many events to return per entity. Maximum: 1000")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Retrieve logs related to the endpoints in Sophos. Supported entities: IP Address, Hostname. Note: events are accessible from API only for 24 hours. Requires valid “SIEM API Root”, “API Key” and “Base 64 Auth Payload” provided in the integration configuration.
+
+Action Parameters: Timeframe: Specify the number of hours backwards events should be retrieved.Note: If the user provides more than 24 hours, the action still uses 24., Max Events To Return: Specify the number events to return per entity.Maximum: 1000
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -778,11 +793,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def sophos_unisolate_endpoint(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], comment: Annotated[str, Field(..., description="Specify the comment explaining why the unisolation is needed.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Unisolate endpoints in Sophos. Supported entities: IP Address, Hostname. Note: Action is running as async, please adjust script timeout value in Siemplify IDE for action as needed.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Unisolate endpoints in Sophos. Supported entities: IP Address, Hostname. Note: Action is running as async, please adjust script timeout value in Siemplify IDE for action as needed.
+
+Action Parameters: Comment: Specify the comment explaining why the unisolation is needed.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None

@@ -25,11 +25,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def v_sphere_suspend(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], vm_name: Annotated[str, Field(..., description="The name of the target VM.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Suspend a VM
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Suspend a VM
+
+Action Parameters: VM Name: The name of the target VM.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -251,11 +254,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def v_sphere_revert_to_snapshot(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], vm_name: Annotated[str, Field(..., description="The name of the target VM.")], snapshot_name: Annotated[str, Field(..., description="The name of the target snapshot.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Revert to a specific snapshot
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Revert to a specific snapshot
+
+Action Parameters: VM Name: The name of the target VM., Snapshot Name: The name of the target snapshot.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -327,11 +333,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def v_sphere_power_on(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], vm_name: Annotated[str, Field(..., description="")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Power on a VM
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Power on a VM
+
+Action Parameters: VM Name:
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -402,11 +411,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def v_sphere_reset(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], vm_name: Annotated[str, Field(..., description="The name of the target VM.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Hard reset a VM
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Hard reset a VM
+
+Action Parameters: VM Name: The name of the target VM.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -551,11 +563,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def v_sphere_power_off(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], vm_name: Annotated[str, Field(..., description="Target VM name.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Power off a VM
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Power off a VM
+
+Action Parameters: VM Name: Target VM name.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -626,11 +641,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def v_sphere_get_system_info(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], vm_name: Annotated[str, Field(..., description="Target VM name.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Get information about a VM
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Get information about a VM
+
+Action Parameters: Vm Name: Target VM name.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None

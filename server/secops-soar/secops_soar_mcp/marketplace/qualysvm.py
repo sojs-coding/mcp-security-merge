@@ -98,12 +98,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def qualys_vm_launch_patch_report(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], report_title: Annotated[str, Field(..., description="A user-defined report title. The title may have a maximum of 128 characters. For a PCI compliance report, the report title is provided by Qualys and cannot be changed.")], report_type: Annotated[str, Field(..., description="Template name. For example: Qualys Patch Report.")], output_format: Annotated[str, Field(..., description="One output format may be specified. When output_format=pdf is specified, the Secure PDF Distribution may be used. e.g: pdf, online, xml or csv.")], i_ps_ranges: Annotated[Optional[str], Field(default=None, description="Specify IPs/ranges to change (override) the report target, as defined in the patch report template. Multiple IPs/ranges are comma separated.")], asset_groups: Annotated[Optional[str], Field(default=None, description="Asset groups.if more than one has to be comma separated.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Launch a patch report
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def qualys_vm_launch_patch_report(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], report_title: Annotated[str, Field(..., description="A user-defined report title. The title may have a maximum of 128 characters. For a PCI compliance report, the report title is provided by Qualys and cannot be changed.")], report_type: Annotated[str, Field(..., description="Template name. For example: Qualys Patch Report.")], output_format: Annotated[str, Field(..., description="One output format may be specified. When output_format=pdf is specified, the Secure PDF Distribution may be used. e.g: pdf, online, xml or csv.")], i_ps_ranges: Annotated[str, Field(default=None, description="Specify IPs/ranges to change (override) the report target, as defined in the patch report template. Multiple IPs/ranges are comma separated.")], asset_groups: Annotated[str, Field(default=None, description="Asset groups.if more than one has to be comma separated.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Launch a patch report
+
+Action Parameters: Report Title: A user-defined report title. The title may have a maximum of 128 characters. For a PCI compliance report, the report title is provided by Qualys and cannot be changed., Report Type: Template name., Output Format: One output format may be specified. When output_format=pdf is specified, the Secure PDF Distribution may be used. Example: pdf, mht and html, IPs/Ranges: Specify IPs or ranges to change (override) the report target, as defined in the patch report template. Multiple IPs or ranges are comma-separated., Asset Groups: Asset groups. If more than one has to be comma-separated.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -180,11 +183,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def qualys_vm_download_vm_scan_results(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], scan_id: Annotated[str, Field(..., description="Scan ID value. Scan ID format: scan/{integer}.{integer}")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Fetch vulnerability scan results by scan id.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Fetch vulnerability scan results by scan id.
+
+Action Parameters: Scan ID: Scan ID value.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -254,12 +260,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def qualys_vm_launch_vm_scan_and_fetch_results(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], processing_priority: Annotated[str, Field(..., description="Specify a value of 0 - 9 to set a processing priority level for the scan. When not specified, a value of 0 (no priority) is used. Valid values are: 0 for No Priority (the default), 1 for Emergency, 2 for Ultimate,3 for Critical, 4 for Major, 5 for High, 6 for Standard 7 for Medium, 8 for Minor and 9 for Low")], scan_profile: Annotated[str, Field(..., description="The title of the compliance option profile to be used. One of these parameters must be specified in a request: option_title or option_id. For example: Qualys Top 20 Options.")], title: Annotated[Optional[str], Field(default=None, description="The scan title. This can be a maximum of 2000 characters (ascii)")], scanner_appliance: Annotated[Optional[str], Field(default=None, description="The friendly names of the scanner appliances to be used or \"External\" for external scanners. Multiple entries are comma separated.")], network: Annotated[Optional[str], Field(default=None, description="The ID of a network used to filter the IPs/ranges specified in the \"ip\" parameter. Set to a custom network ID (note this does not filter IPs/ranges specified in \"asset_groups\" or \"asset_group_ids\"). Or set to \"0\" (the default) for the Global Default Network - this is used to scan hosts outside of your custom networks.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Launch vulnerability scan on a host in your network and fetch results. NOTICE! This action will automatically new hosts to Qualys as assets. Please note that your license limit number of hosts depends on your subscription. Supported entities: IP Address.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def qualys_vm_launch_vm_scan_and_fetch_results(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], processing_priority: Annotated[str, Field(..., description="Specify a value of 0 - 9 to set a processing priority level for the scan. When not specified, a value of 0 (no priority) is used. Valid values are: 0 for No Priority (the default), 1 for Emergency, 2 for Ultimate,3 for Critical, 4 for Major, 5 for High, 6 for Standard 7 for Medium, 8 for Minor and 9 for Low")], scan_profile: Annotated[str, Field(..., description="The title of the compliance option profile to be used. One of these parameters must be specified in a request: option_title or option_id. For example: Qualys Top 20 Options.")], title: Annotated[str, Field(default=None, description="The scan title. This can be a maximum of 2000 characters (ascii)")], scanner_appliance: Annotated[str, Field(default=None, description="The friendly names of the scanner appliances to be used or \"External\" for external scanners. Multiple entries are comma separated.")], network: Annotated[str, Field(default=None, description="The ID of a network used to filter the IPs/ranges specified in the \"ip\" parameter. Set to a custom network ID (note this does not filter IPs/ranges specified in \"asset_groups\" or \"asset_group_ids\"). Or set to \"0\" (the default) for the Global Default Network - this is used to scan hosts outside of your custom networks.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Launch vulnerability scan on a host in your network and fetch results. NOTICE! This action will automatically new hosts to Qualys as assets. Please note that your license limit number of hosts depends on your subscription. Supported entities: IP Address.
+
+Action Parameters: Title: The scan title. It can be up to 2000 characters (ASCII) long., Processing Priority: Specify a value between 0 and 9 to set a processing priority level for the scan. When not specified, a value of 0 (no priority) is used. Valid values are: 0 for No Priority (the default) 1 for Emergency 2 for Ultimate 3 for Critical 4 for Major 5 for High 6 for Standard 7 for Medium 8 for Minor 9 for Low, Scan Profile: The title of the compliance option profile to be used. One of these parameters must be specified in a request: option_title option_id, Scanner Appliance: The friendly names of the scanner appliances to be used or "External" for external scanners. Multiple entries are comma-separated., Network: The ID of a network used to filter the IPs or ranges specified in the "ip" parameter. Set to a custom network ID. Note: This does not filter IPs or ranges specified in "asset_groups" or "asset_group_ids". Or set to "0" (the default) for the Global Default Network. This is used to scan hosts outside of your custom networks.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -337,11 +346,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def qualys_vm_download_report(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], report_id: Annotated[str, Field(..., description="Report ID value.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Fetch report by ID
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Fetch report by ID
+
+Action Parameters: Report ID: Report ID value.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -485,12 +497,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def qualys_vm_launch_scan_report(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], report_title: Annotated[str, Field(..., description="A user-defined report title. The title may have a maximum of 128 characters. For a PCI compliance report, the report title is provided by Qualys and cannot be changed.")], report_type: Annotated[str, Field(..., description="Template name. For example: Technical Report.")], output_format: Annotated[str, Field(..., description="One output format may be specified. When output_format=pdf is specified, the Secure PDF Distribution may be used. e.g: pdf, mht and html.")], i_ps_ranges: Annotated[Optional[str], Field(default=None, description="Specify IPs/ranges to change (override) the report target, as defined in the patch report template. Multiple IPs/ranges are comma separated.")], asset_groups: Annotated[Optional[str], Field(default=None, description="Asset groups.if more than one has to be comma separated.")], scan_reference: Annotated[Optional[str], Field(default=None, description="For a PCI compliance report, either the technical or executive report, this parameter specifies the scan reference to include. A scan reference starts with the string \"scan/\" followed by a reference ID number. The scan reference must be for a scan that was run using the PCI Options profile. Only one scan reference may be specified.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Launch a scan report
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def qualys_vm_launch_scan_report(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], report_title: Annotated[str, Field(..., description="A user-defined report title. The title may have a maximum of 128 characters. For a PCI compliance report, the report title is provided by Qualys and cannot be changed.")], report_type: Annotated[str, Field(..., description="Template name. For example: Technical Report.")], output_format: Annotated[str, Field(..., description="One output format may be specified. When output_format=pdf is specified, the Secure PDF Distribution may be used. e.g: pdf, mht and html.")], i_ps_ranges: Annotated[str, Field(default=None, description="Specify IPs/ranges to change (override) the report target, as defined in the patch report template. Multiple IPs/ranges are comma separated.")], asset_groups: Annotated[str, Field(default=None, description="Asset groups.if more than one has to be comma separated.")], scan_reference: Annotated[str, Field(default=None, description="For a PCI compliance report, either the technical or executive report, this parameter specifies the scan reference to include. A scan reference starts with the string \"scan/\" followed by a reference ID number. The scan reference must be for a scan that was run using the PCI Options profile. Only one scan reference may be specified.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Launch a scan report
+
+Action Parameters: Report Title: A user-defined report title. The title may have a maximum of 128 characters. For a PCI compliance report, the report title is provided by Qualys and cannot be changed., Report Type: Template name., Output Format: One output format may be specified. When output_format=pdf is specified, the Secure PDF Distribution may be used. Example: pdf, mht and html., IPs/Ranges: Specify IPs or ranges to change (override) the report target, as defined in the patch report template. Multiple IPs or ranges are comma-separated., Asset Groups: Asset groups. If more than one has to be comma-separated., Scan Reference: Show only a scan with a certain scan reference code.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -716,12 +731,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def qualys_vm_list_endpoint_detections(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], status_filter: Annotated[Optional[str], Field(default=None, description="Specify a comma-separated list of statuses that should be used during ingestion. If nothing is provided, the action will ingest detections with New, Active, Re-Opened statuses. Possible values: New, Active, Re-Opened, Fixed")], lowest_severity_to_fetch: Annotated[Optional[List[Any]], Field(default=None, description="Specify the lowest severity that will be used to fetch detections.")], max_detections_to_return: Annotated[Optional[str], Field(default=None, description="Specify how many detections to return per entity. Default: 50. Maximum: 200.")], ingest_ignored_detections: Annotated[Optional[bool], Field(default=None, description="If enabled, action will also return ignored detections.")], ingest_disabled_detections: Annotated[Optional[bool], Field(default=None, description="If enabled, action will also return disabled detections.")], create_insight: Annotated[Optional[bool], Field(default=None, description="If enabled, action will create an insight containing information about vulnerabilities found on the entity.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """List endpoint detections in Qualys VM. Supported entities: IP Address, Hostname.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def qualys_vm_list_endpoint_detections(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], status_filter: Annotated[str, Field(default=None, description="Specify a comma-separated list of statuses that should be used during ingestion. If nothing is provided, the action will ingest detections with New, Active, Re-Opened statuses. Possible values: New, Active, Re-Opened, Fixed")], lowest_severity_to_fetch: Annotated[List[Any], Field(default=None, description="Specify the lowest severity that will be used to fetch detections.")], max_detections_to_return: Annotated[str, Field(default=None, description="Specify how many detections to return per entity. Default: 50. Maximum: 200.")], ingest_ignored_detections: Annotated[bool, Field(default=None, description="If enabled, action will also return ignored detections.")], ingest_disabled_detections: Annotated[bool, Field(default=None, description="If enabled, action will also return disabled detections.")], create_insight: Annotated[bool, Field(default=None, description="If enabled, action will create an insight containing information about vulnerabilities found on the entity.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+List endpoint detections in Qualys VM. Supported entities: IP Address, Hostname.
+
+Action Parameters: Status Filter: Specify a comma-separated list of statuses that should be used during ingestion. If nothing is provided, the action ingests detections with "New, Active, Re-Opened" statuses. Possible values: New, Active, Fixed, Re-Opened., Ingest Ignored Detections: If enabled, the action also returns ignored detections., Ingest Disabled Detections: If enabled, the action also returns disabled detections., Lowest Severity To Fetch: Specify the lowest severity that is used to fetch detections., Create Insight: If enabled, the action creates an insight containing information about vulnerabilities found on the entity., Max Detections To Return: Specify the number of detections to return per entity. Maximum: 200
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -876,12 +894,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def qualys_vm_launch_remediation_report(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], report_title: Annotated[str, Field(..., description="A user-defined report title. The title may have a maximum of 128 characters. For a PCI compliance report, the report title is provided by Qualys and cannot be changed.")], report_type: Annotated[str, Field(..., description="Template name. For example: Tickets per Asset Group, Tickets per Vulnerability.")], output_format: Annotated[str, Field(..., description="One output format may be specified. When output_format=pdf is specified, the Secure PDF Distribution may be used. e.g: pdf, mht and html.")], i_ps_ranges: Annotated[Optional[str], Field(default=None, description="Specify IPs/ranges to change (override) the report target, as defined in the patch report template. Multiple IPs/ranges are comma separated.")], asset_groups: Annotated[Optional[str], Field(default=None, description="Asset groups.if more than one has to be comma separated.")], display_results_for_all_tickets: Annotated[Optional[bool], Field(default=None, description="Specifies whether the report will include tickets assigned to the current user (User is set by default), or all tickets in the user account. By default tickets assigned to the current user are included.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Launch a remediation report
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def qualys_vm_launch_remediation_report(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], report_title: Annotated[str, Field(..., description="A user-defined report title. The title may have a maximum of 128 characters. For a PCI compliance report, the report title is provided by Qualys and cannot be changed.")], report_type: Annotated[str, Field(..., description="Template name. For example: Tickets per Asset Group, Tickets per Vulnerability.")], output_format: Annotated[str, Field(..., description="One output format may be specified. When output_format=pdf is specified, the Secure PDF Distribution may be used. e.g: pdf, mht and html.")], i_ps_ranges: Annotated[str, Field(default=None, description="Specify IPs/ranges to change (override) the report target, as defined in the patch report template. Multiple IPs/ranges are comma separated.")], asset_groups: Annotated[str, Field(default=None, description="Asset groups.if more than one has to be comma separated.")], display_results_for_all_tickets: Annotated[bool, Field(default=None, description="Specifies whether the report will include tickets assigned to the current user (User is set by default), or all tickets in the user account. By default tickets assigned to the current user are included.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Launch a remediation report
+
+Action Parameters: Report Title: A user-defined report title. The title may have a maximum of 128 characters. For a PCI compliance report, the report title is provided by Qualys and cannot be changed., Report Type: Template name., Output Format: One output format may be specified. When output_format=pdf is specified, the Secure PDF Distribution may be used. Example: pdf, mht and html, IPs/Ranges: Specify IPs or ranges to change (override) the report target, as defined in the patch report template. Multiple IPs or ranges are comma separated., Asset Groups: Asset groups. If more than one has to be comma-separated., Display Results For All tickets: Specifies whether the report includes tickets assigned to the current user (User is set by default), or all tickets in the user account. By default tickets assigned to the current user are included.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -959,12 +980,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def qualys_vm_launch_compliance_report(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], report_title: Annotated[str, Field(..., description="A user-defined report title. The title may have a maximum of 128 characters. For a PCI compliance report, the report title is provided by Qualys and cannot be changed.")], report_type: Annotated[str, Field(..., description="Template name. For example: Qualys Top 20 Report, Payment Card Industry (PCI).")], output_format: Annotated[str, Field(..., description="One output format may be specified. When output_format=pdf is specified, the Secure PDF Distribution may be used. e.g: pdf, mht and html.")], i_ps_ranges: Annotated[Optional[str], Field(default=None, description="Specify IPs/ranges to change (override) the report target, as defined in the patch report template. Multiple IPs/ranges are comma separated.")], asset_groups: Annotated[Optional[str], Field(default=None, description="Asset groups.if more than one has to be comma separated.")], scan_reference: Annotated[Optional[str], Field(default=None, description="Show only a scan with a certain scan reference code.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Launch a compliance report
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def qualys_vm_launch_compliance_report(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], report_title: Annotated[str, Field(..., description="A user-defined report title. The title may have a maximum of 128 characters. For a PCI compliance report, the report title is provided by Qualys and cannot be changed.")], report_type: Annotated[str, Field(..., description="Template name. For example: Qualys Top 20 Report, Payment Card Industry (PCI).")], output_format: Annotated[str, Field(..., description="One output format may be specified. When output_format=pdf is specified, the Secure PDF Distribution may be used. e.g: pdf, mht and html.")], i_ps_ranges: Annotated[str, Field(default=None, description="Specify IPs/ranges to change (override) the report target, as defined in the patch report template. Multiple IPs/ranges are comma separated.")], asset_groups: Annotated[str, Field(default=None, description="Asset groups.if more than one has to be comma separated.")], scan_reference: Annotated[str, Field(default=None, description="Show only a scan with a certain scan reference code.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Launch a compliance report
+
+Action Parameters: Report Title: A user-defined report title. The title may have a maximum of 128 characters. For a PCI compliance report, the report title is provided by Qualys and cannot be changed., Report Type: Template name., Output Format: One output format may be specified. When output_format=pdf is specified, the Secure PDF Distribution may be used. Example: pdf, mht, and html, IPs/Ranges: Specify IPs or ranges to change (override) the report target, as defined in the patch report template. Multiple IPs or ranges are comma-separated., Asset Groups: A comma-separated list of asset groups., Scan Reference: Show only a scan with a certain scan reference code.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -1042,12 +1066,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def qualys_vm_enrich_host(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], create_insight: Annotated[Optional[bool], Field(default=None, description="If enabled, action will create an insight containing all of the retrieved information about the entity.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Enrich host with information from Qualys VM. Note: AssetView module is required. Supported entities: IP Address, Hostname.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def qualys_vm_enrich_host(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], create_insight: Annotated[bool, Field(default=None, description="If enabled, action will create an insight containing all of the retrieved information about the entity.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Enrich host with information from Qualys VM. Note: AssetView module is required. Supported entities: IP Address, Hostname.
+
+Action Parameters: Create Insight: If enabled, the action creates an insight containing all of the retrieved information about the entity.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None

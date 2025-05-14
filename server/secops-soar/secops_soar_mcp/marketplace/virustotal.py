@@ -24,12 +24,15 @@ def register_tools(mcp: FastMCP):
     # This function registers all tools (actions) for the VirusTotal integration.
 
     @mcp.tool()
-    async def virus_total_scan_hash(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], threshold: Annotated[str, Field(..., description="Mark entity as suspicious if number of negative engines is equal or above the given threshold")], rescan_after_days: Annotated[Optional[str], Field(default=None, description="Action will fetch the latest result. If the result is older than mentioned days it will automatically rescan the entity")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Scan Hash via VirusTotal. *Mark entity as suspicious and show insights if risk score matches a given threshold.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def virus_total_scan_hash(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], threshold: Annotated[str, Field(..., description="Mark entity as suspicious if number of negative engines is equal or above the given threshold")], rescan_after_days: Annotated[str, Field(default=None, description="Action will fetch the latest result. If the result is older than mentioned days it will automatically rescan the entity")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Scan Hash via VirusTotal. *Mark entity as suspicious and show insights if risk score matches a given threshold.
+
+Action Parameters: Threshold: Required. The threshold to mark detections as suspicious.If the malicious engine detections reach or exceed the set threshold, the action marks the entity as suspicious., Rescan after days: Optional. The number of days after the latest scan date to rescan the entity.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -175,7 +178,7 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def virus_total_upload_and_scan_files(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], threshold: Annotated[str, Field(..., description="Entity risk threshold.")], file_paths: Annotated[str, Field(..., description="Target file path.")], linux_server_address: Annotated[Optional[str], Field(default=None, description="Linux server address(e.g: x.x.x.x).")], linux_user: Annotated[Optional[str], Field(default=None, description="")], linux_password: Annotated[Optional[str], Field(default=None, description="")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
+    async def virus_total_upload_and_scan_files(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], threshold: Annotated[str, Field(..., description="Entity risk threshold.")], file_paths: Annotated[str, Field(..., description="Target file path.")], linux_server_address: Annotated[str, Field(default=None, description="Linux server address(e.g: x.x.x.x).")], linux_user: Annotated[str, Field(default=None, description="")], linux_password: Annotated[str, Field(default=None, description="")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """Upload and scan files via VirusTotal. *Files can be uploaded from remote path (Windows share or Linux remote server).
 
         Returns:
@@ -257,12 +260,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def virus_total_scan_url(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], threshold: Annotated[str, Field(..., description="Mark entity as suspicious if number of negative engines is equal or above the given threshold")], rescan_after_days: Annotated[Optional[str], Field(default=None, description="Action will fetch the latest result. If the result is older than mentioned days it will automatically rescan the entity")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Scan URL via VirusTotal. *Mark entity as suspicious and show insights if risk score matches a given threshold.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def virus_total_scan_url(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], threshold: Annotated[str, Field(..., description="Mark entity as suspicious if number of negative engines is equal or above the given threshold")], rescan_after_days: Annotated[str, Field(default=None, description="Action will fetch the latest result. If the result is older than mentioned days it will automatically rescan the entity")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Scan URL via VirusTotal. *Mark entity as suspicious and show insights if risk score matches a given threshold.
+
+Action Parameters: Threshold: Required. The threshold to mark detections as suspicious.If the malicious engine detections reach or exceed the set threshold, the action marks the entity as suspicious., Rescan after days: Optional. The number of days after the latest scan date to rescan the entity.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -334,12 +340,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def virus_total_scan_ip(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], threshold: Annotated[Optional[str], Field(default=None, description="Specify the accepted threshold for the detected samples related to the IP address. If the number of engines that marked related samples as malicious is higher than the specified threshold, IP address will be marked as suspicious.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Scan IP via VirusTotal. Returns table of reverse domains and full Json result
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def virus_total_scan_ip(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], threshold: Annotated[str, Field(default=None, description="Specify the accepted threshold for the detected samples related to the IP address. If the number of engines that marked related samples as malicious is higher than the specified threshold, IP address will be marked as suspicious.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Scan IP via VirusTotal. Returns table of reverse domains and full Json result
+
+Action Parameters: Threshold: Optional. The threshold to mark an IP address as suspicious.If the malicious engine detections reach or exceed the set threshold, the action marks the IP address as suspicious.The default value is 25.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -411,11 +420,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def virus_total_get_domain_report(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Scan Domain via VirusTotal. *Check online report for full details.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Scan Domain via VirusTotal. *Check online report for full details.
+
+Action Parameters: None.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None

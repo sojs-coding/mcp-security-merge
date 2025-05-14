@@ -399,11 +399,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def api_void_get_ip_reputation(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], threshold: Annotated[str, Field(..., description="IP risk threshold. The threshold must be a numeric value. e.g. 3")], create_insights: Annotated[bool, Field(..., description="Specify whether the action should create insights or not.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Detect potentially malicious IP addresses commonly used for spam, to attack websites or to commit fraudulent activities
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Detect potentially malicious IP addresses commonly used for spam, to attack websites or to commit fraudulent activities
+
+Action Parameters: Threshold: IP risk threshold. The threshold must be a numeric value. Example: 3., Create Insights: Specify whether the action should create insights or not.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None

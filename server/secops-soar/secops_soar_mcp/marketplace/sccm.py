@@ -173,11 +173,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def sccm_run_wql_query(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], query_to_run: Annotated[str, Field(..., description="Specify WQL query to run. Consider the default example request for reference.")], number_of_records_to_return: Annotated[str, Field(..., description="Maximum number of records to return in action.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Run arbitrary Windows Management Instrumentation Query Language (WQL) query against Microsoft SCCM Instance. Note: action is not using Siemplify entities to operate.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Run arbitrary Windows Management Instrumentation Query Language (WQL) query against Microsoft SCCM Instance. Note: action is not using Siemplify entities to operate.
+
+Action Parameters: Query to run: Specify WQL query to run. Consider the default example request for reference., Number of records to return: Maximum number of records to return in action.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -323,11 +326,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def sccm_get_login_history(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], number_of_records_to_return: Annotated[str, Field(..., description="Maximum number of records to return in the action.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Retrieve user login history from MS SCCM instance based on the provided Siemplify user entity.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Retrieve user login history from MS SCCM instance based on the provided Siemplify user entity.
+
+Action Parameters: Number of Records to Return: Maximum number of records to return in the action.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None

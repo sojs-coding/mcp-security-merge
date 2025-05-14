@@ -99,11 +99,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def nessus_scanner_get_scan_report(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], scan_name: Annotated[str, Field(..., description="Scan display name.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Get a full report on the scan results
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Get a full report on the scan results
+
+Action Parameters: Scan Name: Scan display name.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -174,11 +177,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def nessus_scanner_launch_scan(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], scan_name: Annotated[str, Field(..., description="Scam display name.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Launch scan on the Nessus server
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Launch scan on the Nessus server
+
+Action Parameters: Scan Name: Scan display name.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -248,12 +254,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def nessus_scanner_create_scan(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], scan_name: Annotated[str, Field(..., description="Scan display name.")], scan_template_title: Annotated[str, Field(..., description="Scan template title value.")], description: Annotated[Optional[str], Field(default=None, description="Description content.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Create a new scan in Nessus with a template
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def nessus_scanner_create_scan(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], scan_name: Annotated[str, Field(..., description="Scan display name.")], scan_template_title: Annotated[str, Field(..., description="Scan template title value.")], description: Annotated[str, Field(default=None, description="Description content.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Create a new scan in Nessus with a template
+
+Action Parameters: Scan Name: Scan display name., Scan Template Title: Scan template title value., Description: Description content.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None

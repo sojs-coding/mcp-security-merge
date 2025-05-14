@@ -24,12 +24,15 @@ def register_tools(mcp: FastMCP):
     # This function registers all tools (actions) for the Cloudflare integration.
 
     @mcp.tool()
-    async def cloudflare_list_firewall_rules(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], zone_name: Annotated[str, Field(..., description="Specify the name of the zone, which will contain the firewall rule.")], filter_key: Annotated[Optional[List[Any]], Field(default=None, description="Specify the key that needs to be used to filter results.")], filter_logic: Annotated[Optional[List[Any]], Field(default=None, description="Specify what filter logic should be applied. Filtering logic is working based on the value  provided in the \"Filter Key\" parameter.")], filter_value: Annotated[Optional[str], Field(default=None, description="Specify what value should be used in the filter. If \"Equal\" is selected, action will try to find the exact match among results and if \"Contains\" is selected, action will try to find results that contain that substring. If nothing is provided in this parameter, the filter will not be applied. Filtering logic is working based on the value provided in the \"Filter Key\" parameter.")], max_records_to_return: Annotated[Optional[str], Field(default=None, description="Specify how many records to return. If nothing is provided, action will return 50 records.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """List available firewall rules in Cloudflare.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def cloudflare_list_firewall_rules(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], zone_name: Annotated[str, Field(..., description="Specify the name of the zone, which will contain the firewall rule.")], filter_key: Annotated[List[Any], Field(default=None, description="Specify the key that needs to be used to filter results.")], filter_logic: Annotated[List[Any], Field(default=None, description="Specify what filter logic should be applied. Filtering logic is working based on the value  provided in the \"Filter Key\" parameter.")], filter_value: Annotated[str, Field(default=None, description="Specify what value should be used in the filter. If \"Equal\" is selected, action will try to find the exact match among results and if \"Contains\" is selected, action will try to find results that contain that substring. If nothing is provided in this parameter, the filter will not be applied. Filtering logic is working based on the value provided in the \"Filter Key\" parameter.")], max_records_to_return: Annotated[str, Field(default=None, description="Specify how many records to return. If nothing is provided, action will return 50 records.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+List available firewall rules in Cloudflare.
+
+Action Parameters: Zone Name: Specify the name of the zone, which will contain the firewall rule., Filter Key: Specify the key that needs to be used to filter {item type}., Filter Logic: Specify the filter logic that should be applied. The filtering logic is based on the value provided in the "Filter Key" parameter., Filter Value: Specify the value that should be used in the filter.If "Equal" is selected, the action tries to find the exact match among results.If "Contains" is selected, the action tries to find results that contain that substring.If nothing is provided in this parameter, the filter is not applied. The filtering logic is based on the value provided in the "Filter Key" parameter., Max Records To Return: Specify the number of records to return.If nothing is provided, the action returns 50 records.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -107,12 +110,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def cloudflare_add_ip_to_rule_list(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], rule_name: Annotated[str, Field(..., description="Specify the name of the rule list to which you want to add rule list items.")], description: Annotated[Optional[str], Field(default=None, description="Specify a description for the newly added rule list items.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Add IP addresses to the rule list in Cloudflare. Supported Entities: IP Address.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def cloudflare_add_ip_to_rule_list(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], rule_name: Annotated[str, Field(..., description="Specify the name of the rule list to which you want to add rule list items.")], description: Annotated[str, Field(default=None, description="Specify a description for the newly added rule list items.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Add IP addresses to the rule list in Cloudflare. Supported Entities: IP Address.
+
+Action Parameters: Rule Name: Specify the name of the rule list to which you want to add rule list items., Description: Specify a description for the newly added rule list items.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -184,12 +190,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def cloudflare_add_url_to_rule_list(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], rule_name: Annotated[str, Field(..., description="Specify the name of the rule list to which you want to add rule list items.")], target_url: Annotated[str, Field(..., description="Specify the target URL for the rule list item.")], description: Annotated[Optional[str], Field(default=None, description="Specify a description for the newly added rule list item.")], status_code: Annotated[Optional[List[Any]], Field(default=None, description="Specify the status for the rule list item.")], preserve_query_string: Annotated[Optional[bool], Field(default=None, description="If enabled, the rule list item will preserve the query string.")], include_subdomains: Annotated[Optional[bool], Field(default=None, description="If enabled, the rule list item will include subdomains.")], subpath_matching: Annotated[Optional[bool], Field(default=None, description="If enabled, the rule list item will match the subpath.")], preserve_path_suffix: Annotated[Optional[bool], Field(default=None, description="If enabled, the rule list item will preserve the path suffix.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Add URLs to the rule list in Cloudflare. Supported Entities: URL. Note: URL entities are treated as "Source URLs".
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def cloudflare_add_url_to_rule_list(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], rule_name: Annotated[str, Field(..., description="Specify the name of the rule list to which you want to add rule list items.")], target_url: Annotated[str, Field(..., description="Specify the target URL for the rule list item.")], description: Annotated[str, Field(default=None, description="Specify a description for the newly added rule list item.")], status_code: Annotated[List[Any], Field(default=None, description="Specify the status for the rule list item.")], preserve_query_string: Annotated[bool, Field(default=None, description="If enabled, the rule list item will preserve the query string.")], include_subdomains: Annotated[bool, Field(default=None, description="If enabled, the rule list item will include subdomains.")], subpath_matching: Annotated[bool, Field(default=None, description="If enabled, the rule list item will match the subpath.")], preserve_path_suffix: Annotated[bool, Field(default=None, description="If enabled, the rule list item will preserve the path suffix.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Add URLs to the rule list in Cloudflare. Supported Entities: URL. Note: URL entities are treated as "Source URLs".
+
+Action Parameters: Rule Name: Specify the name of the rule list to which you want to add rule list items., Source URL: Specify the source URL for the rule list item., Description: Specify a description for the newly added rule list items., Status Code: Specify the status for the rule list item., Preserve Query String: If enabled, the rule list item preserves the query string., Include Subdomains: If enabled, the rule list item includes subdomains., Subpath Matching: If enabled, the rule list item matches the subpath., Preserve Path Suffix: If enabled, the rule list item preserves the path suffix.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -346,7 +355,7 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def cloudflare_update_firewall_rule(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], rule_name: Annotated[str, Field(..., description="Specify the name of the rule that needs to be updated.")], zone_name: Annotated[str, Field(..., description="Specify the name of the zone, which will contain the firewall rule.")], action: Annotated[Optional[List[Any]], Field(default=None, description="Specify the action for the firewall rule. If \"Bypass\" is selected, you need to provide values in the \"Products\" parameter.")], expression: Annotated[Optional[str], Field(default=None, description="Specify the expression for the firewall rule.")], products: Annotated[Optional[str], Field(default=None, description="Specify a comma-separated list of products for the firewall rule. Note: this parameter is only mandatory, if \"Bypass\" is selected for \"Action\" parameter. Possible values: zoneLockdown, uaBlock, bic, hot, securityLevel, rateLimit, waf.")], priority: Annotated[Optional[str], Field(default=None, description="Specify the priority for the firewall rule.")], reference_tag: Annotated[Optional[str], Field(default=None, description="Specify a reference tag for the firewall rule. Note: it can only be up to 50 characters long.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
+    async def cloudflare_update_firewall_rule(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], rule_name: Annotated[str, Field(..., description="Specify the name of the rule that needs to be updated.")], zone_name: Annotated[str, Field(..., description="Specify the name of the zone, which will contain the firewall rule.")], action: Annotated[List[Any], Field(default=None, description="Specify the action for the firewall rule. If \"Bypass\" is selected, you need to provide values in the \"Products\" parameter.")], expression: Annotated[str, Field(default=None, description="Specify the expression for the firewall rule.")], products: Annotated[str, Field(default=None, description="Specify a comma-separated list of products for the firewall rule. Note: this parameter is only mandatory, if \"Bypass\" is selected for \"Action\" parameter. Possible values: zoneLockdown, uaBlock, bic, hot, securityLevel, rateLimit, waf.")], priority: Annotated[str, Field(default=None, description="Specify the priority for the firewall rule.")], reference_tag: Annotated[str, Field(default=None, description="Specify a reference tag for the firewall rule. Note: it can only be up to 50 characters long.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """Update a firewall rule in Cloudflare.
 
         Returns:
@@ -432,12 +441,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def cloudflare_create_rule_list(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], name: Annotated[str, Field(..., description="Specify the name for the rule list.")], type: Annotated[Optional[List[Any]], Field(default=None, description="Specify the type for the rule list.")], description: Annotated[Optional[str], Field(default=None, description="Specify the description for the rule list.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Create a rule list in Cloudflare.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def cloudflare_create_rule_list(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], name: Annotated[str, Field(..., description="Specify the name for the rule list.")], type: Annotated[List[Any], Field(default=None, description="Specify the type for the rule list.")], description: Annotated[str, Field(default=None, description="Specify the description for the rule list.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Create a rule list in Cloudflare.
+
+Action Parameters: Name: Specify the name for the rule list., Type: Specify the type for the rule list., Description: Specify the description for the rule list.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -511,12 +523,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def cloudflare_create_firewall_rule(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], zone_name: Annotated[str, Field(..., description="Specify the name of the zone, which will contain the firewall rule.")], expression: Annotated[str, Field(..., description="Specify the expression for the firewall rule.")], name: Annotated[Optional[str], Field(default=None, description="Specify the name for the firewall rule.")], action: Annotated[Optional[List[Any]], Field(default=None, description="Specify the action for the firewall rule. If \"Bypass\" is selected, you need to provide values in the \"Products\" parameter.")], products: Annotated[Optional[str], Field(default=None, description="Specify a comma-separated list of products for the firewall rule. Note: this parameter is only mandatory, if \"Bypass\" is selected for \"Action\" parameter. Possible values: zoneLockdown, uaBlock, bic, hot, securityLevel, rateLimit, waf.")], priority: Annotated[Optional[str], Field(default=None, description="Specify the priority for the firewall rule.")], reference_tag: Annotated[Optional[str], Field(default=None, description="Specify a reference tag for the firewall rule. Note: it can only be up to 50 characters long.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Create a firewall rule in Cloudflare.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def cloudflare_create_firewall_rule(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], zone_name: Annotated[str, Field(..., description="Specify the name of the zone, which will contain the firewall rule.")], expression: Annotated[str, Field(..., description="Specify the expression for the firewall rule.")], name: Annotated[str, Field(default=None, description="Specify the name for the firewall rule.")], action: Annotated[List[Any], Field(default=None, description="Specify the action for the firewall rule. If \"Bypass\" is selected, you need to provide values in the \"Products\" parameter.")], products: Annotated[str, Field(default=None, description="Specify a comma-separated list of products for the firewall rule. Note: this parameter is only mandatory, if \"Bypass\" is selected for \"Action\" parameter. Possible values: zoneLockdown, uaBlock, bic, hot, securityLevel, rateLimit, waf.")], priority: Annotated[str, Field(default=None, description="Specify the priority for the firewall rule.")], reference_tag: Annotated[str, Field(default=None, description="Specify a reference tag for the firewall rule. Note: it can only be up to 50 characters long.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Create a firewall rule in Cloudflare.
+
+Action Parameters: Zone Name: Specify the name of the zone, which contains the firewall rule., Name: Specify the name for the firewall rule., Action: Specify the action for the firewall rule.If "Block" is selected, you need to provide values in the "Products" parameter., Expression: Specify the expression for the firewall rule., Products: Specify a comma-separated list of products for the firewall rule.Note: This parameter is only mandatory, if "Bypass" is selected for the "Action" parameter.Possible values: zoneLockdown, uaBlock, bic, hot, securityLevel, rateLimit, waf, Priority: Specify the priority for the firewall rule., Reference Tag: Specify a reference tag for the firewall rule.Note: It can only be up to 50 characters long.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None

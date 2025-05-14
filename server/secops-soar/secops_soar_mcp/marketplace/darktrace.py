@@ -24,12 +24,15 @@ def register_tools(mcp: FastMCP):
     # This function registers all tools (actions) for the Darktrace integration.
 
     @mcp.tool()
-    async def darktrace_list_similar_devices(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], max_devices_to_return: Annotated[Optional[str], Field(default=None, description="Specify how many devices to return per entity. Default: 50.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """List similar devices to the endpoint in Darktrace. Supported entities: IP, Hostname, Mac Address.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def darktrace_list_similar_devices(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], max_devices_to_return: Annotated[str, Field(default=None, description="Specify how many devices to return per entity. Default: 50.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+List similar devices to the endpoint in Darktrace. Supported entities: IP, Hostname, Mac Address.
+
+Action Parameters: Max Devices To Return: Specify the number of devices to return per entity.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -101,11 +104,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def darktrace_update_model_breach_status(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], status: Annotated[List[Any], Field(..., description="Specify what status to set for the model breach.")], model_breach_id: Annotated[str, Field(..., description="Specify the id of the model breach, for which you want to update status.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Update model breach status in Darktrace.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Update model breach status in Darktrace.
+
+Action Parameters: Status: Specify the status to set for the model breach., Model Breach ID: Specify the ID of the model breach, for which you want to update status.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -176,12 +182,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def darktrace_execute_custom_search(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], query: Annotated[str, Field(..., description="Specify the query that needs to be executed.")], time_frame: Annotated[Optional[List[Any]], Field(default=None, description="Specify a time frame for the results. If \"Custom\" is selected, you also need to provide \"Start Time\". If \"Alert Time Till Now\" is selected, action will use start time of the alert as start time for the search and end time will be current time. If \"30 Minutes Around Alert Time\" is selected, action will search the alerts 30 minutes before the alert happened till the 30 minutes after the alert has happened. Same idea applies to \"1 Hour Around Alert Time\" and \"5 Minutes Around Alert Time\"")], start_time: Annotated[Optional[str], Field(default=None, description="Specify the start time for the results. This parameter is mandatory, if \"Custom\" is selected for the \"Time Frame\" parameter. Format: ISO 8601")], end_time: Annotated[Optional[str], Field(default=None, description="Specify the end time for the results. Format: ISO 8601. If nothing is provided and \"Custom\" is selected for the \"Time Frame\" parameter then this parameter will use current time.")], max_results_to_return: Annotated[Optional[str], Field(default=None, description="Specify how many results to return. Default: 50.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Execute custom search in Darktrace.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def darktrace_execute_custom_search(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], query: Annotated[str, Field(..., description="Specify the query that needs to be executed.")], time_frame: Annotated[List[Any], Field(default=None, description="Specify a time frame for the results. If \"Custom\" is selected, you also need to provide \"Start Time\". If \"Alert Time Till Now\" is selected, action will use start time of the alert as start time for the search and end time will be current time. If \"30 Minutes Around Alert Time\" is selected, action will search the alerts 30 minutes before the alert happened till the 30 minutes after the alert has happened. Same idea applies to \"1 Hour Around Alert Time\" and \"5 Minutes Around Alert Time\"")], start_time: Annotated[str, Field(default=None, description="Specify the start time for the results. This parameter is mandatory, if \"Custom\" is selected for the \"Time Frame\" parameter. Format: ISO 8601")], end_time: Annotated[str, Field(default=None, description="Specify the end time for the results. Format: ISO 8601. If nothing is provided and \"Custom\" is selected for the \"Time Frame\" parameter then this parameter will use current time.")], max_results_to_return: Annotated[str, Field(default=None, description="Specify how many results to return. Default: 50.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Execute custom search in Darktrace.
+
+Action Parameters: Query: Specify the query that needs to be executed., Time Frame: Specify a time frame for the results. If "Custom" is selected, you also need to provide the "Start Time" parameter. If "Alert Time Till Now" is selected, the action uses start time of the alert as start time for the search and end time is current time. If "30 Minutes Around Alert Time" is selected, the action searches the alerts 30 minutes before the alert happened till the 30 minutes after the alert has happened. Same idea applies to the "1 Hour Around Alert Time" and "5 Minutes Around Alert Time" values., Start Time: Specify the start time for the results. This parameter is mandatory, if "Custom" is selected for the "Time Frame" parameter. Format: ISO 8601, End Time: Specify the end time for the results. If nothing is provided and "Custom" is selected for the "Time Frame" parameter then this parameter will use current time. Format: ISO 8601, Max Results To Return: Specify the number of results to return.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -259,12 +268,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def darktrace_list_endpoint_events(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], event_type: Annotated[str, Field(..., description="Specify a comma-separated list of event types that they want to return. Possible values: connection, unusualconnection, newconnection, notice, devicehistory, modelbreach.")], time_frame: Annotated[List[Any], Field(..., description="Specify a time frame for the search. If \"Custom\" is selected, you also need to provide \"Start Time\".")], start_time: Annotated[Optional[str], Field(default=None, description="Specify the start time for the search. This parameter is mandatory, if \"Custom\" is selected for the \"Time Frame\" parameter. Format: ISO 8601")], end_time: Annotated[Optional[str], Field(default=None, description="Specify the end time for the search. Format: ISO 8601. If nothing is provided and \"Custom\" is selected for the \"Time Frame\" parameter then this parameter will use current time.")], max_events_to_return: Annotated[Optional[str], Field(default=None, description="Specify how many events to return per event type. Default: 50.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """List latest events related to the endpoint in Darktrace. Supported entities: IP, Hostname, MacAddress. Note: events will be returned in UTC timezone.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def darktrace_list_endpoint_events(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], event_type: Annotated[str, Field(..., description="Specify a comma-separated list of event types that they want to return. Possible values: connection, unusualconnection, newconnection, notice, devicehistory, modelbreach.")], time_frame: Annotated[List[Any], Field(..., description="Specify a time frame for the search. If \"Custom\" is selected, you also need to provide \"Start Time\".")], start_time: Annotated[str, Field(default=None, description="Specify the start time for the search. This parameter is mandatory, if \"Custom\" is selected for the \"Time Frame\" parameter. Format: ISO 8601")], end_time: Annotated[str, Field(default=None, description="Specify the end time for the search. Format: ISO 8601. If nothing is provided and \"Custom\" is selected for the \"Time Frame\" parameter then this parameter will use current time.")], max_events_to_return: Annotated[str, Field(default=None, description="Specify how many events to return per event type. Default: 50.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+List latest events related to the endpoint in Darktrace. Supported entities: IP, Hostname, MacAddress. Note: events will be returned in UTC timezone.
+
+Action Parameters: Event Type: Specify a comma-separated list of event types that they want to return. Possible values: connection, unusualconnection, newconnection, notice, devicehistory, modelbreach, Time Frame: Specify a time frame for the search. If "Custom" is selected, you also need to provide the "Start Time" parameter., Start Time: Specify the start time for the search. This parameter is mandatory, if "Custom" is selected for the "Time Frame" parameter. Format: ISO 8601, End Time: Specify the end time for the search. If nothing is provided and "Custom" is selected for the "Time Frame" parameter then this parameter will use current time. Format: ISO 8601, Max Events To Return: Specify the number of events to return per event type.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -342,11 +354,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def darktrace_add_comment_to_model_breach(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], model_breach_id: Annotated[str, Field(..., description="Specify the ID of the model breach to which you want to add a comment.")], comment: Annotated[str, Field(..., description="Specify the comment for the model breach.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Add a comment to model breach in Darktrace.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Add a comment to model breach in Darktrace.
+
+Action Parameters: Model Breach ID: Specify the ID of the model breach to which you want to add a comment., Comment: Specify the comment for the model breach.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -491,7 +506,7 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def darktrace_enrich_entities(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], fetch_connection_data: Annotated[Optional[bool], Field(default=None, description="If enabled, action will return additional information about connections related to the internal endpoints of Darktrace.")], max_hours_backwards: Annotated[Optional[str], Field(default=None, description="Specify how many hours backwards, action needs to fetch connection data. Default: 24.")], create_endpoint_insight: Annotated[Optional[bool], Field(default=None, description="If enabled, action will create an insight containing information about the internal endpoints of Darktrace.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
+    async def darktrace_enrich_entities(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], fetch_connection_data: Annotated[bool, Field(default=None, description="If enabled, action will return additional information about connections related to the internal endpoints of Darktrace.")], max_hours_backwards: Annotated[str, Field(default=None, description="Specify how many hours backwards, action needs to fetch connection data. Default: 24.")], create_endpoint_insight: Annotated[bool, Field(default=None, description="If enabled, action will create an insight containing information about the internal endpoints of Darktrace.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """Enrich entities using information from Darktrace. Supported entities: IP, Hostname, MacAddress, URL. Note: action will extract the domain part out of URL entities.
 
         Returns:

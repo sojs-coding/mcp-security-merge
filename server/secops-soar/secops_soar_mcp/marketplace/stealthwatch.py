@@ -25,11 +25,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def stealthwatch_search_events(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], timeframe: Annotated[str, Field(..., description="Time frame in hours.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Get a host's security events for a given time frame
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Get a host's security events for a given time frame
+
+Action Parameters: Time Frame: Time frame in hours.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
