@@ -24,12 +24,15 @@ def register_tools(mcp: FastMCP):
     # This function registers all tools (actions) for the Slack integration.
 
     @mcp.tool()
-    async def slack_wait_for_reply(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], message_timestamp: Annotated[str, Field(..., description="Specify the timestamp of the message to track. Timestamp can be found in the Send Message action json result as ts key.")], channel: Annotated[Optional[str], Field(default=None, description="Specify the channel name in which to track reply for the message. Note: if both Channel and Channel ID are specified, action will only work with ID.")], channel_id: Annotated[Optional[str], Field(default=None, description="Specify the id of the channel, in which to track reply for the message. Note: if both Channel and Channel ID are specified, action will only work with ID.")], wait_for_multiple_replies: Annotated[Optional[bool], Field(default=None, description="If enabled, action should wait for multiple responses  until action timeout. Otherwise, action finishes running after getting first reply to the message.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Wait for a thread reply to a message previously sent with a 'Send Message' or 'Send Advanced Message' actions. Note: action is async, please adjust the timeout for action in Siemplify IDE. Action is not running on Siemplify entities.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def slack_wait_for_reply(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], message_timestamp: Annotated[str, Field(..., description="Specify the timestamp of the message to track. Timestamp can be found in the Send Message action json result as ts key.")], channel: Annotated[str, Field(default=None, description="Specify the channel name in which to track reply for the message. Note: if both Channel and Channel ID are specified, action will only work with ID.")], channel_id: Annotated[str, Field(default=None, description="Specify the id of the channel, in which to track reply for the message. Note: if both Channel and Channel ID are specified, action will only work with ID.")], wait_for_multiple_replies: Annotated[bool, Field(default=None, description="If enabled, action should wait for multiple responses  until action timeout. Otherwise, action finishes running after getting first reply to the message.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Wait for a thread reply to a message previously sent with a 'Send Message' or 'Send Advanced Message' actions. Note: action is async, please adjust the timeout for action in Siemplify IDE. Action is not running on Siemplify entities.
+
+Action Parameters: Channel: Target Channel., Message Timestamp: The timestamp of the message to get the replies from (in milliseconds)., Channel ID: The ID of the target Slack channel.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -105,12 +108,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def slack_create_channel(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], channel_name: Annotated[str, Field(..., description="Specify the name of the channel. Note: Channel names may only contain lowercase letters, numbers, hyphens, and underscores, and must be 80 characters or less.")], user_i_ds: Annotated[Optional[str], Field(default=None, description="Specify the ids of the users that should be invited to the newly created channel. Example: U014JDHLW87, U08544ABC85. Parameter accepts multiple values as a comma separated list. Note: if both \u201cUser IDs\u201d and \u201cUser Emails\u201d are specified, action will only work with IDs.")], is_private: Annotated[Optional[bool], Field(default=None, description="If enabled, action will create a private channel.")], user_emails: Annotated[Optional[str], Field(default=None, description="Specify the emails of users that should be invited to the newly created channel. Parameter accepts multiple values as a comma separated list. Note: if both \u201cUser IDs\u201d and \u201cUser Emails\u201d are specified, action will only work with IDs.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Create a channel in Slack. Note that action is not working on Siemplify entities.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def slack_create_channel(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], channel_name: Annotated[str, Field(..., description="Specify the name of the channel. Note: Channel names may only contain lowercase letters, numbers, hyphens, and underscores, and must be 80 characters or less.")], user_i_ds: Annotated[str, Field(default=None, description="Specify the ids of the users that should be invited to the newly created channel. Example: U014JDHLW87, U08544ABC85. Parameter accepts multiple values as a comma separated list. Note: if both \u201cUser IDs\u201d and \u201cUser Emails\u201d are specified, action will only work with IDs.")], is_private: Annotated[bool, Field(default=None, description="If enabled, action will create a private channel.")], user_emails: Annotated[str, Field(default=None, description="Specify the emails of users that should be invited to the newly created channel. Parameter accepts multiple values as a comma separated list. Note: if both \u201cUser IDs\u201d and \u201cUser Emails\u201d are specified, action will only work with IDs.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Create a channel in Slack. Note that action is not working on Siemplify entities.
+
+Action Parameters: Channel Name: Specify the name of the channel.Note: Channel names may only contain lowercase letters, numbers, hyphens, and underscores, and must be 80 characters or less., User IDs: Specify the IDs of the users that should be invited to the newly created channel.Example: U014JDHLW87, U08544ABC85., Is Private: If enabled, the action creates a private channel.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -186,7 +192,7 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def slack_list_channels(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], max_channels_to_return: Annotated[Optional[str], Field(default=None, description="Specify how many channels to return.")], type_filter: Annotated[Optional[str], Field(default=None, description="Specify what type of conversations to return. Example: public_channel,private_channel. Possible Values: public_channel, private_channel, mpim, im.")], filter_key: Annotated[Optional[List[Any]], Field(default=None, description="Specify the key that needs to be used to filter channels.")], filter_value: Annotated[Optional[str], Field(default=None, description="Specify what value should be used in the filter. If \u201cEqual\u201c is selected, action will try to find the exact match among results and if \u201cContains\u201c is selected, action will try to find results that contain that substring. If nothing is provided in this parameter, the filter will not be applied. Filtering logic is working based on the value  provided in the \u201cFilter Key\u201d parameter.")], filter_logic: Annotated[Optional[List[Any]], Field(default=None, description="Specify what filter logic should be applied. Filtering logic is working based on the value  provided in the \u201cFilter Key\u201d parameter.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
+    async def slack_list_channels(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], max_channels_to_return: Annotated[str, Field(default=None, description="Specify how many channels to return.")], type_filter: Annotated[str, Field(default=None, description="Specify what type of conversations to return. Example: public_channel,private_channel. Possible Values: public_channel, private_channel, mpim, im.")], filter_key: Annotated[List[Any], Field(default=None, description="Specify the key that needs to be used to filter channels.")], filter_value: Annotated[str, Field(default=None, description="Specify what value should be used in the filter. If \u201cEqual\u201c is selected, action will try to find the exact match among results and if \u201cContains\u201c is selected, action will try to find results that contain that substring. If nothing is provided in this parameter, the filter will not be applied. Filtering logic is working based on the value  provided in the \u201cFilter Key\u201d parameter.")], filter_logic: Annotated[List[Any], Field(default=None, description="Specify what filter logic should be applied. Filtering logic is working based on the value  provided in the \u201cFilter Key\u201d parameter.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """Get a list of Slack channels based on the provided criteria. Note that action is not working on Siemplify entities.
 
         Returns:
@@ -270,12 +276,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def slack_get_channel_or_user_conversation_history(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], channel_or_user_id: Annotated[str, Field(..., description="Specify the channel or user id to fetch the conversation history for.")], time_frame: Annotated[Optional[List[Any]], Field(default=None, description="Specify a time frame for the results. If Custom is selected, you also need to provide Start Time.")], start_time: Annotated[Optional[str], Field(default=None, description="Specify the start time for the results. This parameter is mandatory, if Custom is selected for the Time Frame parameter. 'Format: ISO 8601. Example: 2021-08-05T05:18:42Z'")], end_time: Annotated[Optional[str], Field(default=None, description="Specify the end time for the results. 'Format: ISO 8601. Example: 2021-08-05T05:18:42Z'. If nothing is provided and Custom is selected for the Time Frame parameter then this parameter will use current time.")], max_records_to_return: Annotated[Optional[str], Field(default=None, description="Specify how many records to return. If nothing is provided, action will return 20 records.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Get conversation history for a user or a channel based on provided input criteria. Action works with either channel or user id, which could be searched with either 'List Channels' or 'List User' actions. Note that action is not working on Siemplify entities.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def slack_get_channel_or_user_conversation_history(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], channel_or_user_id: Annotated[str, Field(..., description="Specify the channel or user id to fetch the conversation history for.")], time_frame: Annotated[List[Any], Field(default=None, description="Specify a time frame for the results. If Custom is selected, you also need to provide Start Time.")], start_time: Annotated[str, Field(default=None, description="Specify the start time for the results. This parameter is mandatory, if Custom is selected for the Time Frame parameter. 'Format: ISO 8601. Example: 2021-08-05T05:18:42Z'")], end_time: Annotated[str, Field(default=None, description="Specify the end time for the results. 'Format: ISO 8601. Example: 2021-08-05T05:18:42Z'. If nothing is provided and Custom is selected for the Time Frame parameter then this parameter will use current time.")], max_records_to_return: Annotated[str, Field(default=None, description="Specify how many records to return. If nothing is provided, action will return 20 records.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Get conversation history for a user or a channel based on provided input criteria. Action works with either channel or user id, which could be searched with either 'List Channels' or 'List User' actions. Note that action is not working on Siemplify entities.
+
+Action Parameters: Channel or User ID: Specify the channel or user ID to fetch the conversation history for., Time Frame: Specify a time frame for the results.If "Custom" is selected, you also need to provide the "Start Time" parameter., Start Time: Specify the start time for the results.This parameter is mandatory, if "Custom" is selected for the "Time Frame" parameter.Format: ISO 8601.Example: 2021-08-05T05:18:42Z, End Time: Specify the end time for the results.If nothing is provided and "Custom" is selected for the "Time Frame" parameter then this parameter uses current time.Format: ISO 8601. Example: 2021-08-05T05:18:42Z., Max Records To Return: Specify the number of records to return.If nothing is provided, the action returns 20 records.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -354,11 +363,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def slack_get_user_details_by_id(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], user_id: Annotated[str, Field(..., description="Specify user account id to fetch details for. User ID can be found by running \u201cList Users\u201c action.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Fetch Slack user account details. Note that action is not working on Siemplify entities.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Fetch Slack user account details. Note that action is not working on Siemplify entities.
+
+Action Parameters: User ID: User's ID.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -578,11 +590,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def slack_get_user_details(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], search_by: Annotated[List[Any], Field(..., description="Specify the parameter to search user details by.")], user_value: Annotated[str, Field(..., description="Specify the user value to search by.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Get Slack user details based on provided input criteria. Note: that action is not working on Siemplify entities.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Get Slack user details based on provided input criteria. Note: that action is not working on Siemplify entities.
+
+Action Parameters: Search By: Specify the parameter to search user details by., User Value: Specify the user value to search by.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -654,11 +669,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def slack_ask_question(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], channel: Annotated[str, Field(..., description="Target channel.")], question: Annotated[str, Field(..., description="Question content.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Ask question in Slack. Note: this action will be deprecated in the future integration's versions and replaced with actions providing enhanced functionality.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Ask question in Slack. Note: this action will be deprecated in the future integration's versions and replaced with actions providing enhanced functionality.
+
+Action Parameters: Channel: Target Channel., Question: Question content.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -730,11 +748,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def slack_send_advanced_message(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], recipient: Annotated[str, Field(..., description="Specify the recipient to send a message to.")], recipient_type: Annotated[List[Any], Field(..., description="Specify channel or user name (full name) to send message to. Optionally channel or user id can be specified, or email address of a user.")], message: Annotated[str, Field(..., description="Specify the message content to send.")], message_type: Annotated[List[Any], Field(..., description="Specify the message type to send.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Send an advanced message to a Slack channel or user. Action provides an ability to send 'simple' text messages and 'rich' Slack block messages with buttons, advanced formatting and more. Please see https://api.slack.com/block-kit for the block messages reference. Note that action is not working on Siemplify entities. This action can be used together with the 'Wait for Reply With Webhook' action to first send a 'block' message with a webhook to a user, and when later with 'Wait for Reply With Webhook' action check for a user's response.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Send an advanced message to a Slack channel or user. Action provides an ability to send 'simple' text messages and 'rich' Slack block messages with buttons, advanced formatting and more. Please see https://api.slack.com/block-kit for the block messages reference. Note that action is not working on Siemplify entities. This action can be used together with the 'Wait for Reply With Webhook' action to first send a 'block' message with a webhook to a user, and when later with 'Wait for Reply With Webhook' action check for a user's response.
+
+Action Parameters: Message Type: Specify the type of the message to send., Recipient Type: Specify the channel or user name (full name) to send message to.Optionally specify channel or user ID, or email address of a user., Recipient: Specify the recipient to send a message to., Message: Specify the content of the message to send.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -807,12 +828,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def slack_rename_channel(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], new_name: Annotated[str, Field(..., description="Specify what should be a new name for the channel. Note: Channel names may only contain lowercase letters, numbers, hyphens, and underscores, and must be 80 characters or less.")], channel_name: Annotated[Optional[str], Field(default=None, description="Specify the name of the channel, which you want to rename. Note: if both \u201cChannel Name\u201d and \u201cChannel ID\u201d are specified, action will only work with ID.")], channel_id: Annotated[Optional[str], Field(default=None, description="Specify the id of the channel, which you want to rename. Note: if both \u201cChannel Name\u201d and \u201cChannel ID\u201d are specified, action will only work with ID.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Rename the specified Slack channel. Note that action is not working on Siemplify entities.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def slack_rename_channel(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], new_name: Annotated[str, Field(..., description="Specify what should be a new name for the channel. Note: Channel names may only contain lowercase letters, numbers, hyphens, and underscores, and must be 80 characters or less.")], channel_name: Annotated[str, Field(default=None, description="Specify the name of the channel, which you want to rename. Note: if both \u201cChannel Name\u201d and \u201cChannel ID\u201d are specified, action will only work with ID.")], channel_id: Annotated[str, Field(default=None, description="Specify the id of the channel, which you want to rename. Note: if both \u201cChannel Name\u201d and \u201cChannel ID\u201d are specified, action will only work with ID.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Rename the specified Slack channel. Note that action is not working on Siemplify entities.
+
+Action Parameters: Channel Name: Specify the name of the channel, which you want to rename. Note: If both the "Channel Name" and "Channel ID" parameters are specified, the action only works with ID., Channel ID: Specify the ID of the channel, which you want to rename.Note: If both the "Channel Name" and "Channel ID" parameters are specified, the action only works with ID., New Name: Specify a new name for the channel.Note: Channel names may only contain lowercase letters, numbers, hyphens, and underscores, and must be 80 characters or less.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -887,11 +911,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def slack_upload_file(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], file_name: Annotated[str, Field(..., description="Specify the name(title) that should be used to show in Slack for the uploaded file.")], file_path: Annotated[str, Field(..., description="Specify the full file path on the Siemplify server for the file to upload.")], channel: Annotated[str, Field(..., description="Specify the name of the Slack channel or the email address of the user to whom to send the message.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Add files to Slack and share them with your teammates to help you collaborate. Uploaded files are stored, searchable, and shareable across your workspace. Note that action is not working on Siemplify entities.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Add files to Slack and share them with your teammates to help you collaborate. Uploaded files are stored, searchable, and shareable across your workspace. Note that action is not working on Siemplify entities.
+
+Action Parameters: File Name: Target File Name., File Path: Target File Path., Channel: Target Channel.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -1042,11 +1069,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def slack_build_block(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], question: Annotated[str, Field(..., description="Specify the question text to add to the block.")], answers_buttons: Annotated[str, Field(..., description="Specify the answer buttons to add to the block.")], siemplify_base_url: Annotated[str, Field(..., description="Specify the Siemplify server base url to add to the block.")], webhook_token_uuid: Annotated[str, Field(..., description="Specify the Webhook token UUID to monitor for the user\u2019s response.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Build a slack message block based on provided input criteria. Action creates a block with a webhook that can be later passed to the 'Send Interactive Message' to send a message with. Note that action is not working on Siemplify entities.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Build a slack message block based on provided input criteria. Action creates a block with a webhook that can be later passed to the 'Send Interactive Message' to send a message with. Note that action is not working on Siemplify entities.
+
+Action Parameters: Question: Specify the question text to add to the block., Answers Buttons: Specify the answer buttons to add to the block., Siemplify Base URL: Specify the {{chronicle_soar_name}} server base URL to add to the block., Case ID: Specify the {{chronicle_soar_name}} case ID to add to the block., Webhook Token UUID: Specify the Webhook token UUID to monitor for the user's response.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -1120,11 +1150,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def slack_send_message(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], channel: Annotated[str, Field(..., description="Specify the name of the Slack channel or the email address of the user to whom to send the message. Parameter accepts multiple values as a comma-separated string.")], message: Annotated[str, Field(..., description="Specify the message content to send.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Send a message to a Slack channel or user. Note that action is not working on Siemplify entities.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Send a message to a Slack channel or user. Note that action is not working on Siemplify entities.
+
+Action Parameters: Channel: The name of the Slack channel or the email address of the user to whom to send the message.Entered values need to be comma-separated., Message: Message content.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -1195,7 +1228,7 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def slack_list_users(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], max_records_to_return: Annotated[Optional[str], Field(default=None, description="Specify how many user accounts to return.")], filter_key: Annotated[Optional[List[Any]], Field(default=None, description="Specify the key that needs to be used to filter user accounts.")], filter_value: Annotated[Optional[str], Field(default=None, description="Specify what value should be used in the filter. If \u201cEqual\u201c is selected, action will try to find the exact match among results and if \u201cContains\u201c is selected, action will try to find results that contain that substring. If nothing is provided in this parameter, the filter will not be applied. Filtering logic is working based on the value  provided in the \u201cFilter Key\u201d parameter.")], filter_logic: Annotated[Optional[List[Any]], Field(default=None, description="Specify what filter logic should be applied. Filtering logic is working based on the value  provided in the \u201cFilter Key\u201d parameter.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
+    async def slack_list_users(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], max_records_to_return: Annotated[str, Field(default=None, description="Specify how many user accounts to return.")], filter_key: Annotated[List[Any], Field(default=None, description="Specify the key that needs to be used to filter user accounts.")], filter_value: Annotated[str, Field(default=None, description="Specify what value should be used in the filter. If \u201cEqual\u201c is selected, action will try to find the exact match among results and if \u201cContains\u201c is selected, action will try to find results that contain that substring. If nothing is provided in this parameter, the filter will not be applied. Filtering logic is working based on the value  provided in the \u201cFilter Key\u201d parameter.")], filter_logic: Annotated[List[Any], Field(default=None, description="Specify what filter logic should be applied. Filtering logic is working based on the value  provided in the \u201cFilter Key\u201d parameter.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """Get a list of Slack users based on the provided criteria. Note that action is not working on Siemplify entities.
 
         Returns:

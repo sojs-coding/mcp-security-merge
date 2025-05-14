@@ -25,11 +25,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def redis_get_key(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], key_name: Annotated[str, Field(..., description="Target key name.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Return the value at the selected key, or return None if the key doesn't exist
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Return the value at the selected key, or return None if the key doesn't exist
+
+Action Parameters: Key Name: Target key name.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -176,11 +179,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def redis_get_list(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], list_name: Annotated[str, Field(..., description="Target list name.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Return the value of an element from a Redis list
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Return the value of an element from a Redis list
+
+Action Parameters: List Name: Target list name.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -325,11 +331,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def redis_add_to_list(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], list_name: Annotated[str, Field(..., description="Target list name.")], value: Annotated[str, Field(..., description="Can be any of the following types: str, int, dict, list, etc.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Add a value to the head of a Redis list. If the list does not exist, create a new list
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Add a value to the head of a Redis list. If the list does not exist, create a new list
+
+Action Parameters: List Name: Target list name., Value: Can be any of the following types: str, int, dict, list, etc.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None

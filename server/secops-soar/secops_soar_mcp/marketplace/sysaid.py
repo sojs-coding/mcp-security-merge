@@ -24,12 +24,15 @@ def register_tools(mcp: FastMCP):
     # This function registers all tools (actions) for the SysAid integration.
 
     @mcp.tool()
-    async def sys_aid_list_service_requests(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], service_request_type: Annotated[Optional[str], Field(default=None, description="The type of the service request to filter by. Valid values: incident, request, problem, change, all.")], status: Annotated[Optional[str], Field(default=None, description="The status of the request service to filter by.")], priority: Annotated[Optional[str], Field(default=None, description="The priority of the request service to filter by.")], assignee: Annotated[Optional[str], Field(default=None, description="The assignee of the request service to filter by.")], urgency: Annotated[Optional[str], Field(default=None, description="The urgency of the request service to filter by.")], request_user: Annotated[Optional[str], Field(default=None, description="The request user of the request service to filter by.")], category: Annotated[Optional[str], Field(default=None, description="The category of the request service to filter by.")], subcategory: Annotated[Optional[str], Field(default=None, description="The subcategory of the request service to filter by.")], third_category: Annotated[Optional[str], Field(default=None, description="The third category of the request service to filter by.")], assigned_group: Annotated[Optional[str], Field(default=None, description="The assigned group of the request service to filter by.")], get_archived: Annotated[Optional[bool], Field(default=None, description="Whether to get archived request services or not.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """List service requests.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def sys_aid_list_service_requests(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], service_request_type: Annotated[str, Field(default=None, description="The type of the service request to filter by. Valid values: incident, request, problem, change, all.")], status: Annotated[str, Field(default=None, description="The status of the request service to filter by.")], priority: Annotated[str, Field(default=None, description="The priority of the request service to filter by.")], assignee: Annotated[str, Field(default=None, description="The assignee of the request service to filter by.")], urgency: Annotated[str, Field(default=None, description="The urgency of the request service to filter by.")], request_user: Annotated[str, Field(default=None, description="The request user of the request service to filter by.")], category: Annotated[str, Field(default=None, description="The category of the request service to filter by.")], subcategory: Annotated[str, Field(default=None, description="The subcategory of the request service to filter by.")], third_category: Annotated[str, Field(default=None, description="The third category of the request service to filter by.")], assigned_group: Annotated[str, Field(default=None, description="The assigned group of the request service to filter by.")], get_archived: Annotated[bool, Field(default=None, description="Whether to get archived request services or not.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+List service requests.
+
+Action Parameters: Service Request Type: The type of the service request to filter by. Valid values: incident, request, problem, change, all., Status: The status of the request service to filter by., Priority: The priority of the request service to filter by., Assignee: The assignee of the request service to filter by., Urgency: The urgency of the request service to filter by., Request User: The request user of the request service to filter by., Category: The category of the request service to filter by., Subcategory: The subcategory of the request service to filter by., Third Category: The third category of the request service to filter by., Assigned Group: The assigned group of the request service to filter by., Get Archived: Whether to get archived request services or not.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -121,11 +124,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def sys_aid_delete_service_request(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], service_request_id: Annotated[str, Field(..., description="The ID of the service request to delete.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Delete a service request.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Delete a service request.
+
+Action Parameters: Service Request ID: The ID of the service request to delete.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -196,11 +202,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def sys_aid_get_service_request(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], service_request_id: Annotated[str, Field(..., description="The ID of the service request to get info about.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Get a service request.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Get a service request.
+
+Action Parameters: Service Request ID: The ID of the service request to get info about.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -344,7 +353,7 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def sys_aid_update_service_request(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], service_request_id: Annotated[str, Field(..., description="The id of the service request to update.")], status: Annotated[Optional[str], Field(default=None, description="The new status of the request service.")], priority: Annotated[Optional[str], Field(default=None, description="The new priority of the request service.")], assignee: Annotated[Optional[str], Field(default=None, description="The new assignee of the request service.")], urgency: Annotated[Optional[str], Field(default=None, description="The new urgency of the request service.")], request_user: Annotated[Optional[str], Field(default=None, description="The new request user of the request service.")], category: Annotated[Optional[str], Field(default=None, description="The new category of the request service.")], subcategory: Annotated[Optional[str], Field(default=None, description="The new subcategory of the request service.")], third_category: Annotated[Optional[str], Field(default=None, description="The new third category of the request service.")], assigned_group: Annotated[Optional[str], Field(default=None, description="The new assigned group of the request service.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
+    async def sys_aid_update_service_request(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], service_request_id: Annotated[str, Field(..., description="The id of the service request to update.")], status: Annotated[str, Field(default=None, description="The new status of the request service.")], priority: Annotated[str, Field(default=None, description="The new priority of the request service.")], assignee: Annotated[str, Field(default=None, description="The new assignee of the request service.")], urgency: Annotated[str, Field(default=None, description="The new urgency of the request service.")], request_user: Annotated[str, Field(default=None, description="The new request user of the request service.")], category: Annotated[str, Field(default=None, description="The new category of the request service.")], subcategory: Annotated[str, Field(default=None, description="The new subcategory of the request service.")], third_category: Annotated[str, Field(default=None, description="The new third category of the request service.")], assigned_group: Annotated[str, Field(default=None, description="The new assigned group of the request service.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """Update a service request.
 
         Returns:
@@ -438,11 +447,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def sys_aid_close_service_request(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], service_request_id: Annotated[str, Field(..., description="The ID of the service request to delete.")], solution: Annotated[str, Field(..., description="The solution of the request service.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Close a service request.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Close a service request.
+
+Action Parameters: Solution: The solution of the request service.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -513,12 +525,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def sys_aid_create_service_request(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], title: Annotated[str, Field(..., description="The title of the service request.")], description: Annotated[str, Field(..., description="The description of the service request.")], status: Annotated[str, Field(..., description="The status of the request service.")], priority: Annotated[str, Field(..., description="The priority of the request service.")], assignee: Annotated[str, Field(..., description="The assignee of the request service.")], urgency: Annotated[str, Field(..., description="The urgency of the request service.")], service_request_type: Annotated[Optional[str], Field(default=None, description="The type of the service request. Valid values: incident, request, problem, change, all.")], request_user: Annotated[Optional[str], Field(default=None, description="The request user of the request service.")], category: Annotated[Optional[str], Field(default=None, description="The category of the request service.")], subcategory: Annotated[Optional[str], Field(default=None, description="The subcategory of the request service.")], third_category: Annotated[Optional[str], Field(default=None, description="The third category of the request service.")], assigned_group: Annotated[Optional[str], Field(default=None, description="The assigned group of the request service.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Create a service request.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def sys_aid_create_service_request(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], title: Annotated[str, Field(..., description="The title of the service request.")], description: Annotated[str, Field(..., description="The description of the service request.")], status: Annotated[str, Field(..., description="The status of the request service.")], priority: Annotated[str, Field(..., description="The priority of the request service.")], assignee: Annotated[str, Field(..., description="The assignee of the request service.")], urgency: Annotated[str, Field(..., description="The urgency of the request service.")], service_request_type: Annotated[str, Field(default=None, description="The type of the service request. Valid values: incident, request, problem, change, all.")], request_user: Annotated[str, Field(default=None, description="The request user of the request service.")], category: Annotated[str, Field(default=None, description="The category of the request service.")], subcategory: Annotated[str, Field(default=None, description="The subcategory of the request service.")], third_category: Annotated[str, Field(default=None, description="The third category of the request service.")], assigned_group: Annotated[str, Field(default=None, description="The assigned group of the request service.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Create a service request.
+
+Action Parameters: Title: The title of the service request., Description: The description of the service request., Service Request Type: The type of the service request. Valid values: incident, request, problem, change, all., Status: The status of the request service., Priority: The priority of the request service., Assignee: The assignee of the request service., Urgency: The urgency of the request service., Request User: The request user of the request service., Category: The category of the request service., Subcategory: The subcategory of the request service., Third Category: The third category of the request service., Assigned Group: The assigned group of the request service.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None

@@ -24,12 +24,15 @@ def register_tools(mcp: FastMCP):
     # This function registers all tools (actions) for the ConnectWise integration.
 
     @mcp.tool()
-    async def connect_wise_create_ticket(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], company: Annotated[str, Field(..., description="Company identifier")], board: Annotated[str, Field(..., description="Board name")], summary: Annotated[str, Field(..., description="Specify the summary for the new ticket. Note: if the summary is more than 100 characters, it will be truncated.")], status: Annotated[str, Field(..., description="e.g. Unassigned")], priority: Annotated[str, Field(..., description="e.g. Priority 3 - Normal Response")], owner_name: Annotated[Optional[str], Field(default=None, description="ConnectWise member name to assign this ticket to, e.g. connectwise_user_1.")], email_note_cc: Annotated[Optional[str], Field(default=None, description="Specify a comma-separated list of email addresses that should receive all of the notes via email.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Create a ConnectWise ticket
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def connect_wise_create_ticket(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], company: Annotated[str, Field(..., description="Company identifier")], board: Annotated[str, Field(..., description="Board name")], summary: Annotated[str, Field(..., description="Specify the summary for the new ticket. Note: if the summary is more than 100 characters, it will be truncated.")], status: Annotated[str, Field(..., description="e.g. Unassigned")], priority: Annotated[str, Field(..., description="e.g. Priority 3 - Normal Response")], owner_name: Annotated[str, Field(default=None, description="ConnectWise member name to assign this ticket to, e.g. connectwise_user_1.")], email_note_cc: Annotated[str, Field(default=None, description="Specify a comma-separated list of email addresses that should receive all of the notes via email.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Create a ConnectWise ticket
+
+Action Parameters: Company: Company name., Board: Board name, Summary: , Status: e.g. Unassigned., Priority: Example: Priority 3 - Normal Response, Owner Name: ConnectWise member name to assign this ticket to. Example: connectwise_user_1
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -107,12 +110,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def connect_wise_add_comment_to_ticket(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], ticket_id: Annotated[str, Field(..., description="ConnectWise ticket id. e.g. 608718")], comment: Annotated[str, Field(..., description="Comment content to attach to a ticket")], internal: Annotated[Optional[bool], Field(default=None, description="If checked, put comment in internal section")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Add new comment to a ticket in ConnectWise
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def connect_wise_add_comment_to_ticket(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], ticket_id: Annotated[str, Field(..., description="ConnectWise ticket id. e.g. 608718")], comment: Annotated[str, Field(..., description="Comment content to attach to a ticket")], internal: Annotated[bool, Field(default=None, description="If checked, put comment in internal section")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Add new comment to a ticket in ConnectWise
+
+Action Parameters: Ticket ID: ConnectWise ticket ID.Example: 608718, Comment: Comment content to attach to a ticket., Internal: If checked, puts comment in the internal section.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -186,11 +192,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def connect_wise_get_ticket(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], ticket_id: Annotated[str, Field(..., description="Fetch ticket by ID")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Get ConnectWise ticket by ID and attach ticket JSON as a file
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Get ConnectWise ticket by ID and attach ticket JSON as a file
+
+Action Parameters: Ticket ID: Fetch a ticket by ID.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -260,12 +269,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def connect_wise_create_alerts_ticket(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], company: Annotated[str, Field(..., description="Company identifier")], board: Annotated[str, Field(..., description="Board name")], status: Annotated[str, Field(..., description="e.g. Unassigned")], priority: Annotated[str, Field(..., description="e.g. Priority 3 - Normal Response")], initial_description: Annotated[str, Field(..., description="")], owner_name: Annotated[Optional[str], Field(default=None, description="ConnectWise member name to assign this ticket to, e.g. connectwise_user_1.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Create a ConnectWise ticket for each new Siemplify alert
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def connect_wise_create_alerts_ticket(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], company: Annotated[str, Field(..., description="Company identifier")], board: Annotated[str, Field(..., description="Board name")], status: Annotated[str, Field(..., description="e.g. Unassigned")], priority: Annotated[str, Field(..., description="e.g. Priority 3 - Normal Response")], initial_description: Annotated[str, Field(..., description="")], owner_name: Annotated[str, Field(default=None, description="ConnectWise member name to assign this ticket to, e.g. connectwise_user_1.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Create a ConnectWise ticket for each new Siemplify alert
+
+Action Parameters: Company: Company name., Board: Board name., Status: Example: Unassigned, Priority: Example: Priority 3 - Normal Response, Initial Description: , Owner Name: ConnectWise member name to assign this ticket to.Example: connectwise_user_1.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -415,12 +427,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def connect_wise_close_ticket(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], ticket_id: Annotated[str, Field(..., description="ConnectWise ticket id. e.g. 608718")], custom_close_status: Annotated[Optional[str], Field(default=None, description="If the specific system use a custom closed status (e.g. Completed)")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Close ConnectWise ticket
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def connect_wise_close_ticket(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], ticket_id: Annotated[str, Field(..., description="ConnectWise ticket id. e.g. 608718")], custom_close_status: Annotated[str, Field(default=None, description="If the specific system use a custom closed status (e.g. Completed)")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Close ConnectWise ticket
+
+Action Parameters: Ticket ID: ConnectWise ticket ID. Example: 608718., Custom Close Status: If the specific system uses a custom closed status, for example Completed.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -492,7 +507,7 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def connect_wise_add_attachment_to_ticket(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], filename: Annotated[str, Field(..., description="Specify the filename behind the attachment. This value will be also used as a title. Note: action needs to provide the correct extension for the file.")], base64_encoded_file: Annotated[str, Field(..., description="Specify the base64 encoded file that needs to be added as an attachment.")], ticket_id: Annotated[str, Field(..., description="Specify the ID of the ticket to which the document would need to be added.")], allow_only_owner_update: Annotated[Optional[bool], Field(default=None, description="If enabled, action will only allow the owner to update the attachment.")], display_in_customer_portal: Annotated[Optional[bool], Field(default=None, description="If enabled, attachment will be shown in the customer portal.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
+    async def connect_wise_add_attachment_to_ticket(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], filename: Annotated[str, Field(..., description="Specify the filename behind the attachment. This value will be also used as a title. Note: action needs to provide the correct extension for the file.")], base64_encoded_file: Annotated[str, Field(..., description="Specify the base64 encoded file that needs to be added as an attachment.")], ticket_id: Annotated[str, Field(..., description="Specify the ID of the ticket to which the document would need to be added.")], allow_only_owner_update: Annotated[bool, Field(default=None, description="If enabled, action will only allow the owner to update the attachment.")], display_in_customer_portal: Annotated[bool, Field(default=None, description="If enabled, attachment will be shown in the customer portal.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """Add an attachment to the ticket in ConnectWise.
 
         Returns:
@@ -573,12 +588,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def connect_wise_update_ticket(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], ticket_id: Annotated[str, Field(..., description="Ticket ID to be updated. e.g. 609620")], summary: Annotated[Optional[str], Field(default=None, description="Specify the summary for the updated ticket. Note: if the summary is more than 100 characters, it will be truncated.")], type_name: Annotated[Optional[str], Field(default=None, description="e.g. Application")], sub_type_name: Annotated[Optional[str], Field(default=None, description="e.g. Adobe")], item_name: Annotated[Optional[str], Field(default=None, description="e.g. Development")], owner_name: Annotated[Optional[str], Field(default=None, description="ConnectWise member name to assign this ticket to, e.g. connectwise_user_1.")], board: Annotated[Optional[str], Field(default=None, description="Board name.")], priority: Annotated[Optional[str], Field(default=None, description="e.g. Priority 3 - Normal Response.")], status: Annotated[Optional[str], Field(default=None, description="New ticket status, e.g. In Progress (plan of action)")], email_note_cc: Annotated[Optional[str], Field(default=None, description="Specify a comma-separated list of email addresses that should receive all of the notes via email.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Update ticket details in ConnectWIse
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def connect_wise_update_ticket(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], ticket_id: Annotated[str, Field(..., description="Ticket ID to be updated. e.g. 609620")], summary: Annotated[str, Field(default=None, description="Specify the summary for the updated ticket. Note: if the summary is more than 100 characters, it will be truncated.")], type_name: Annotated[str, Field(default=None, description="e.g. Application")], sub_type_name: Annotated[str, Field(default=None, description="e.g. Adobe")], item_name: Annotated[str, Field(default=None, description="e.g. Development")], owner_name: Annotated[str, Field(default=None, description="ConnectWise member name to assign this ticket to, e.g. connectwise_user_1.")], board: Annotated[str, Field(default=None, description="Board name.")], priority: Annotated[str, Field(default=None, description="e.g. Priority 3 - Normal Response.")], status: Annotated[str, Field(default=None, description="New ticket status, e.g. In Progress (plan of action)")], email_note_cc: Annotated[str, Field(default=None, description="Specify a comma-separated list of email addresses that should receive all of the notes via email.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Update ticket details in ConnectWIse
+
+Action Parameters: Parameter: Description, Ticket ID: The ID of the ticket to be updated. Example: 609620, Summary: Updated summary., Type Name: Example: Application, SubType Name: Example: Adobe, Item Name: Example: Development, Status: New ticket status. Example: In Progress (plan of action)
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -667,11 +685,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def connect_wise_delete_ticket(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], ticket_id: Annotated[str, Field(..., description="Ticket ID to be deleted. e.g. 607167")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Delete ConnectWise ticket by ID
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Delete ConnectWise ticket by ID
+
+Action Parameters: Ticket ID: The ID of the ticket to be deleted. Example: 607167
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None

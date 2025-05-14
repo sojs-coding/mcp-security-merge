@@ -25,11 +25,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def sentinel_one_v2_add_threat_note(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], threat_id: Annotated[str, Field(..., description="Specify the id of the threat for which you want to add a note.")], note: Annotated[str, Field(..., description="Specify the note that needs to be added to the threat.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Add a note to the threat in SentinelOne.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Add a note to the threat in SentinelOne.
+
+Action Parameters: Threat ID: Required.The ID of the threat to add a note., Note: Required.A note to add to the threat.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -100,12 +103,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def sentinel_one_v2_resolve_threat(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], threat_i_ds: Annotated[str, Field(..., description="Specify a comma-separated list of threat IDs that need to be resolved.")], annotation: Annotated[Optional[str], Field(default=None, description="Specify an annotation describing, why the threat can be resolved.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Resolve threats in SentinelOne.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def sentinel_one_v2_resolve_threat(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], threat_i_ds: Annotated[str, Field(..., description="Specify a comma-separated list of threat IDs that need to be resolved.")], annotation: Annotated[str, Field(default=None, description="Specify an annotation describing, why the threat can be resolved.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Resolve threats in SentinelOne.
+
+Action Parameters: Threat IDs: Required.A comma-separated list of threat IDs to resolve., Annotation: Optional.A justification for resolving the threat.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -177,12 +183,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def sentinel_one_v2_get_blacklist(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], hash: Annotated[Optional[str], Field(default=None, description="Specify a comma-separated list of hashes that need to be checked in blacklist. Only hashes that were found will be returned. If nothing is specified here action will return all hashes. Note: if \"Hash\" parameter is provided then \"Limit\" parameter is ignored.")], site_i_ds: Annotated[Optional[str], Field(default=None, description="Specify a comma-separated list of site ids, which should be used to return blacklist items.")], group_i_ds: Annotated[Optional[str], Field(default=None, description="Specify a comma-separated list of group ids, which should be used to return blacklist items.")], account_i_ds: Annotated[Optional[str], Field(default=None, description="Specify a comma-separated list of account ids, which should be used to return blacklist items.")], limit: Annotated[Optional[str], Field(default=None, description="Specify how many blacklist items should be returned. Note: if \"Hash\" parameter has values, then this parameter is ignored. Maximum is 1000.")], query: Annotated[Optional[str], Field(default=None, description="Specify the query that needs to be used in order to filter the results.")], use_global_blacklist: Annotated[Optional[bool], Field(default=None, description="If enabled, action will also return hashes from the global blacklist.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Get a list of all the items available in the blacklist in SentinelOne.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def sentinel_one_v2_get_blacklist(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], hash: Annotated[str, Field(default=None, description="Specify a comma-separated list of hashes that need to be checked in blacklist. Only hashes that were found will be returned. If nothing is specified here action will return all hashes. Note: if \"Hash\" parameter is provided then \"Limit\" parameter is ignored.")], site_i_ds: Annotated[str, Field(default=None, description="Specify a comma-separated list of site ids, which should be used to return blacklist items.")], group_i_ds: Annotated[str, Field(default=None, description="Specify a comma-separated list of group ids, which should be used to return blacklist items.")], account_i_ds: Annotated[str, Field(default=None, description="Specify a comma-separated list of account ids, which should be used to return blacklist items.")], limit: Annotated[str, Field(default=None, description="Specify how many blacklist items should be returned. Note: if \"Hash\" parameter has values, then this parameter is ignored. Maximum is 1000.")], query: Annotated[str, Field(default=None, description="Specify the query that needs to be used in order to filter the results.")], use_global_blacklist: Annotated[bool, Field(default=None, description="If enabled, action will also return hashes from the global blacklist.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Get a list of all the items available in the blacklist in SentinelOne.
+
+Action Parameters: Hash: Optional.A comma-separated list of hashes to check in the blocklist.The action only returns hashes that were found.If you set the Hash, the action ignores the Limit parameter., Site IDs: Optional.A comma-separated list of site IDs to return blocklist items., Group IDs: Optional.A comma-separated list of group IDs to return blocklist items., Account Ids: Optional.A comma-separated list of account IDs to return blocklist items., Limit: Optional.A number of blocklist items to return.If you set the Hash parameter, the action ignores this parameter. The maximum value is 1000.The default value is 50., Query: Optional.A query to filter results., Use Global Blacklist: Optional.If selected, the action returns hashes from a global blocklist.Not selected by default.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -265,12 +274,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def sentinel_one_v2_create_hash_exclusion_record(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], operation_system: Annotated[str, Field(..., description="Specify the OS for the hash. Possible values: windows, windows_legacy, macos, linux.")], site_i_ds: Annotated[Optional[str], Field(default=None, description="Specify a comma-separated list of site ids, where hash needs to be sent to the exclusion list.")], group_i_ds: Annotated[Optional[str], Field(default=None, description="Specify a comma-separated list of group ids, where hash needs to be sent to the exclusion list.")], account_i_ds: Annotated[Optional[str], Field(default=None, description="Specify a comma-separated list of account ids, where hash needs to be sent to the exclusion list.")], description: Annotated[Optional[str], Field(default=None, description="Specify additional information related to the hash.")], add_to_global_exclusion_list: Annotated[Optional[bool], Field(default=None, description="If enabled, action will add the hash to the global exclusion list. Note: when this parameter is enabled, parameters \u201cSite IDs\u201c, \u201cGroup IDs\u201c and \u201cAccount IDs\u201c are ignored.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Add hash to the exclusion list in SentinelOne. Note: Only SHA1 hashes are supported.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def sentinel_one_v2_create_hash_exclusion_record(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], operation_system: Annotated[str, Field(..., description="Specify the OS for the hash. Possible values: windows, windows_legacy, macos, linux.")], site_i_ds: Annotated[str, Field(default=None, description="Specify a comma-separated list of site ids, where hash needs to be sent to the exclusion list.")], group_i_ds: Annotated[str, Field(default=None, description="Specify a comma-separated list of group ids, where hash needs to be sent to the exclusion list.")], account_i_ds: Annotated[str, Field(default=None, description="Specify a comma-separated list of account ids, where hash needs to be sent to the exclusion list.")], description: Annotated[str, Field(default=None, description="Specify additional information related to the hash.")], add_to_global_exclusion_list: Annotated[bool, Field(default=None, description="If enabled, action will add the hash to the global exclusion list. Note: when this parameter is enabled, parameters \u201cSite IDs\u201c, \u201cGroup IDs\u201c and \u201cAccount IDs\u201c are ignored.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Add hash to the exclusion list in SentinelOne. Note: Only SHA1 hashes are supported.
+
+Action Parameters: Operation System: Required.An operation system (OS) for the hash. The possible values are as follows: windowswindows_legacy macoslinuxThe default value is windows., Site IDs: Optional. A comma-separated list of site IDs to send the hash to the exclusion list.The action requires at least one valid value., Group IDs: Optional.A comma-separated list of group ID to send the hash to the exclusion list.The action requires at least one valid value., Account IDs: Optional.A comma-separated list of account IDs to send the hash to the exclusion list., Description: Optional. Additional information related to the hash., Add to global exclusion list: Optional. If selected, the action adds a hash to the global exclusion list. If you select this parameter, the action ignores the Site IDs, Group IDs, and Account IDs parameters.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -351,11 +363,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def sentinel_one_v2_get_system_status(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Fetch system status.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Fetch system status.
+
+Action Parameters: None.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -425,11 +440,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def sentinel_one_v2_disconnect_agent_from_network(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Disconnect agent from network by it's host name or IP address.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Disconnect agent from network by it's host name or IP address.
+
+Action Parameters: None.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -498,12 +516,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def sentinel_one_v2_get_events_for_endpoint_hours_back(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], hours_back: Annotated[str, Field(..., description="Specify how many hours backwards to fetch events.")], events_amount_limit: Annotated[Optional[str], Field(default=None, description="Specify how many events to return per event type. Default: 50.")], include_file_events_information: Annotated[Optional[bool], Field(default=None, description="If enabled, action will also query information about file events.")], include_indicator_events_information: Annotated[Optional[bool], Field(default=None, description="If enabled, action will also query information about indicator events.")], include_dns_events_information: Annotated[Optional[bool], Field(default=None, description="If enabled, action will also query information about DNS events.")], include_network_actions_events_information: Annotated[Optional[bool], Field(default=None, description="If enabled, action will also query information about \u201cnetwork actions\u201d events.")], include_url_events_information: Annotated[Optional[bool], Field(default=None, description="If enabled, action will also query information about URL events.")], include_registry_events_information: Annotated[Optional[bool], Field(default=None, description="If enabled, action will also query information about registry events.")], include_scheduled_task_events_information: Annotated[Optional[bool], Field(default=None, description="If enabled, action will also query information about scheduled task events.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Retrieve information about the latest events on the endpoint. Works with IP and Hostname entities.Note: this action uses an endpoint that has rate limiting. Only one endpoint can be processed per minute․
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def sentinel_one_v2_get_events_for_endpoint_hours_back(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], hours_back: Annotated[str, Field(..., description="Specify how many hours backwards to fetch events.")], events_amount_limit: Annotated[str, Field(default=None, description="Specify how many events to return per event type. Default: 50.")], include_file_events_information: Annotated[bool, Field(default=None, description="If enabled, action will also query information about file events.")], include_indicator_events_information: Annotated[bool, Field(default=None, description="If enabled, action will also query information about indicator events.")], include_dns_events_information: Annotated[bool, Field(default=None, description="If enabled, action will also query information about DNS events.")], include_network_actions_events_information: Annotated[bool, Field(default=None, description="If enabled, action will also query information about \u201cnetwork actions\u201d events.")], include_url_events_information: Annotated[bool, Field(default=None, description="If enabled, action will also query information about URL events.")], include_registry_events_information: Annotated[bool, Field(default=None, description="If enabled, action will also query information about registry events.")], include_scheduled_task_events_information: Annotated[bool, Field(default=None, description="If enabled, action will also query information about scheduled task events.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Retrieve information about the latest events on the endpoint. Works with IP and Hostname entities.Note: this action uses an endpoint that has rate limiting. Only one endpoint can be processed per minute․
+
+Action Parameters: Hours Back: Required.The number of hours prior to now to fetch events., Events Amount Limit: Optional.The maximum number of events to return for every event type.The default value is 50., Include File Events Information: Optional.If selected, the action queries information about file events., Include Indicator Events Information: Optional.If selected, the action queries information about indicator events., Include DNS Events Information: Optional.If selected, the action queries information about DNS events., Include Network Actions Events Information: Optional.If selected, the action queries information about the network actions events., Include URL Events Information: Optional.If selected, the action queries information about URL events., Include Registry Events Information: Optional.If selected, the action queries information about registry events., Include Scheduled Task Events Information: Optional.If selected, the action queries information about scheduled task events.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -589,12 +610,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def sentinel_one_v2_create_path_exclusion_record(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], path: Annotated[str, Field(..., description="Specify the path that needs to be added to the exclusion list.")], operation_system: Annotated[str, Field(..., description="Specify the OS for the path. Possible values: windows, windows_legacy, macos, linux.")], site_i_ds: Annotated[Optional[str], Field(default=None, description="Specify a comma-separated list of site ids, where path needs to be sent to the exclusion list.")], group_i_ds: Annotated[Optional[str], Field(default=None, description="Specify a comma-separated list of group ids, where path needs to be sent to the exclusion list.")], account_i_ds: Annotated[Optional[str], Field(default=None, description="Specify a comma-separated list of account ids, where path needs to be sent to the exclusion list.")], description: Annotated[Optional[str], Field(default=None, description="Specify additional information related to the path.")], add_to_global_exclusion_list: Annotated[Optional[bool], Field(default=None, description="If enabled, action will add the path to the global exclusion list. Note: when this parameter is enabled, parameters \u201cSite IDs\u201c, \u201cGroup IDs\u201c and \u201cAccount IDs\u201c are ignored.")], include_subfolders: Annotated[Optional[bool], Field(default=None, description="If enabled, action will include subfolders for the provided path. This feature only works, if user provides folder path and not file path.")], mode: Annotated[Optional[List[Any]], Field(default=None, description="Specify what mode should be used for the excluded path.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Add path to the exclusion list in SentinelOne.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def sentinel_one_v2_create_path_exclusion_record(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], path: Annotated[str, Field(..., description="Specify the path that needs to be added to the exclusion list.")], operation_system: Annotated[str, Field(..., description="Specify the OS for the path. Possible values: windows, windows_legacy, macos, linux.")], site_i_ds: Annotated[str, Field(default=None, description="Specify a comma-separated list of site ids, where path needs to be sent to the exclusion list.")], group_i_ds: Annotated[str, Field(default=None, description="Specify a comma-separated list of group ids, where path needs to be sent to the exclusion list.")], account_i_ds: Annotated[str, Field(default=None, description="Specify a comma-separated list of account ids, where path needs to be sent to the exclusion list.")], description: Annotated[str, Field(default=None, description="Specify additional information related to the path.")], add_to_global_exclusion_list: Annotated[bool, Field(default=None, description="If enabled, action will add the path to the global exclusion list. Note: when this parameter is enabled, parameters \u201cSite IDs\u201c, \u201cGroup IDs\u201c and \u201cAccount IDs\u201c are ignored.")], include_subfolders: Annotated[bool, Field(default=None, description="If enabled, action will include subfolders for the provided path. This feature only works, if user provides folder path and not file path.")], mode: Annotated[List[Any], Field(default=None, description="Specify what mode should be used for the excluded path.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Add path to the exclusion list in SentinelOne.
+
+Action Parameters: Path: Required. A path to add to the exclusion list., Operation System: Required.An operation system (OS) for the hash. The possible values are as follows: windowswindows_legacy macoslinuxThe default value is windows., Site IDs: Optional. A comma-separated list of site IDs to send the hash to the exclusion list.The action requires at least one valid value., Group IDs: Optional.A comma-separated list of group ID to send the hash to the exclusion list.The action requires at least one valid value., Account IDs: Optional.A comma-separated list of account IDs to send the hash to the exclusion list., Description: Optional. Additional information related to the hash., Add to global exclusion list: Optional. If selected, the action adds a hash to the global exclusion list. If you select this parameter, the action ignores the Site IDs, Group IDs, and Account IDs parameters., Include Subfolders: Optional. If selected, the action includes subfolders for the provided path. This parameter only applies if you configure a folder path in the Path parameter., Mode: Optional. A mode to use for the excluded path.The possible values are as follows:Suppress Alerts Interoperability Interoperability - Extended Performance Focus Performance Focus - Extended
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -679,7 +703,7 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def sentinel_one_v2_get_deep_visibility_query_result(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], query_id: Annotated[str, Field(..., description="Specify the ID of the query for which you want to return results. This ID is available in the JSON result of the action \u201cInitiate Deep Visibility Query\u201c as \u201cquery_id\u201c parameter.")], limit: Annotated[Optional[str], Field(default=None, description="Specify how many events to return. Default: 50. Maximum is 100.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
+    async def sentinel_one_v2_get_deep_visibility_query_result(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], query_id: Annotated[str, Field(..., description="Specify the ID of the query for which you want to return results. This ID is available in the JSON result of the action \u201cInitiate Deep Visibility Query\u201c as \u201cquery_id\u201c parameter.")], limit: Annotated[str, Field(default=None, description="Specify how many events to return. Default: 50. Maximum is 100.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """Retrieve information about deep visibility query results. Note: this action should be used in combination with “Initiate Deep Visibility Query“.
 
         Returns:
@@ -756,7 +780,7 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def sentinel_one_v2_initiate_deep_visibility_query(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], query: Annotated[str, Field(..., description="Specify the query for the search.")], start_date: Annotated[Optional[str], Field(default=None, description="Specify the start date for the search. If nothing is specified, action will fetch events from 30 days ago.")], end_date: Annotated[Optional[str], Field(default=None, description="Specify the end date for the search. If nothing is specified, action will use current time.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
+    async def sentinel_one_v2_initiate_deep_visibility_query(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], query: Annotated[str, Field(..., description="Specify the query for the search.")], start_date: Annotated[str, Field(default=None, description="Specify the start date for the search. If nothing is specified, action will fetch events from 30 days ago.")], end_date: Annotated[str, Field(default=None, description="Specify the end date for the search. If nothing is specified, action will use current time.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """Initiate a Deep Visibility Query search. Returns query id, which should be used in the action "Get Deep Visibility Query Result".
 
         Returns:
@@ -835,12 +859,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def sentinel_one_v2_get_threats(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], mitigation_status: Annotated[Optional[str], Field(default=None, description="Specify the comma-separated list of threat statuses. Only threats that match the statuses will be returned. Possible values: mitigated, active, blocked, suspicious, suspicious_resolved")], created_until: Annotated[Optional[str], Field(default=None, description="Specify the end time for the threats. Example: 2020-03-02T21:30:13.014874Z")], created_from: Annotated[Optional[str], Field(default=None, description="Specify the start time for the threats. Example: 2020-03-02T21:30:13.014874Z")], resolved_threats: Annotated[Optional[bool], Field(default=None, description="If enabled, action will only return resolved threats.")], threat_display_name: Annotated[Optional[str], Field(default=None, description="Specify a display name of the threat that you want to return. Partial name will also work.")], limit: Annotated[Optional[str], Field(default=None, description="Specify how many threats to return. Default: 10.")], api_version: Annotated[Optional[List[Any]], Field(default=None, description="Specify what version of API to use in the action. If nothing is provided connector will use version 2.1. Note: JSON result structure is different between API versions. It is recommended to use the latest one.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Retrieve information about threats in SentinelOne.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def sentinel_one_v2_get_threats(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], mitigation_status: Annotated[str, Field(default=None, description="Specify the comma-separated list of threat statuses. Only threats that match the statuses will be returned. Possible values: mitigated, active, blocked, suspicious, suspicious_resolved")], created_until: Annotated[str, Field(default=None, description="Specify the end time for the threats. Example: 2020-03-02T21:30:13.014874Z")], created_from: Annotated[str, Field(default=None, description="Specify the start time for the threats. Example: 2020-03-02T21:30:13.014874Z")], resolved_threats: Annotated[bool, Field(default=None, description="If enabled, action will only return resolved threats.")], threat_display_name: Annotated[str, Field(default=None, description="Specify a display name of the threat that you want to return. Partial name will also work.")], limit: Annotated[str, Field(default=None, description="Specify how many threats to return. Default: 10.")], api_version: Annotated[List[Any], Field(default=None, description="Specify what version of API to use in the action. If nothing is provided connector will use version 2.1. Note: JSON result structure is different between API versions. It is recommended to use the latest one.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Retrieve information about threats in SentinelOne.
+
+Action Parameters: Mitigation Status: Optional.A comma-separated list of threat statuses. The action only returns threats that match the configured statuses. The possible values are as follows:mitigated activeblocked suspicioussuspicious_resolved, Created until: Optional. The end time for the threats, such as 2020-03-02T21:30:13.014874Z., Created from: Optional. The start time for the threats, such as 2020-03-02T21:30:13.014874Z., Resolved Threats: Optional.If selected, the action only returns resolved threats., Threat Display Name: Optional.A display name of the threat to return., Limit: Optional.A number of threats to return.The default value is 10., API Version: Optional. A version of API to use in the action. If you don't set a value, the action uses the 2.1 version. API version impacts the JSON result structure. We recommend to set the latest API version.The possible values are as follows: 2.02.1The default value is 2.0.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -923,7 +950,7 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def sentinel_one_v2_enrich_endpoint(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], create_insight: Annotated[Optional[bool], Field(default=None, description="If enabled, action will create an insight with information about endpoints.")], only_infected_endpoints_insights: Annotated[Optional[bool], Field(default=None, description="If enabled, action will only create insights for the infected endpoints.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
+    async def sentinel_one_v2_enrich_endpoint(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], create_insight: Annotated[bool, Field(default=None, description="If enabled, action will create an insight with information about endpoints.")], only_infected_endpoints_insights: Annotated[bool, Field(default=None, description="If enabled, action will only create insights for the infected endpoints.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """Enrich information about the endpoint by IP address or Hostname.
 
         Returns:
@@ -1002,11 +1029,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def sentinel_one_v2_initiate_full_scan(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Initiate a full disk scan on the endpoint in SentinelOne.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Initiate a full disk scan on the endpoint in SentinelOne.
+
+Action Parameters: None.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -1076,11 +1106,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def sentinel_one_v2_mark_as_threat(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], threat_i_ds: Annotated[str, Field(..., description="Specify a comma-separated list of threat IDs that should be marked.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Marks suspicious threats as a true positive threat in SentinelOne.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Marks suspicious threats as a true positive threat in SentinelOne.
+
+Action Parameters: Threat IDs: Required. A comma-separated list of detection IDs to mark as threats.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -1151,11 +1184,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def sentinel_one_v2_ping(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Test integration connectivity.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Test integration connectivity.
+
+Action Parameters: None.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -1224,12 +1260,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def sentinel_one_v2_delete_hash_blacklist_record(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], site_i_ds: Annotated[Optional[str], Field(default=None, description="Specify a comma-separated list of site ids, from where the hash needs to be removed.")], group_i_ds: Annotated[Optional[str], Field(default=None, description="Specify a comma-separated list of group ids, from where the hash needs to be removed.")], account_i_ds: Annotated[Optional[str], Field(default=None, description="Specify a comma-separated list of account ids, from where the hash needs to be removed.")], remove_from_global_black_list: Annotated[Optional[bool], Field(default=None, description="If enabled, action will remove the hash from the global black list. Note: when this parameter is enabled, parameters \"Site IDs\", \"Group IDs\" and \"Account IDs\" are ignored.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Delete hashes from a blacklist in SentinelOne. Note: Only SHA1 hashes are supported.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def sentinel_one_v2_delete_hash_blacklist_record(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], site_i_ds: Annotated[str, Field(default=None, description="Specify a comma-separated list of site ids, from where the hash needs to be removed.")], group_i_ds: Annotated[str, Field(default=None, description="Specify a comma-separated list of group ids, from where the hash needs to be removed.")], account_i_ds: Annotated[str, Field(default=None, description="Specify a comma-separated list of account ids, from where the hash needs to be removed.")], remove_from_global_black_list: Annotated[bool, Field(default=None, description="If enabled, action will remove the hash from the global black list. Note: when this parameter is enabled, parameters \"Site IDs\", \"Group IDs\" and \"Account IDs\" are ignored.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Delete hashes from a blacklist in SentinelOne. Note: Only SHA1 hashes are supported.
+
+Action Parameters: Site IDs: Optional.A comma-separated list of site IDs to remove the hash., Group IDs: Optional.A comma-separated list of group IDs to remove the hash., Account IDs: Optional.A comma-separated list of account IDs to remove the hash., Remove from global black list: Optional.If selected, the action removes the hash from the global blocklist.If you select this parameter, the action ignores the Site IDs, Group IDs, and Account IDs parameters.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -1307,11 +1346,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def sentinel_one_v2_get_system_version(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Fetch system version.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Fetch system version.
+
+Action Parameters: None.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -1381,11 +1423,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def sentinel_one_v2_update_incident_status(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], threat_id: Annotated[str, Field(..., description="Specify a comma-separated list of threat ids for which you want to update the incident status.")], status: Annotated[List[Any], Field(..., description="Specify the incident status.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Update threat incident status in SentinelOne.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Update threat incident status in SentinelOne.
+
+Action Parameters: Threat ID: Required.A comma-separated list of threat IDs to update the incident status., Status: Required.An incident status.The possible values are as follows:UnresolvedIn Progress ResolvedThe default value is Resolved.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -1457,11 +1502,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def sentinel_one_v2_mitigate_threat(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], mitigation_action: Annotated[List[Any], Field(..., description="Specify the mitigation actions for the provided threats.")], threat_i_ds: Annotated[str, Field(..., description="Specify a comma-separated list of threat IDs that should be mitigated.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Executes mitigation actions on the threats in SentinelOne.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Executes mitigation actions on the threats in SentinelOne.
+
+Action Parameters: Mitigation action: Required.A mitigation action for the detected threats. The possible values are as follows: quarantinekill un-quarantineremediate rollback-remediateThe default value is quarantine., Threat IDs: Required.A comma-separated list of threat IDs to mitigate.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -1533,11 +1581,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def sentinel_one_v2_download_threat_file(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], threat_id: Annotated[str, Field(..., description="Specify the id of the threat for which you want to download the file.")], password: Annotated[str, Field(..., description="Specify the password for the zip that contains the threat file. Password requirements: At least 10 characters. Three of these: uppercase, lowercase, digits, special symbols. Maximum length is 256 characters.")], download_folder_path: Annotated[str, Field(..., description="Specify the path to the folder, where you want to store the threat file.")], overwrite: Annotated[bool, Field(..., description="If enabled, action will overwrite the file with the same name.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Download file related to threat in SentinelOne. Note: Your user role must have permissions to Fetch Threat File - Admin, IR Team, SOC.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Download file related to threat in SentinelOne. Note: Your user role must have permissions to Fetch Threat File - Admin, IR Team, SOC.
+
+Action Parameters: Threat ID: Required.The ID of the threat to download a file., Password: Required.A password for the zipped folder that contains the threat file.The password requirements are as follows:Is at least 10 characters long.Includes uppercase letters, lowercase letters, digits, and special symbols.The maximum length for the password is 256 characters., Download Folder Path: Required.A path to a folder to store the threat file., Overwrite: Required.If selected, the action overwrites a file with the identical name.Not selected by default.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -1611,11 +1662,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def sentinel_one_v2_get_agent_status(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Retrieve information about the status of the agents on the endpoints based on the IP or Hostname entity.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Retrieve information about the status of the agents on the endpoints based on the IP or Hostname entity.
+
+Action Parameters: None.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -1684,12 +1738,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def sentinel_one_v2_list_sites(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], filter_key: Annotated[Optional[List[Any]], Field(default=None, description="Specify the key that needs to be used to filter sites.")], filter_logic: Annotated[Optional[List[Any]], Field(default=None, description="Specify what filter logic should be applied. Filtering logic is working based on the value provided in the \"Filter Key\" parameter.")], filter_value: Annotated[Optional[str], Field(default=None, description="Specify what value should be used in the filter. If \"Equal\" is selected, action will try to find the exact match among results and if \"Contains\" is selected, action will try to find results that contain that substring. If nothing is provided in this parameter, the filter will not be applied. Filtering logic is working based on the value  provided in the \"Filter Key\" parameter.")], max_records_to_return: Annotated[Optional[str], Field(default=None, description="Specify how many records to return.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """List available sites in SentinelOne.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def sentinel_one_v2_list_sites(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], filter_key: Annotated[List[Any], Field(default=None, description="Specify the key that needs to be used to filter sites.")], filter_logic: Annotated[List[Any], Field(default=None, description="Specify what filter logic should be applied. Filtering logic is working based on the value provided in the \"Filter Key\" parameter.")], filter_value: Annotated[str, Field(default=None, description="Specify what value should be used in the filter. If \"Equal\" is selected, action will try to find the exact match among results and if \"Contains\" is selected, action will try to find results that contain that substring. If nothing is provided in this parameter, the filter will not be applied. Filtering logic is working based on the value  provided in the \"Filter Key\" parameter.")], max_records_to_return: Annotated[str, Field(default=None, description="Specify how many records to return.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+List available sites in SentinelOne.
+
+Action Parameters: Filter Key: Optional.The key to filter sites.The possible values are as follows:Select OneName IDThe default value is Select One., Filter Logic: Optional.The filter logic to apply.The filter logic uses the value set in the Filter Key parameter.The possible values are as follows:Not Specified EqualContainsThe default value is Not Specified., Filter Value: Optional.The value to use in the filter.The filter logic uses the value set in the Filter Key parameter.If you select Equal in the Filter Logic parameter, the action searches for the exact match among results.If you select Contains in the Filter Logic parameter, the action searches for results that contain the specified substring.If you don't set a value, the action ignores the filter., Max Records To Return: Optional.The number of records to return.The default value is 50.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -1766,12 +1823,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def sentinel_one_v2_create_hash_blacklist_record(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], operating_system: Annotated[str, Field(..., description="Specify the OS for the hash. Possible values: windows, windows_legacy, macos, linux.")], add_to_global_black_list: Annotated[bool, Field(..., description="If enabled, action will add the hash to the global blacklist. Note: when this parameter is enabled, parameters \u201cSite IDs\u201c, \u201cGroup IDs\u201c and \u201cAccount IDs\u201c are ignored.")], site_i_ds: Annotated[Optional[str], Field(default=None, description="Specify a comma-separated list of site ids, where hash needs to be sent to the blacklist.")], group_i_ds: Annotated[Optional[str], Field(default=None, description="Specify a comma-separated list of group ids, where hash needs to be sent to the blacklist.")], account_i_ds: Annotated[Optional[str], Field(default=None, description="Specify a comma-separated list of account ids, where hash needs to be sent to the blacklist.")], description: Annotated[Optional[str], Field(default=None, description="Specify additional information related to the hash.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Add hashes to a blacklist in SentinelOne. Note: Only SHA1 hashes are supported.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def sentinel_one_v2_create_hash_blacklist_record(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], operating_system: Annotated[str, Field(..., description="Specify the OS for the hash. Possible values: windows, windows_legacy, macos, linux.")], add_to_global_black_list: Annotated[bool, Field(..., description="If enabled, action will add the hash to the global blacklist. Note: when this parameter is enabled, parameters \u201cSite IDs\u201c, \u201cGroup IDs\u201c and \u201cAccount IDs\u201c are ignored.")], site_i_ds: Annotated[str, Field(default=None, description="Specify a comma-separated list of site ids, where hash needs to be sent to the blacklist.")], group_i_ds: Annotated[str, Field(default=None, description="Specify a comma-separated list of group ids, where hash needs to be sent to the blacklist.")], account_i_ds: Annotated[str, Field(default=None, description="Specify a comma-separated list of account ids, where hash needs to be sent to the blacklist.")], description: Annotated[str, Field(default=None, description="Specify additional information related to the hash.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Add hashes to a blacklist in SentinelOne. Note: Only SHA1 hashes are supported.
+
+Action Parameters: Operating System: Required.An operating system for the hash.The possible values are as follows:windows windows_legacymacos linuxThe default value is windows., Site IDs: Optional.A comma-separated list of site IDs to send to the blocklist., Group IDs: Optional.A comma-separated list of group IDs to send to the blocklist., Account IDs: Optional.A comma-separated list of account IDs to send to the blocklist., Description: Optional.Additional information related to a hash.The default value is ""., Add to global blocklist: Required.If selected, the action adds a hash to a global blocklist.If you select this parameter, the action ignores the Site IDs, Group IDs, and Account IDs parameters.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -1851,11 +1911,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def sentinel_one_v2_reconnect_agent_to_the_network(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Reconnect disconnected endpoint to the network. Works with Hostname and IP entities.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Reconnect disconnected endpoint to the network. Works with Hostname and IP entities.
+
+Action Parameters: None.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -1924,7 +1987,7 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def sentinel_one_v2_get_application_list_for_endpoint(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], max_applications_to_return: Annotated[Optional[str], Field(default=None, description="Specify how many applications to return. If nothing is specified action will return all of the applications.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
+    async def sentinel_one_v2_get_application_list_for_endpoint(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], max_applications_to_return: Annotated[str, Field(default=None, description="Specify how many applications to return. If nothing is specified action will return all of the applications.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """Retrieve information about available applications on the endpoint by IP or Hostname.
 
         Returns:
@@ -2000,12 +2063,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def sentinel_one_v2_get_hash_reputation(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], reputation_threshold: Annotated[Optional[str], Field(default=None, description="Specify what should be the reputation threshold in order it to be marked as suspicious. If nothing is provided, action will not mark entites as suspicious. Maximum: 10.")], create_insight: Annotated[Optional[bool], Field(default=None, description="If enabled, action will create an insight containing information about the reputation.")], only_suspicious_hashes_insight: Annotated[Optional[bool], Field(default=None, description="If enabled, action will only create insight for hashes that have higher or equal reputation to \u201cReputation Threshold\u201c value.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Retrieve information about the hashes from SentinelOne.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def sentinel_one_v2_get_hash_reputation(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], reputation_threshold: Annotated[str, Field(default=None, description="Specify what should be the reputation threshold in order it to be marked as suspicious. If nothing is provided, action will not mark entites as suspicious. Maximum: 10.")], create_insight: Annotated[bool, Field(default=None, description="If enabled, action will create an insight containing information about the reputation.")], only_suspicious_hashes_insight: Annotated[bool, Field(default=None, description="If enabled, action will only create insight for hashes that have higher or equal reputation to \u201cReputation Threshold\u201c value.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Retrieve information about the hashes from SentinelOne.
+
+Action Parameters: Reputation Threshold: Optional.A reputation threshold to mark entity as suspicious.If you don't set a value, the action doesn't mark any entity as suspicious.The maximum value is 10.The default value is 5., Create Insight: Optional.If selected, the action creates an insight that contains information about the reputation., Only Suspicious Hashes Insight: Optional.If selected, the action only creates an insight for hashes with the reputation exceeding or equal to the Reputation Threshold value.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -2081,11 +2147,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def sentinel_one_v2_get_group_details(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], group_names: Annotated[str, Field(..., description="Specify a comma-separated list of group names for which you want to retrieve details.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Retrieve detailed information about the provided groups.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Retrieve detailed information about the provided groups.
+
+Action Parameters: Group Names: Required.Group names to retrieve details. This parameter accepts multiple values as a comma-separated list.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -2156,11 +2225,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def sentinel_one_v2_update_analyst_verdict(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], threat_id: Annotated[str, Field(..., description="Specify a comma-separated list of threat ids for which you want to update the analyst verdict.")], analyst_verdict: Annotated[List[Any], Field(..., description="Specify the analyst verdict.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Update analyst verdict of the threat in SentinelOne.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Update analyst verdict of the threat in SentinelOne.
+
+Action Parameters: Threat ID: Required.A comma-separated list of threat IDs to update the analyst verdict., Analyst Verdict: Required.An analyst verdict.The possible values are as follows:True Positive False PositiveSuspicious UndefinedThe default value is Undefined.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -2231,12 +2303,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def sentinel_one_v2_move_agents(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], group_id: Annotated[Optional[str], Field(default=None, description="Specify the ID of the group, where to move the agents.")], group_name: Annotated[Optional[str], Field(default=None, description="Specify the name of the group, where to move the agents. Note: if both Group ID and Group Name are provided, action will put \u201cGroup ID\u201c in the priority.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Move agents to the provided group. This action works with Hostname and IP address entities. Note: the group should be from the same site.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def sentinel_one_v2_move_agents(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], group_id: Annotated[str, Field(default=None, description="Specify the ID of the group, where to move the agents.")], group_name: Annotated[str, Field(default=None, description="Specify the name of the group, where to move the agents. Note: if both Group ID and Group Name are provided, action will put \u201cGroup ID\u201c in the priority.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Move agents to the provided group. This action works with Hostname and IP address entities. Note: the group should be from the same site.
+
+Action Parameters: Group ID: Optional.The ID of the group to move agents., Group Name: Optional.The name of the group to move agents.If you configure both the Group ID parameter and the Group Name parameters, the action prioritizes the Group ID parameter.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None

@@ -25,11 +25,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def sentinel_one_get_system_status(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Get SentinelOne system health status
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Get SentinelOne system health status
+
+Action Parameters: None.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -99,11 +102,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def sentinel_one_disconnect_agent_from_network(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Disconnect agent from network connection
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Disconnect agent from network connection
+
+Action Parameters: None.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -173,11 +179,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def sentinel_one_get_events_for_endpoint_by_time(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], hours_back: Annotated[str, Field(..., description="How match time back fetch events from.")], events_amount_limit: Annotated[str, Field(..., description="Events amount limit.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Get all events related to an endpoint
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Get all events related to an endpoint
+
+Action Parameters: Hours Back: Optional.The number of hours prior to the current time to retrieve events., Events Amount Limit: Optional.The number of events to retrieve for every action run.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -249,11 +258,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def sentinel_one_enrich_endpoint(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Enrich endpoint entity with its system information
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Enrich endpoint entity with its system information
+
+Action Parameters: None.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -323,11 +335,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def sentinel_one_initiate_full_scan(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Initiate full disk scan on an endpoint
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Initiate full disk scan on an endpoint
+
+Action Parameters: None.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -397,11 +412,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def sentinel_one_ping(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Test Connectivity
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Test Connectivity
+
+Action Parameters: None.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -471,11 +489,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def sentinel_one_get_system_version(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Get SentinelOne system version
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Get SentinelOne system version
+
+Action Parameters: None.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -545,11 +566,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def sentinel_one_get_agent_status(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Get agent's current status (active/inactive)
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Get agent's current status (active/inactive)
+
+Action Parameters: None.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -619,11 +643,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def sentinel_one_get_process_list_for_endpoint(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Get process list by an endpoint
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Get process list by an endpoint
+
+Action Parameters: None.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -693,11 +720,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def sentinel_one_reconnect_agent_to_the_network(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Reconnect a disconnected agent to the network
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Reconnect a disconnected agent to the network
+
+Action Parameters: None.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -767,11 +797,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def sentinel_one_get_application_list_for_endpoint(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Get a list of applications by endpoint (host or IP address)
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Get a list of applications by endpoint (host or IP address)
+
+Action Parameters: None.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -841,11 +874,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def sentinel_one_get_hash_reputation(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Get hash reputation by SHA1
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Get hash reputation by SHA1
+
+Action Parameters: None.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None

@@ -25,11 +25,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def cuckoo_get_report(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], task_id: Annotated[str, Field(..., description="The task's id. e.g. 10")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Get report of a particular task by id (async)
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Get report of a particular task by id (async)
+
+Action Parameters: Task ID: The task's ID. Example: 10
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -100,11 +103,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def cuckoo_detonate_file(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], file_paths: Annotated[str, Field(..., description="The path of the file to submit")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Submit a file for analysis and get a report (async)
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Submit a file for analysis and get a report (async)
+
+Action Parameters: File Paths: The path of the file to submit.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None

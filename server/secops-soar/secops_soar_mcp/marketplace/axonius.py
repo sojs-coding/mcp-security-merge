@@ -173,12 +173,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def axonius_enrich_entities(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], create_endpoint_insight: Annotated[Optional[bool], Field(default=None, description="If enabled, action will create an insight containing information about the endpoints.")], create_user_insight: Annotated[Optional[bool], Field(default=None, description="If enabled, action will create an insight containing information about the user.")], max_notes_to_return: Annotated[Optional[str], Field(default=None, description="Specify how many notes to show in the case wall table. Default: 50.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Enrich entities using information from Axonius. Supported entities: IP Address, Hostname, Mac Address, User, Email Addresses (User entities that match email regex).
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def axonius_enrich_entities(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], create_endpoint_insight: Annotated[bool, Field(default=None, description="If enabled, action will create an insight containing information about the endpoints.")], create_user_insight: Annotated[bool, Field(default=None, description="If enabled, action will create an insight containing information about the user.")], max_notes_to_return: Annotated[str, Field(default=None, description="Specify how many notes to show in the case wall table. Default: 50.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Enrich entities using information from Axonius. Supported entities: IP Address, Hostname, Mac Address, User, Email Addresses (User entities that match email regex).
+
+Action Parameters: Create Endpoint Insight: If enabled, action will create an insight containing information about the endpoints., Create User Insight: If enabled, action will create an insight containing information about the user., Max Notes To Return: Specify how many notes to show in the case wall table.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -254,11 +257,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def axonius_add_tags(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], tags: Annotated[str, Field(..., description="Specify the comma-separated list of tags that need to be added to the entities.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Add tags to entities in Axonius. Supported entities: Hostname, IP, Mac Address, User, Email Addresses (User entities that match email regex).
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Add tags to entities in Axonius. Supported entities: Hostname, IP, Mac Address, User, Email Addresses (User entities that match email regex).
+
+Action Parameters: Tags: Specify a comma-separated list of tags that must be added to the entities.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -329,11 +335,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def axonius_add_note(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], note: Annotated[str, Field(..., description="Specify what note needs to be added.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Add a note to entities in Axonius. Supported entities: Hostname, IP, Mac Address, User, Email Addresses (User entities that match email regex).
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Add a note to entities in Axonius. Supported entities: Hostname, IP, Mac Address, User, Email Addresses (User entities that match email regex).
+
+Action Parameters: Note: Specify what note needs to be added.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None

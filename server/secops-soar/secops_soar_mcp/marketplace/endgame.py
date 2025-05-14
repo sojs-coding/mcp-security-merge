@@ -24,7 +24,7 @@ def register_tools(mcp: FastMCP):
     # This function registers all tools (actions) for the Endgame integration.
 
     @mcp.tool()
-    async def endgame_collect_autoruns(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], max_items_to_return: Annotated[Optional[str], Field(default=None, description="Specify how many autoruns to return.")], category_all: Annotated[Optional[bool], Field(default=None, description="If enabled, search for all autorun categories")], category_network_provider: Annotated[Optional[bool], Field(default=None, description="If enabled, search for \"Network Provider\" autorun category")], category_office: Annotated[Optional[bool], Field(default=None, description="If enabled, search for \"Office\" autorun category")], category_driver: Annotated[Optional[bool], Field(default=None, description="If enabled, search for \"Driver\" autorun category")], category_app_init: Annotated[Optional[bool], Field(default=None, description="If enabled, search for \"App Init\" autorun category")], category_winlogon: Annotated[Optional[bool], Field(default=None, description="If enabled, search for \"Winlogon\" autorun category")], category_print_monitor: Annotated[Optional[bool], Field(default=None, description="If enabled, search for \"Print Monitor\" autorun category")], category_ease_of_access: Annotated[Optional[bool], Field(default=None, description="If enabled, search for \"Ease of Access\" autorun category")], category_wmi: Annotated[Optional[bool], Field(default=None, description="If enabled, search for \"WMI\" autorun category")], category_lsa_provider: Annotated[Optional[bool], Field(default=None, description="If enabled, search for \"LSA Provider\" autorun category")], category_service: Annotated[Optional[bool], Field(default=None, description="If enabled, search for \"Service\" autorun category")], category_bits: Annotated[Optional[bool], Field(default=None, description="If enabled, search for \"Bits\" autorun category")], category_known_dll: Annotated[Optional[bool], Field(default=None, description="If enabled, search for \"Known dll\" autorun category")], category_print_provider: Annotated[Optional[bool], Field(default=None, description="If enabled, search for \"Print Provider\" autorun category")], category_image_hijack: Annotated[Optional[bool], Field(default=None, description="If enabled, search for \"Image Hijack\" autorun category")], category_startup_folder: Annotated[Optional[bool], Field(default=None, description="If enabled, search for \"Startup Folder\" autorun category")], category_internet_explorer: Annotated[Optional[bool], Field(default=None, description="If enabled, search for \"Internet Explorer\" autorun category")], category_codec: Annotated[Optional[bool], Field(default=None, description="If enabled, search for \"Codec\" autorun category")], category_logon: Annotated[Optional[bool], Field(default=None, description="If enabled, search for \"Logon\" autorun category")], category_search_order_hijack: Annotated[Optional[bool], Field(default=None, description="If enabled, search for \"Search Order Hijack\" autorun category")], category_winsock_provider: Annotated[Optional[bool], Field(default=None, description="If enabled, search for \"Winsock Provider\" autorun category")], category_boot_execute: Annotated[Optional[bool], Field(default=None, description="If enabled, search for \"Boot Execute\" autorun category")], category_phantom_dll: Annotated[Optional[bool], Field(default=None, description="If enabled, search for \"Phantom dll\" autorun category")], category_com_hijack: Annotated[Optional[bool], Field(default=None, description="If enabled, search for \"Com Hijack\" autorun category")], category_explorer: Annotated[Optional[bool], Field(default=None, description="If enabled, search for \"Explorer\" autorun category")], category_scheduled_task: Annotated[Optional[bool], Field(default=None, description="If enabled, search for \"Scheduled Task\" autorun category")], include_all_metadata: Annotated[Optional[bool], Field(default=None, description="If enabled, provides all available data")], include_malware_classification_metadata: Annotated[Optional[bool], Field(default=None, description="If enabled, provides information about MalwareScore")], include_authenticode_metadata: Annotated[Optional[bool], Field(default=None, description="If enabled, provides Signer Information")], include_md5_hash: Annotated[Optional[bool], Field(default=None, description="If enabled, provides MD5 hash in the response")], include_sha_1_hash: Annotated[Optional[bool], Field(default=None, description="If enabled, provides SHA-1 hash in the response")], include_sha_256_hash: Annotated[Optional[bool], Field(default=None, description="If enabled, provides SHA-256 hash in the response")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
+    async def endgame_collect_autoruns(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], max_items_to_return: Annotated[str, Field(default=None, description="Specify how many autoruns to return.")], category_all: Annotated[bool, Field(default=None, description="If enabled, search for all autorun categories")], category_network_provider: Annotated[bool, Field(default=None, description="If enabled, search for \"Network Provider\" autorun category")], category_office: Annotated[bool, Field(default=None, description="If enabled, search for \"Office\" autorun category")], category_driver: Annotated[bool, Field(default=None, description="If enabled, search for \"Driver\" autorun category")], category_app_init: Annotated[bool, Field(default=None, description="If enabled, search for \"App Init\" autorun category")], category_winlogon: Annotated[bool, Field(default=None, description="If enabled, search for \"Winlogon\" autorun category")], category_print_monitor: Annotated[bool, Field(default=None, description="If enabled, search for \"Print Monitor\" autorun category")], category_ease_of_access: Annotated[bool, Field(default=None, description="If enabled, search for \"Ease of Access\" autorun category")], category_wmi: Annotated[bool, Field(default=None, description="If enabled, search for \"WMI\" autorun category")], category_lsa_provider: Annotated[bool, Field(default=None, description="If enabled, search for \"LSA Provider\" autorun category")], category_service: Annotated[bool, Field(default=None, description="If enabled, search for \"Service\" autorun category")], category_bits: Annotated[bool, Field(default=None, description="If enabled, search for \"Bits\" autorun category")], category_known_dll: Annotated[bool, Field(default=None, description="If enabled, search for \"Known dll\" autorun category")], category_print_provider: Annotated[bool, Field(default=None, description="If enabled, search for \"Print Provider\" autorun category")], category_image_hijack: Annotated[bool, Field(default=None, description="If enabled, search for \"Image Hijack\" autorun category")], category_startup_folder: Annotated[bool, Field(default=None, description="If enabled, search for \"Startup Folder\" autorun category")], category_internet_explorer: Annotated[bool, Field(default=None, description="If enabled, search for \"Internet Explorer\" autorun category")], category_codec: Annotated[bool, Field(default=None, description="If enabled, search for \"Codec\" autorun category")], category_logon: Annotated[bool, Field(default=None, description="If enabled, search for \"Logon\" autorun category")], category_search_order_hijack: Annotated[bool, Field(default=None, description="If enabled, search for \"Search Order Hijack\" autorun category")], category_winsock_provider: Annotated[bool, Field(default=None, description="If enabled, search for \"Winsock Provider\" autorun category")], category_boot_execute: Annotated[bool, Field(default=None, description="If enabled, search for \"Boot Execute\" autorun category")], category_phantom_dll: Annotated[bool, Field(default=None, description="If enabled, search for \"Phantom dll\" autorun category")], category_com_hijack: Annotated[bool, Field(default=None, description="If enabled, search for \"Com Hijack\" autorun category")], category_explorer: Annotated[bool, Field(default=None, description="If enabled, search for \"Explorer\" autorun category")], category_scheduled_task: Annotated[bool, Field(default=None, description="If enabled, search for \"Scheduled Task\" autorun category")], include_all_metadata: Annotated[bool, Field(default=None, description="If enabled, provides all available data")], include_malware_classification_metadata: Annotated[bool, Field(default=None, description="If enabled, provides information about MalwareScore")], include_authenticode_metadata: Annotated[bool, Field(default=None, description="If enabled, provides Signer Information")], include_md5_hash: Annotated[bool, Field(default=None, description="If enabled, provides MD5 hash in the response")], include_sha_1_hash: Annotated[bool, Field(default=None, description="If enabled, provides SHA-1 hash in the response")], include_sha_256_hash: Annotated[bool, Field(default=None, description="If enabled, provides SHA-256 hash in the response")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """Collect Autoruns from Endgame endpoints (Windows only).
 
         Returns:
@@ -164,12 +164,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def endgame_isolate_host(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], create_insight: Annotated[Optional[bool], Field(default=None, description="If enabled, creates Insight after successful execution of this action.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Initiate Endgame endpoint isolation. This action supports only Windows and MacOS endpoints.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def endgame_isolate_host(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], create_insight: Annotated[bool, Field(default=None, description="If enabled, creates Insight after successful execution of this action.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Initiate Endgame endpoint isolation. This action supports only Windows and MacOS endpoints.
+
+Action Parameters: Create Insight: If enabled, creates an Insight after successful execution of this action.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -240,12 +243,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def endgame_hunt_user(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], endpoints_core_os: Annotated[Optional[str], Field(default=None, description="Select an operating system (i.e., Windows, Linux, or Mac) to filter the Endpoints list. Note: You can only create a single investigation for endpoints that run on the same operating system.")], find_username: Annotated[Optional[str], Field(default=None, description="ADVANCED CONFIGURATION for this hunt. Enter username(s), separate multiple entries with a semicolon.")], domain_name: Annotated[Optional[str], Field(default=None, description="ADVANCED CONFIGURATION for this hunt. Enter Domain Name")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Searches the network for logged in users.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def endgame_hunt_user(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], endpoints_core_os: Annotated[str, Field(default=None, description="Select an operating system (i.e., Windows, Linux, or Mac) to filter the Endpoints list. Note: You can only create a single investigation for endpoints that run on the same operating system.")], find_username: Annotated[str, Field(default=None, description="ADVANCED CONFIGURATION for this hunt. Enter username(s), separate multiple entries with a semicolon.")], domain_name: Annotated[str, Field(default=None, description="ADVANCED CONFIGURATION for this hunt. Enter Domain Name")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Searches the network for logged in users.
+
+Action Parameters: Endpoints Core OS: Select an operating system (i.e., Windows, Linux, or Mac) to filter the Endpoints list. Note: You can only create a single investigation for endpoints that run on the same operating system., Find Username: ADVANCED CONFIGURATION for this hunt. Enter username(s), separate multiple entries with a semicolon., Domain Name: ADVANCED CONFIGURATION for this hunt. Enter Domain Name.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -320,12 +326,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def endgame_add_ip_subnet_to_host_isolation_config(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], ip_subnet: Annotated[str, Field(..., description="Enter the IPv4 Subnet that you want to add to Host Isolation Config.")], description: Annotated[Optional[str], Field(default=None, description="Enter the description to the IP Subnet.")], create_insight: Annotated[Optional[bool], Field(default=None, description="If enabled, creates Insight after successful execution of this action.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Add IP subnet to Host Isolation Config defined in the Endgame.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def endgame_add_ip_subnet_to_host_isolation_config(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], ip_subnet: Annotated[str, Field(..., description="Enter the IPv4 Subnet that you want to add to Host Isolation Config.")], description: Annotated[str, Field(default=None, description="Enter the description to the IP Subnet.")], create_insight: Annotated[bool, Field(default=None, description="If enabled, creates Insight after successful execution of this action.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Add IP subnet to Host Isolation Config defined in the Endgame.
+
+Action Parameters: IP Subnet: Enter the IPv4 Subnet that you want to add to Host Isolation Config., Description: Enter the description to the IP Subnet., Create Insight: If enabled, creates Insight after successful execution of this action.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -400,11 +409,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def endgame_get_investigation_details(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], investigation_id: Annotated[str, Field(..., description="Specify Endgame Investigation ID to search for.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Get information on a specific Endgame Investigation.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Get information on a specific Endgame Investigation.
+
+Action Parameters: Investigation ID: Specify Endgame investigation ID to search for.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -474,12 +486,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def endgame_remove_ip_subnet_from_host_isolation_config(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], ip_subnet: Annotated[str, Field(..., description="Enter the IPv4 Subnet that you want to remove from Host Isolation Config.")], create_insight: Annotated[Optional[bool], Field(default=None, description="If enabled, creates Insight after successful execution of this action.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Remove IP subnet from Host Isolation Config defined in the Endgame.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def endgame_remove_ip_subnet_from_host_isolation_config(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], ip_subnet: Annotated[str, Field(..., description="Enter the IPv4 Subnet that you want to remove from Host Isolation Config.")], create_insight: Annotated[bool, Field(default=None, description="If enabled, creates Insight after successful execution of this action.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Remove IP subnet from Host Isolation Config defined in the Endgame.
+
+Action Parameters: IP Subnet: Enter the IPv4 Subnet that you want to add to Host Isolation Config., Create Insight: If enabled, creates Insight after successful execution of this action.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -551,12 +566,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def endgame_system_survey(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], max_items_to_return: Annotated[Optional[str], Field(default=None, description="Specify how many items to return.")], include_security_product_information_windows_only: Annotated[Optional[bool], Field(default=None, description="Specify to get information about the security products installed on the endpoint (Windows only).")], include_patch_information_windows_only: Annotated[Optional[bool], Field(default=None, description="Specify to get information about patches (Windows only).")], include_disk_information: Annotated[Optional[bool], Field(default=None, description="Specify to get information about Disks.")], include_network_interface_information: Annotated[Optional[bool], Field(default=None, description="Specify to get information about network interfaces.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Get system information on a single endgame endpoint, such as memory use, dns, and OS.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def endgame_system_survey(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], max_items_to_return: Annotated[str, Field(default=None, description="Specify how many items to return.")], include_security_product_information_windows_only: Annotated[bool, Field(default=None, description="Specify to get information about the security products installed on the endpoint (Windows only).")], include_patch_information_windows_only: Annotated[bool, Field(default=None, description="Specify to get information about patches (Windows only).")], include_disk_information: Annotated[bool, Field(default=None, description="Specify to get information about Disks.")], include_network_interface_information: Annotated[bool, Field(default=None, description="Specify to get information about network interfaces.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Get system information on a single endgame endpoint, such as memory use, dns, and OS.
+
+Action Parameters: Max Items to Return: Specify how many items to return., Include Security Product Information (Windows only): Specify to get information about the security products installed on the endpoint (Windows only)., Include Patch Information (Windows only): Specify to get information about patches (Windows only)., Include Disk Information: Specify to get information about Disks., Include Network Interface Information: Specify to get information about network interfaces.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -635,12 +653,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def endgame_hunt_process(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], endpoints_core_os: Annotated[Optional[str], Field(default=None, description="Select an operating system (i.e., Windows, Linux, or Mac) to filter the Endpoints list. Note: You can only create a single investigation for endpoints that run on the same operating system.")], md5_hashes: Annotated[Optional[str], Field(default=None, description="ADVANCED CONFIGURATION for this hunt. Enter MD5 Hashes, separated by comma")], sha1_hashes: Annotated[Optional[str], Field(default=None, description="ADVANCED CONFIGURATION for this hunt. Enter SHA1 Hashes, separated by comma")], sha256_hashes: Annotated[Optional[str], Field(default=None, description="ADVANCED CONFIGURATION for this hunt. Enter SHA256 Hashes, separated by comma")], process_name: Annotated[Optional[str], Field(default=None, description="ADVANCED CONFIGURATION for this hunt. Enter Process Name ex. iss.exe")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Searches for running processes.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def endgame_hunt_process(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], endpoints_core_os: Annotated[str, Field(default=None, description="Select an operating system (i.e., Windows, Linux, or Mac) to filter the Endpoints list. Note: You can only create a single investigation for endpoints that run on the same operating system.")], md5_hashes: Annotated[str, Field(default=None, description="ADVANCED CONFIGURATION for this hunt. Enter MD5 Hashes, separated by comma")], sha1_hashes: Annotated[str, Field(default=None, description="ADVANCED CONFIGURATION for this hunt. Enter SHA1 Hashes, separated by comma")], sha256_hashes: Annotated[str, Field(default=None, description="ADVANCED CONFIGURATION for this hunt. Enter SHA256 Hashes, separated by comma")], process_name: Annotated[str, Field(default=None, description="ADVANCED CONFIGURATION for this hunt. Enter Process Name ex. iss.exe")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Searches for running processes.
+
+Action Parameters: Endpoints Core OS: Select an operating system (i.e., Windows, Linux, or Mac) to filter the Endpoints list. Note: You can only create a single investigation for endpoints that run on the same operating system., MD5 Hashes: ADVANCED CONFIGURATION for this hunt. Enter MD5 Hashes, separated by comma., SHA1 Hashes: ADVANCED CONFIGURATION for this hunt. Enter SHA-1 Hashes, separated by comma., SHA256 Hashes: ADVANCED CONFIGURATION for this hunt. Enter SHA256 Hashes, separated by comma., Process Name: ADVANCED CONFIGURATION for this hunt. Enter Process Name ex. iss.exe*
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -719,12 +740,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def endgame_firewall_survey_windows_only(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], max_items_to_return: Annotated[Optional[str], Field(default=None, description="Specify how many items to return.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Get information about the firewall rules on a specific Endgame endpoint.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def endgame_firewall_survey_windows_only(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], max_items_to_return: Annotated[str, Field(default=None, description="Specify how many items to return.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Get information about the firewall rules on a specific Endgame endpoint.
+
+Action Parameters: Max Items to Return: Specify how many items to return.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -795,12 +819,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def endgame_unisolate_host(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], create_insight: Annotated[Optional[bool], Field(default=None, description="If enabled, creates Insight after successful execution of this action.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Initiate Endgame endpoint unisolation. This action supports only Windows and MacOS endpoints.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def endgame_unisolate_host(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], create_insight: Annotated[bool, Field(default=None, description="If enabled, creates Insight after successful execution of this action.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Initiate Endgame endpoint unisolation. This action supports only Windows and MacOS endpoints.
+
+Action Parameters: Create Insight: If enabled, creates an Insight after successful execution of this action.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -871,12 +898,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def endgame_list_investigations(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], os: Annotated[Optional[str], Field(default=None, description="Specify for which OS you want to list investigations. Parameter can take multiple values as a comma separated string.")], fetch_investigations_for_the_last_x_hours: Annotated[Optional[str], Field(default=None, description="Return investigations created for the specified time frame in hours.")], max_investigation_to_return: Annotated[Optional[str], Field(default=None, description="Specify how many investigation you want to query.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """List Endgame Investigations.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def endgame_list_investigations(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], os: Annotated[str, Field(default=None, description="Specify for which OS you want to list investigations. Parameter can take multiple values as a comma separated string.")], fetch_investigations_for_the_last_x_hours: Annotated[str, Field(default=None, description="Return investigations created for the specified time frame in hours.")], max_investigation_to_return: Annotated[str, Field(default=None, description="Specify how many investigation you want to query.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+List Endgame Investigations.
+
+Action Parameters: OS: Specify for which OS you want to list investigations. Parameter can take multiple values as a comma-separated string., Fetch investigations for the last X hours: Return investigations created for the specified timeframe in hours., Max Investigation to Return: Specify how many investigation you want to query.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -1173,12 +1203,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def endgame_process_survey(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], max_items_to_return: Annotated[Optional[str], Field(default=None, description="Specify how many items to return.")], detect_fileless_attacks_windows_only: Annotated[Optional[bool], Field(default=None, description="Specify to detect fileless attacks. Windows Only.")], detect_malware_with_malware_score_windows_only: Annotated[Optional[bool], Field(default=None, description="Specify to detect malware processes with MalwareScore. Windows Only.")], collect_process_threads: Annotated[Optional[bool], Field(default=None, description="Specify to include information about the amount of process threads in the response.")], return_only_suspicious_processes: Annotated[Optional[bool], Field(default=None, description="Specify to return only suspicious processes from the endpoint. By the Endgame definition: Suspicious processes are unbacked executable processes.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Get information about running processes on a specific Endgame endpoint.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def endgame_process_survey(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], max_items_to_return: Annotated[str, Field(default=None, description="Specify how many items to return.")], detect_fileless_attacks_windows_only: Annotated[bool, Field(default=None, description="Specify to detect fileless attacks. Windows Only.")], detect_malware_with_malware_score_windows_only: Annotated[bool, Field(default=None, description="Specify to detect malware processes with MalwareScore. Windows Only.")], collect_process_threads: Annotated[bool, Field(default=None, description="Specify to include information about the amount of process threads in the response.")], return_only_suspicious_processes: Annotated[bool, Field(default=None, description="Specify to return only suspicious processes from the endpoint. By the Endgame definition: Suspicious processes are unbacked executable processes.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Get information about running processes on a specific Endgame endpoint.
+
+Action Parameters: Max Items to Return: Specify how many items to return., Detect Fileless Attacks (Windows Only): Specify to detect fileless attacks. Windows Only., Detect Malware With MalwareScore (Windows Only): Specify to detect malware processes with MalwareScore. Windows Only., Collect Process Threads: Specify to include information about the amount of process threads in the response., Return Only Suspicious Processes: Specify to return only suspicious processes from the endpoint. By the Endgame definition: Suspicious processes are unbacked executable processes.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -1257,12 +1290,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def endgame_drivers_survey_windows_only(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], max_items_to_return: Annotated[Optional[str], Field(default=None, description="Specify how many items to return.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Get the information on drivers from a specific Endgame endpoint.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def endgame_drivers_survey_windows_only(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], max_items_to_return: Annotated[str, Field(default=None, description="Specify how many items to return.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Get the information on drivers from a specific Endgame endpoint.
+
+Action Parameters: Max Items to Return: Specify how many items to return.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -1333,12 +1369,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def endgame_kill_process(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], process_name: Annotated[str, Field(..., description="Enter the process name.")], pid: Annotated[Optional[str], Field(default=None, description="Enter ID of the process.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Kill a process in a specific Endgame endpoint.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def endgame_kill_process(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], process_name: Annotated[str, Field(..., description="Enter the process name.")], pid: Annotated[str, Field(default=None, description="Enter ID of the process.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Kill a process in a specific Endgame endpoint.
+
+Action Parameters: Process Name: Enter the process name, PID: Enter ID of the process.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -1410,12 +1449,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def endgame_user_sessions_survey(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], max_items_to_return: Annotated[Optional[str], Field(default=None, description="Specify how many items to return.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Get information about an active user sessions on a specific Endgame endpoint.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def endgame_user_sessions_survey(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], max_items_to_return: Annotated[str, Field(default=None, description="Specify how many items to return.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Get information about an active user sessions on a specific Endgame endpoint.
+
+Action Parameters: Max Items to Return: Specify how many items to return.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -1486,12 +1528,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def endgame_network_survey(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], max_items_to_return: Annotated[Optional[str], Field(default=None, description="Specify how many items to return.")], include_route_entries_information: Annotated[Optional[bool], Field(default=None, description="Specify to get information about the Route Entries.")], include_net_bios_information: Annotated[Optional[bool], Field(default=None, description="Specify to get information about Net Bios.")], include_dns_cache_information: Annotated[Optional[bool], Field(default=None, description="Specify to get information about the DNS Cache.")], include_arp_table_information: Annotated[Optional[bool], Field(default=None, description="Specify to get information about the ARP table.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Get information about connections, DNS cache, Net Bios, ARP, and Route tables from a specific Endgame endpoint.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def endgame_network_survey(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], max_items_to_return: Annotated[str, Field(default=None, description="Specify how many items to return.")], include_route_entries_information: Annotated[bool, Field(default=None, description="Specify to get information about the Route Entries.")], include_net_bios_information: Annotated[bool, Field(default=None, description="Specify to get information about Net Bios.")], include_dns_cache_information: Annotated[bool, Field(default=None, description="Specify to get information about the DNS Cache.")], include_arp_table_information: Annotated[bool, Field(default=None, description="Specify to get information about the ARP table.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Get information about connections, DNS cache, Net Bios, ARP, and Route tables from a specific Endgame endpoint.
+
+Action Parameters: Max Items to Return: Specify how many autoruns to return., Include Route Entries Information: Specify to get information about the Route Entries., Include Net Bios Information: Specify to get information about Net Bios., Include DNS Cache Information: Specify to get information about the DNS Cache., Include ARP Table Information: Specify to get information about the ARP table.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -1570,12 +1615,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def endgame_hunt_ip(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], endpoints_core_os: Annotated[Optional[str], Field(default=None, description="Select an operating system (i.e., Windows, Linux, or Mac) to filter the Endpoints list. Note: You can only create a single investigation for endpoints that run on the same operating system.")], remote_ip_address: Annotated[Optional[str], Field(default=None, description="remote IP address - separated by comma")], local_ip_address: Annotated[Optional[str], Field(default=None, description="separated by comma")], state: Annotated[Optional[str], Field(default=None, description="Enter state to return. Ex. ANY")], protocol: Annotated[Optional[str], Field(default=None, description="Ex. ANY, UDP, TCP")], network_port: Annotated[Optional[str], Field(default=None, description="ul")], network_remote: Annotated[Optional[str], Field(default=None, description="Network Remote or Local")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Searches for network connections.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def endgame_hunt_ip(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], endpoints_core_os: Annotated[str, Field(default=None, description="Select an operating system (i.e., Windows, Linux, or Mac) to filter the Endpoints list. Note: You can only create a single investigation for endpoints that run on the same operating system.")], remote_ip_address: Annotated[str, Field(default=None, description="remote IP address - separated by comma")], local_ip_address: Annotated[str, Field(default=None, description="separated by comma")], state: Annotated[str, Field(default=None, description="Enter state to return. Ex. ANY")], protocol: Annotated[str, Field(default=None, description="Ex. ANY, UDP, TCP")], network_port: Annotated[str, Field(default=None, description="ul")], network_remote: Annotated[str, Field(default=None, description="Network Remote or Local")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Searches for network connections.
+
+Action Parameters: Endpoints Core OS: Select an operating system (for example, Windows, Linux, or Mac) to filter the Endpoints list. Note: You can only create a single investigation for endpoints that run on the same operating system., Remote IP Address: remote IP address - separated by comma, Local IP Address: separated by comma, State: Enter state to return. Example: ANY, Protocol: Example: ANY, UDP, TCP, Network Port: , Network Remote: Network Remote or Local.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -1658,12 +1706,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def endgame_hunt_registry(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], hive: Annotated[Optional[str], Field(default=None, description="One of the following: HKEY_CLASSES_ROOT, HKEY_CURRENT_CONFIG, HKEY_USERS, HKEY_LOCAL_MACHINE, ALL")], keys: Annotated[Optional[str], Field(default=None, description="Registry Key or Value Name")], min_size: Annotated[Optional[str], Field(default=None, description="Min byte size")], max_size: Annotated[Optional[str], Field(default=None, description="Max byte size")], endpoints_core_os: Annotated[Optional[str], Field(default=None, description="Select an operating system (i.e., Windows, Linux, or Mac) to filter the Endpoints list. Note: You can only create a single investigation for endpoints that run on the same operating system.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Searches for a registry key or value name.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def endgame_hunt_registry(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], hive: Annotated[str, Field(default=None, description="One of the following: HKEY_CLASSES_ROOT, HKEY_CURRENT_CONFIG, HKEY_USERS, HKEY_LOCAL_MACHINE, ALL")], keys: Annotated[str, Field(default=None, description="Registry Key or Value Name")], min_size: Annotated[str, Field(default=None, description="Min byte size")], max_size: Annotated[str, Field(default=None, description="Max byte size")], endpoints_core_os: Annotated[str, Field(default=None, description="Select an operating system (i.e., Windows, Linux, or Mac) to filter the Endpoints list. Note: You can only create a single investigation for endpoints that run on the same operating system.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Searches for a registry key or value name.
+
+Action Parameters: Hive: One of the following: HKEY_CLASSES_ROOT, HKEY_CURRENT_CONFIG, HKEY_USERS, HKEY_LOCAL_MACHINE, ALL., Keys: Registry Key or Value Name., Min Size: Min byte size., Max Size: Max byte size., Endpoints Core OS: Select an operating system (i.e., Windows, Linux, or Mac) to filter the Endpoints list. Note: You can only create a single investigation for endpoints that run on the same operating system.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -1816,12 +1867,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def endgame_hunt_file(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], endpoints_core_os: Annotated[Optional[str], Field(default=None, description="Select an operating system (i.e., Windows, Linux, or Mac) to filter the Endpoints list. Note: You can only create a single investigation for endpoints that run on the same operating system.")], md5_hashes: Annotated[Optional[str], Field(default=None, description="ADVANCED CONFIGURATION for this hunt. Enter MD5 Hashes, separated by comma")], sha1_hashes: Annotated[Optional[str], Field(default=None, description="ADVANCED CONFIGURATION for this hunt. Enter SHA1 Hashes, separated by comma")], sha256_hashes: Annotated[Optional[str], Field(default=None, description="ADVANCED CONFIGURATION for this hunt. Enter SHA256 Hashes, separated by comma")], directory: Annotated[Optional[str], Field(default=None, description="The starting directory path e.g. C:\\windows\\system32")], find_file: Annotated[Optional[str], Field(default=None, description="Enter the filename(s) to search. TIP: Enter a regex to narrow search results.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Searches for running files.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def endgame_hunt_file(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], endpoints_core_os: Annotated[str, Field(default=None, description="Select an operating system (i.e., Windows, Linux, or Mac) to filter the Endpoints list. Note: You can only create a single investigation for endpoints that run on the same operating system.")], md5_hashes: Annotated[str, Field(default=None, description="ADVANCED CONFIGURATION for this hunt. Enter MD5 Hashes, separated by comma")], sha1_hashes: Annotated[str, Field(default=None, description="ADVANCED CONFIGURATION for this hunt. Enter SHA1 Hashes, separated by comma")], sha256_hashes: Annotated[str, Field(default=None, description="ADVANCED CONFIGURATION for this hunt. Enter SHA256 Hashes, separated by comma")], directory: Annotated[str, Field(default=None, description="The starting directory path e.g. C:\\windows\\system32")], find_file: Annotated[str, Field(default=None, description="Enter the filename(s) to search. TIP: Enter a regex to narrow search results.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Searches for running files.
+
+Action Parameters: Endpoints Core OS: Select an operating system (for example, Windows, Linux, or Mac) to filter the Endpoints list. Note: You can only create a single investigation for endpoints that run on the same operating system., MD5 Hashes: ADVANCED CONFIGURATION for this hunt. Enter MD5 Hashes, separated by comma., SHA1 Hashes: ADVANCED CONFIGURATION for this hunt. Enter SHA-1 Hashes, separated by comma., SHA256 Hashes: ADVANCED CONFIGURATION for this hunt. Enter SHA256 Hashes, separated by comma., Directory: The starting directory path Example C:\windows\system32, Find File: Enter the filename(s) to search. Enter a regular expression to narrow search results.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -1902,12 +1956,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def endgame_download_file(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], full_file_path: Annotated[str, Field(..., description="Enter the path to the file")], full_download_folder_path: Annotated[str, Field(..., description="Enter the path to the folder, where you want to store this file.")], expected_sha_256_hash: Annotated[Optional[str], Field(default=None, description="Enter the expected SHA-256 hash")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Download a file from a specific Endgame endpoint.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def endgame_download_file(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], full_file_path: Annotated[str, Field(..., description="Enter the path to the file")], full_download_folder_path: Annotated[str, Field(..., description="Enter the path to the folder, where you want to store this file.")], expected_sha_256_hash: Annotated[str, Field(default=None, description="Enter the expected SHA-256 hash")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Download a file from a specific Endgame endpoint.
+
+Action Parameters: Full File Path: If enabled, creates an Insight after successful execution of this action., Full Download Folder Path: Enter the path to the folder, where you want to store this file., Expected SHA-256 Hash: Enter the expected SHA-256 hash.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -1981,11 +2038,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def endgame_delete_file(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], file_path: Annotated[str, Field(..., description="Enter the path to the file")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Delete a file from Endgame endpoint.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Delete a file from Endgame endpoint.
+
+Action Parameters: File Path: Enter the path to the file.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -2055,12 +2115,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def endgame_removable_media_survey_windows_only(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], max_items_to_return: Annotated[Optional[str], Field(default=None, description="Specify how many items to return.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Get information about removable media from a specific Endgame endpoint.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def endgame_removable_media_survey_windows_only(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], max_items_to_return: Annotated[str, Field(default=None, description="Specify how many items to return.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Get information about removable media from a specific Endgame endpoint.
+
+Action Parameters: Max Items to Return: Specify how many items to return.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -2131,12 +2194,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def endgame_software_survey_windows_only(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], max_items_to_return: Annotated[Optional[str], Field(default=None, description="Specify how many items to return.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Get information about an installed software on a specific Endgame endpoint.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def endgame_software_survey_windows_only(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], max_items_to_return: Annotated[str, Field(default=None, description="Specify how many items to return.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Get information about an installed software on a specific Endgame endpoint.
+
+Action Parameters: Max Items to Return: Specify how many items to return.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None

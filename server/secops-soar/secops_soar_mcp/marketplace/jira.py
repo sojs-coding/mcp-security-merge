@@ -24,12 +24,15 @@ def register_tools(mcp: FastMCP):
     # This function registers all tools (actions) for the Jira integration.
 
     @mcp.tool()
-    async def jira_assign_issue(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], issue_key: Annotated[str, Field(..., description="The issue key of the issue")], assignee: Annotated[str, Field(..., description="The new assignee of the issue. Assignee can be jira username.")], jira_username: Annotated[Optional[str], Field(default=None, description="The Jira username of the initiator of the action. Note: If a username is not provided, action will not create a comment in the issue")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Assign an issue to a specific user. (Jira username could be: name, mail, etc...). For new Jira Api, action will try to find a match for the assignee to assign an issue based on User email or displayName field.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def jira_assign_issue(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], issue_key: Annotated[str, Field(..., description="The issue key of the issue")], assignee: Annotated[str, Field(..., description="The new assignee of the issue. Assignee can be jira username.")], jira_username: Annotated[str, Field(default=None, description="The Jira username of the initiator of the action. Note: If a username is not provided, action will not create a comment in the issue")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Assign an issue to a specific user. (Jira username could be: name, mail, etc...). For new Jira Api, action will try to find a match for the assignee to assign an issue based on User email or displayName field.
+
+Action Parameters: Issue Key: The issue key of the issue., Assignee: The new assignee of the issue., Jira Username: The Jira username of the initiator of the action.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -102,12 +105,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def jira_upload_attachment(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], issue_key: Annotated[str, Field(..., description="The key of the issue")], file_paths: Annotated[str, Field(..., description="The paths of the files to upload, comma separated")], mode: Annotated[Optional[List[Any]], Field(default=None, description="Specify the mode for the action. If \"Add New Attachment\" is selected, action will add a new attachment, if it even has the same name. If \"Overwrite Existing Attachment\" is selected, action will remove other attachments with the same name and add a new attachment.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Add an attachment to an issue.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def jira_upload_attachment(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], issue_key: Annotated[str, Field(..., description="The key of the issue")], file_paths: Annotated[str, Field(..., description="The paths of the files to upload, comma separated")], mode: Annotated[List[Any], Field(default=None, description="Specify the mode for the action. If \"Add New Attachment\" is selected, action will add a new attachment, if it even has the same name. If \"Overwrite Existing Attachment\" is selected, action will remove other attachments with the same name and add a new attachment.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Add an attachment to an issue.
+
+Action Parameters: Issue Key: File Paths., File Paths: The paths of the files to upload, comma-separated.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -181,11 +187,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def jira_get_issues(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], issue_keys: Annotated[str, Field(..., description="The keys of the issues to fetch. separated by comma")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Get issues details by keys. (separated by comma)
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Get issues details by keys. (separated by comma)
+
+Action Parameters: Issue Keys: The keys of the issues to fetch separated by a comma.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -255,12 +264,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def jira_list_issues(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], project_names: Annotated[Optional[str], Field(default=None, description="The names of the projects to search in, comma separated")], summary: Annotated[Optional[str], Field(default=None, description="The summary to filter by")], description: Annotated[Optional[str], Field(default=None, description="The description to filter by")], issue_types: Annotated[Optional[str], Field(default=None, description="The issue types to filter by")], priorities: Annotated[Optional[str], Field(default=None, description="The priority to filter by")], created_from: Annotated[Optional[str], Field(default=None, description="The earliest creation date to filter by. Format: YYYY/MM/DD. If not provided, filter will not be used.")], updated_from: Annotated[Optional[str], Field(default=None, description="The earliest update date to filter by. Format: YYYY/MM/DD. If not provided, filter will not be used.")], assignees: Annotated[Optional[str], Field(default=None, description="The name of the assignees to filter by, comma separated")], reporter: Annotated[Optional[str], Field(default=None, description="The name of the reporters to filter by, comma separated")], statuses: Annotated[Optional[str], Field(default=None, description="The statuses to filter by, comma separated")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Search for issues
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def jira_list_issues(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], project_names: Annotated[str, Field(default=None, description="The names of the projects to search in, comma separated")], summary: Annotated[str, Field(default=None, description="The summary to filter by")], description: Annotated[str, Field(default=None, description="The description to filter by")], issue_types: Annotated[str, Field(default=None, description="The issue types to filter by")], priorities: Annotated[str, Field(default=None, description="The priority to filter by")], created_from: Annotated[str, Field(default=None, description="The earliest creation date to filter by. Format: YYYY/MM/DD. If not provided, filter will not be used.")], updated_from: Annotated[str, Field(default=None, description="The earliest update date to filter by. Format: YYYY/MM/DD. If not provided, filter will not be used.")], assignees: Annotated[str, Field(default=None, description="The name of the assignees to filter by, comma separated")], reporter: Annotated[str, Field(default=None, description="The name of the reporters to filter by, comma separated")], statuses: Annotated[str, Field(default=None, description="The statuses to filter by, comma separated")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Search for issues
+
+Action Parameters: Project Names: The names of the projects to search in, comma-separated., Summary: The summary to filter by., Description: The description to filter by., Issue Types: The issue types to filter by., Priorities: The priority to filter by., Created From: The earliest creation date to filter by. Format: YYYY/MM/DD., Updated From: The earliest update date to filter by. Format: YYYY/MM/DD., Assignees: The name of the assignees to filter by, comma-separated., Reporter: The name of the reporters to filter by, comma-separated., Statuses: The statuses to filter by, comma-separated.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -350,11 +362,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def jira_ping(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Test Connectivity
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Test Connectivity
+
+Action Parameters: This action has no input parameters.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -499,12 +514,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def jira_update_issue(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], issue_key: Annotated[str, Field(..., description="The key of the issue to update")], status: Annotated[Optional[str], Field(default=None, description="Specify the relevant transition name, to transition this issue to the new desired status.")], summary: Annotated[Optional[str], Field(default=None, description="The new summary of the issue")], description: Annotated[Optional[str], Field(default=None, description="The new description of the issue")], issue_type: Annotated[Optional[str], Field(default=None, description="The new type of the issue")], jira_username: Annotated[Optional[str], Field(default=None, description="The JIRA username of the action initiator. Note: If a username is not provided, action will not create a comment in the issue")], assignee: Annotated[Optional[str], Field(default=None, description="The new assignee of the issue.")], components: Annotated[Optional[str], Field(default=None, description="The Components field of the issue. Parameter accepts multiple values as a comma separated string.")], labels: Annotated[Optional[str], Field(default=None, description="The Labels field of the issue. Parameter accepts multiple values as a comma separated string.")], custom_fields: Annotated[Optional[str], Field(default=None, description="Specify a JSON object containing all of the fields and values that will be updated for the issue. Note: this parameter has priority and all of the fields will be overwritten with the value that is provided for this parameter. Example: {\"field\":\"value\"}")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Update an issue. For new Jira Api, action will try to find a match for the assignee to assign an issue based on User email or displayName field.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def jira_update_issue(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], issue_key: Annotated[str, Field(..., description="The key of the issue to update")], status: Annotated[str, Field(default=None, description="Specify the relevant transition name, to transition this issue to the new desired status.")], summary: Annotated[str, Field(default=None, description="The new summary of the issue")], description: Annotated[str, Field(default=None, description="The new description of the issue")], issue_type: Annotated[str, Field(default=None, description="The new type of the issue")], jira_username: Annotated[str, Field(default=None, description="The JIRA username of the action initiator. Note: If a username is not provided, action will not create a comment in the issue")], assignee: Annotated[str, Field(default=None, description="The new assignee of the issue.")], components: Annotated[str, Field(default=None, description="The Components field of the issue. Parameter accepts multiple values as a comma separated string.")], labels: Annotated[str, Field(default=None, description="The Labels field of the issue. Parameter accepts multiple values as a comma separated string.")], custom_fields: Annotated[str, Field(default=None, description="Specify a JSON object containing all of the fields and values that will be updated for the issue. Note: this parameter has priority and all of the fields will be overwritten with the value that is provided for this parameter. Example: {\"field\":\"value\"}")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Update an issue. For new Jira Api, action will try to find a match for the assignee to assign an issue based on User email or displayName field.
+
+Action Parameters: Issue Key: The key of the issue to update., Status: Specify the relevant transition name, to transition this issue to the new desired status., Summary: The new summary of the issue., Description: The new description of the issue., Issue Type: The new type of the issue., Assignee: The new assignee of the issue., Jira Username: The Jira username of the action initiator., Components: The components field of the issue. This parameter accepts multiple values as a comma-separated string., Custom Fields: Specify a JSON object containing all of the fields and values that are used during issue creation. Note: This parameter has priority and all of the fields are overwritten with the value that is provided for this parameter. Example: {"field":"value"}, Labels: The components field of the issue. This parameter accepts multiple values as a comma-separated string.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -592,12 +610,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def jira_download_attachments(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], issue_key: Annotated[str, Field(..., description="The key of the issue")], download_path: Annotated[Optional[str], Field(default=None, description="Specify the path for the downloaded file. Note: if parameter 'Download Attachments to the Case Wall' is enabled, then this parameter is not mandatory.")], download_attachments_to_the_case_wall: Annotated[Optional[bool], Field(default=None, description="If enabled, action download Jira issue attachmnets to the current Siemplify alert case wall.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Get an Issue key and download all attachments. If one of them is an EML file, download inside attachments as well
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def jira_download_attachments(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], issue_key: Annotated[str, Field(..., description="The key of the issue")], download_path: Annotated[str, Field(default=None, description="Specify the path for the downloaded file. Note: if parameter 'Download Attachments to the Case Wall' is enabled, then this parameter is not mandatory.")], download_attachments_to_the_case_wall: Annotated[bool, Field(default=None, description="If enabled, action download Jira issue attachmnets to the current Siemplify alert case wall.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Get an Issue key and download all attachments. If one of them is an EML file, download inside attachments as well
+
+Action Parameters: Issue Key: The key of the issue., Download Path: The path where save the attachments., Download Attachments to the Case Wall: If enabled, the action downloads the Jira issue attachments to the current {{chronicle_soar_name}} alert case wall.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -672,11 +693,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def jira_link_issues(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], inward_issue_id: Annotated[str, Field(..., description="Specify the inward issue id. For example, if the relation type is \u201cBlocks\u201d, then in the UI you would see this issue with relation \"blocks\".")], outward_issue_i_ds: Annotated[str, Field(..., description="Specify a comma-separated list of outward issue ids. For example, if the relation type is \u201cBlocks\u201d, then in the UI you would see this issue with relation \"blocked by\".")], relation_type: Annotated[str, Field(..., description="Specify the relation type that will be used to link multiple issues. A list of all available relation types are available in the action \"List Relation Types\".")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Link multiple issues in Jira.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Link multiple issues in Jira.
+
+Action Parameters: Inward Issue ID: Specify a comma-separated list of inward issue IDs. For example, if the relation type is "Blocks", then in the UI you would see this issue with relation "blocked by"., Outward Issue IDs: Specify the outward issue ID. For example, if the relation type is "Blocks", then in the UI you would see this issue with relation "blocks"., Relation Type: Specify the relation type that will be used to link multiple issues. A list of all available relation types is available in the "List Relation Types" action.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -748,12 +772,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def jira_search_users(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], user_email_addresses: Annotated[Optional[str], Field(default=None, description="Specify a comma-separated list of email addresses for which you want to return the users.")], user_names: Annotated[Optional[str], Field(default=None, description="Specify a comma-separated list of user display names for which you want to return the users.")], project: Annotated[Optional[str], Field(default=None, description="Specify the name of the project in which you need to search for the email addresses. If provided, only Project Assignable Users will be returned.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Search users in Jira. Note: Providing User Email Addresses will result in more accurate results.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def jira_search_users(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], user_email_addresses: Annotated[str, Field(default=None, description="Specify a comma-separated list of email addresses for which you want to return the users.")], user_names: Annotated[str, Field(default=None, description="Specify a comma-separated list of user display names for which you want to return the users.")], project: Annotated[str, Field(default=None, description="Specify the name of the project in which you need to search for the email addresses. If provided, only Project Assignable Users will be returned.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Search users in Jira. Note: Providing User Email Addresses will result in more accurate results.
+
+Action Parameters: To configure the action, use the following parameters:
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -828,12 +855,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def jira_create_issue(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], project_key: Annotated[str, Field(..., description="The key of the project to create an issue in")], summary: Annotated[str, Field(..., description="The summary of the issue")], issue_type: Annotated[str, Field(..., description="The type of the issue")], description: Annotated[Optional[str], Field(default=None, description="The description of the issue")], jira_username: Annotated[Optional[str], Field(default=None, description="The Jira username of the initiator of the action. Note: If a username is not provided, action will not create a comment in the issue")], assignee: Annotated[Optional[str], Field(default=None, description="The new assignee of the issue.")], components: Annotated[Optional[str], Field(default=None, description="The Components field of the issue. Parameter accepts multiple values as a comma separated string.")], labels: Annotated[Optional[str], Field(default=None, description="The Labels field of the issue. Parameter accepts multiple values as a comma separated string.")], custom_fields: Annotated[Optional[str], Field(default=None, description="Specify a JSON object containing all of the fields and values that will be used during issue creation. Note: this parameter has priority and all of the fields will be overwritten with the value that is provided for this parameter. Example: {\"field\":\"value\"}")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Create an issue in a project. (Jira username could be: name, mail, etc...). For new Jira Api, action will try to find a match for the assignee to assign an issue based on User email or displayName field.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def jira_create_issue(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], project_key: Annotated[str, Field(..., description="The key of the project to create an issue in")], summary: Annotated[str, Field(..., description="The summary of the issue")], issue_type: Annotated[str, Field(..., description="The type of the issue")], description: Annotated[str, Field(default=None, description="The description of the issue")], jira_username: Annotated[str, Field(default=None, description="The Jira username of the initiator of the action. Note: If a username is not provided, action will not create a comment in the issue")], assignee: Annotated[str, Field(default=None, description="The new assignee of the issue.")], components: Annotated[str, Field(default=None, description="The Components field of the issue. Parameter accepts multiple values as a comma separated string.")], labels: Annotated[str, Field(default=None, description="The Labels field of the issue. Parameter accepts multiple values as a comma separated string.")], custom_fields: Annotated[str, Field(default=None, description="Specify a JSON object containing all of the fields and values that will be used during issue creation. Note: this parameter has priority and all of the fields will be overwritten with the value that is provided for this parameter. Example: {\"field\":\"value\"}")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Create an issue in a project. (Jira username could be: name, mail, etc...). For new Jira Api, action will try to find a match for the assignee to assign an issue based on User email or displayName field.
+
+Action Parameters: Project Key: The key of the project to create an issue in., Summary: The summary of the issue., Description: The description of the issue., Issue Type: The type of the issue., Assignee: The new assignee of the issue., Jira  Username: The Jira username of the initiator of the action., Components: The components field of the issue. This parameter accepts multiple values as a comma-separated string., Labels: The components field of the issue. This parameter accepts multiple values as a comma-separated string., Custom Fields: Specify a JSON object containing all of the fields and values that will be used during issue creation. Note: This parameter has priority and all of the fields are overwritten with the value that is provided for this parameter. Example: {"field":"value"}
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -917,12 +947,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def jira_list_relation_types(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], filter_key: Annotated[Optional[List[Any]], Field(default=None, description="Specify the key that needs to be used to filter {item type}.")], filter_logic: Annotated[Optional[List[Any]], Field(default=None, description="Specify what filter logic should be applied. Filtering logic is working based on the value provided in the \"Filter Key\" parameter.")], filter_value: Annotated[Optional[str], Field(default=None, description="Specify what value should be used in the filter. If \"Equal\" is selected, action will try to find the exact match among results and if \"Contains\" is selected, action will try to find results that contain that substring. If nothing is provided in this parameter, the filter will not be applied. Filtering logic is working based on the value  provided in the \"Filter Key\" parameter.")], max_records_to_return: Annotated[Optional[str], Field(default=None, description="Specify how many records to return. If nothing is provided, action will return 50 records.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """List available relation types in Jira.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def jira_list_relation_types(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], filter_key: Annotated[List[Any], Field(default=None, description="Specify the key that needs to be used to filter {item type}.")], filter_logic: Annotated[List[Any], Field(default=None, description="Specify what filter logic should be applied. Filtering logic is working based on the value provided in the \"Filter Key\" parameter.")], filter_value: Annotated[str, Field(default=None, description="Specify what value should be used in the filter. If \"Equal\" is selected, action will try to find the exact match among results and if \"Contains\" is selected, action will try to find results that contain that substring. If nothing is provided in this parameter, the filter will not be applied. Filtering logic is working based on the value  provided in the \"Filter Key\" parameter.")], max_records_to_return: Annotated[str, Field(default=None, description="Specify how many records to return. If nothing is provided, action will return 50 records.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+List available relation types in Jira.
+
+Action Parameters: Filter Key: Specify the key that needs to be used to filter {item type}., Filter Logic: Specify what filter logic should be applied. Filtering logic is working based on the value provided in the "Filter Key" parameter., Filter Value: Specify what value should be used in the filter.If "Equal" is selected, the action will try to find the exact match among results.If "Contains" is selected, the action will try to find results that contain the specified substring.If nothing is provided in this parameter, the filter will not be applied. Filtering logic is working based on the value provided in the "Filter Key" parameter., Max Records To Return: Specify the number of records to return. If nothing is provided, the action returns 50 records.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -1000,11 +1033,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def jira_delete_issue(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], issue_key: Annotated[str, Field(..., description="The key of the issue to delete")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Delete an issue
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Delete an issue
+
+Action Parameters: Issue Key: The key of the issue to delete.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -1075,11 +1111,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def jira_create_alert_issue(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], project_key: Annotated[str, Field(..., description="The key of the project to create the issue in")], summary: Annotated[str, Field(..., description="The summary of the issue")], issue_type: Annotated[str, Field(..., description="The type of the issue")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Create an alert issue
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Create an alert issue
+
+Action Parameters: Project Key: The key of the project to create the issue in., Summary: The summary of the issue., Issue Type: The type of the issue.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None

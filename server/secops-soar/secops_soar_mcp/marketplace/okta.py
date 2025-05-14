@@ -24,12 +24,15 @@ def register_tools(mcp: FastMCP):
     # This function registers all tools (actions) for the Okta integration.
 
     @mcp.tool()
-    async def okta_list_providers(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], query: Annotated[Optional[str], Field(default=None, description="Search the name property for a match")], type: Annotated[Optional[str], Field(default=None, description="Filter by type")], limit: Annotated[Optional[str], Field(default=None, description="Max amount of results to return")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """List identity providers (IdPs) in your organization
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def okta_list_providers(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], query: Annotated[str, Field(default=None, description="Search the name property for a match")], type: Annotated[str, Field(default=None, description="Filter by type")], limit: Annotated[str, Field(default=None, description="Max amount of results to return")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+List identity providers (IdPs) in your organization
+
+Action Parameters: Query: Search the name property for a match., Type: Filter by type., Limit: Max amount of results to return.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -104,12 +107,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def okta_assign_role(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], role_types: Annotated[str, Field(..., description="The type of role to assign to the users")], user_i_ds: Annotated[Optional[str], Field(default=None, description="Ids of users in Okta")], also_run_on_scope: Annotated[Optional[bool], Field(default=None, description="Whether to run on entities as well as the input")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Assign a role to a user
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def okta_assign_role(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], role_types: Annotated[str, Field(..., description="The type of role to assign to the users")], user_i_ds: Annotated[str, Field(default=None, description="Ids of users in Okta")], also_run_on_scope: Annotated[bool, Field(default=None, description="Whether to run on entities as well as the input")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Assign a role to a user
+
+Action Parameters: User IDs: IDs of users in Okta., Role Types: The type of role to assign to the users., Also Run On Scope: Whether to run on entities as well as the input.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -183,7 +189,7 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def okta_unassign_role(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], role_i_ds_or_names: Annotated[str, Field(..., description="Ids or names of roles in Okta")], user_i_ds: Annotated[Optional[str], Field(default=None, description="Ids of users in Okta")], is_id: Annotated[Optional[bool], Field(default=None, description="Whether the values are ids or names")], also_run_on_scope: Annotated[Optional[bool], Field(default=None, description="Whether to run on entities as well as the input")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
+    async def okta_unassign_role(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], role_i_ds_or_names: Annotated[str, Field(..., description="Ids or names of roles in Okta")], user_i_ds: Annotated[str, Field(default=None, description="Ids of users in Okta")], is_id: Annotated[bool, Field(default=None, description="Whether the values are ids or names")], also_run_on_scope: Annotated[bool, Field(default=None, description="Whether to run on entities as well as the input")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """Unassign a role from a user
 
         Returns:
@@ -264,12 +270,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def okta_disable_user(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], user_i_ds_or_logins: Annotated[Optional[str], Field(default=None, description="Ids of users in Okta")], is_deactivate: Annotated[Optional[bool], Field(default=None, description="Whether to dactivate or only suspend the user")], send_email_if_deactivate: Annotated[Optional[bool], Field(default=None, description="Whether to send an email after deactivating or not")], also_run_on_scope: Annotated[Optional[bool], Field(default=None, description="Whether to run on entities as well as the input")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Disables the specified user
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def okta_disable_user(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], user_i_ds_or_logins: Annotated[str, Field(default=None, description="Ids of users in Okta")], is_deactivate: Annotated[bool, Field(default=None, description="Whether to dactivate or only suspend the user")], send_email_if_deactivate: Annotated[bool, Field(default=None, description="Whether to send an email after deactivating or not")], also_run_on_scope: Annotated[bool, Field(default=None, description="Whether to run on entities as well as the input")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Disables the specified user
+
+Action Parameters: User IDs Or Logins: IDs of users in Okta., Is Deactivate: Whether to deactivate or only suspend the user., Send Email If Deactivate: Whether to send an email after deactivating or not., Also Run On Scope: Whether to run on entities as well as the input.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -346,12 +355,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def okta_get_user(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], user_ids_or_logins: Annotated[Optional[str], Field(default=None, description="Ids or logins (email or short email name) of a user in Okta, e.g. test@gmail.com or simply 'test'")], also_run_on_scope: Annotated[Optional[bool], Field(default=None, description="Whether to run on entities as well as the input")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Get information about a user
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def okta_get_user(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], user_ids_or_logins: Annotated[str, Field(default=None, description="Ids or logins (email or short email name) of a user in Okta, e.g. test@gmail.com or simply 'test'")], also_run_on_scope: Annotated[bool, Field(default=None, description="Whether to run on entities as well as the input")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Get information about a user
+
+Action Parameters: User IDs Or Logins: IDs or logins (email or short email name) of a user in Okta, for example: test@gmail.com or simply 'test'., Also Run On Scope: Whether to run on entities as well as the input.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -498,12 +510,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def okta_list_user_groups(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], user_i_ds_or_logins: Annotated[Optional[str], Field(default=None, description="Ids or logins of users in Okta")], also_run_on_scope: Annotated[Optional[bool], Field(default=None, description="Whether to run on entities as well as the input")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Get the groups that the user is a member of
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def okta_list_user_groups(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], user_i_ds_or_logins: Annotated[str, Field(default=None, description="Ids or logins of users in Okta")], also_run_on_scope: Annotated[bool, Field(default=None, description="Whether to run on entities as well as the input")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Get the groups that the user is a member of
+
+Action Parameters: User IDs Or Logins: IDs or logins of users in Okta., Also Run On Scope: Whether to run on entities as well as the input.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -576,12 +591,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def okta_get_group(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], group_ids_or_names: Annotated[str, Field(..., description="Ids or names of groups in Okta")], is_id: Annotated[Optional[bool], Field(default=None, description="Whether the value is an id or a name")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Get information about a group
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def okta_get_group(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], group_ids_or_names: Annotated[str, Field(..., description="Ids or names of groups in Okta")], is_id: Annotated[bool, Field(default=None, description="Whether the value is an id or a name")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Get information about a group
+
+Action Parameters: Group IDs Or Names: IDs or names of groups in Okta., Is Id: Whether the value is an ID or a name.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -653,7 +671,7 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def okta_add_group(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], group_name: Annotated[str, Field(..., description="The name of the group in Okta")], group_description: Annotated[Optional[str], Field(default=None, description="The description for the group")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
+    async def okta_add_group(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], group_name: Annotated[str, Field(..., description="The name of the group in Okta")], group_description: Annotated[str, Field(default=None, description="The description for the group")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """Add a group
 
         Returns:
@@ -730,12 +748,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def okta_reset_password(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], user_i_ds_or_logins: Annotated[Optional[str], Field(default=None, description="Ids or logins of users in Okta")], send_email: Annotated[Optional[bool], Field(default=None, description="Whether to send an email for the password reset or return the token for every user")], also_run_on_scope: Annotated[Optional[bool], Field(default=None, description="Whether to run on entities as well as the input")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Generate a one-time token that can be used to reset a user's password
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def okta_reset_password(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], user_i_ds_or_logins: Annotated[str, Field(default=None, description="Ids or logins of users in Okta")], send_email: Annotated[bool, Field(default=None, description="Whether to send an email for the password reset or return the token for every user")], also_run_on_scope: Annotated[bool, Field(default=None, description="Whether to run on entities as well as the input")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Generate a one-time token that can be used to reset a user's password
+
+Action Parameters: User IDs Or Logins: IDs or logins of users in Okta., Send Email: Whether to send an email for the password reset or return the token for every user., Also Run On Scope: Whether to run on entities as well as the input.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -810,7 +831,7 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def okta_list_roles(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], user_i_ds: Annotated[Optional[str], Field(default=None, description="Ids of users in Okta")], also_run_on_scope: Annotated[Optional[bool], Field(default=None, description="Whether to run on entities as well as the input")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
+    async def okta_list_roles(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], user_i_ds: Annotated[str, Field(default=None, description="Ids of users in Okta")], also_run_on_scope: Annotated[bool, Field(default=None, description="Whether to run on entities as well as the input")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """Lists all roles assigned to a user
 
         Returns:
@@ -888,12 +909,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def okta_enable_user(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], user_i_ds_or_logins: Annotated[Optional[str], Field(default=None, description="Ids or logins of users in Okta")], is_activate: Annotated[Optional[bool], Field(default=None, description="Whether to activate the user or just unsuspend")], send_email_if_activate: Annotated[Optional[bool], Field(default=None, description="Whether to send an email after activating or not")], also_run_on_scope: Annotated[Optional[bool], Field(default=None, description="Whether to run on entities as well as the input")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Enables the specified user
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def okta_enable_user(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], user_i_ds_or_logins: Annotated[str, Field(default=None, description="Ids or logins of users in Okta")], is_activate: Annotated[bool, Field(default=None, description="Whether to activate the user or just unsuspend")], send_email_if_activate: Annotated[bool, Field(default=None, description="Whether to send an email after activating or not")], also_run_on_scope: Annotated[bool, Field(default=None, description="Whether to run on entities as well as the input")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Enables the specified user
+
+Action Parameters: User IDs Or Logins: IDs or logins of users in Okta., Is Activate: Whether to activate the user or just unsuspend., Send Email If Activate: Whether to send an email after activating or not., Also Run On Scope: Whether to run on entities as well as the input.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -970,12 +994,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def okta_set_password(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], new_password: Annotated[str, Field(..., description="The new password")], user_i_ds_or_logins: Annotated[Optional[str], Field(default=None, description="Ids or logins of users in Okta")], add_10_random_chars: Annotated[Optional[bool], Field(default=None, description="Whether to add extra characters to every user password or not")], also_run_on_scope: Annotated[Optional[bool], Field(default=None, description="Whether to run on entities as well as the input")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Set the password of a user without validating existing credentials
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def okta_set_password(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], new_password: Annotated[str, Field(..., description="The new password")], user_i_ds_or_logins: Annotated[str, Field(default=None, description="Ids or logins of users in Okta")], add_10_random_chars: Annotated[bool, Field(default=None, description="Whether to add extra characters to every user password or not")], also_run_on_scope: Annotated[bool, Field(default=None, description="Whether to run on entities as well as the input")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Set the password of a user without validating existing credentials
+
+Action Parameters: User IDs Or Logins: IDs or logins of users in Okta., New Password: The new password., Add 10 Random Chars: Whether to add extra characters to every user password or not., Also Run On Scope: Whether to run on entities as well as the input.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -1051,12 +1078,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def okta_list_users(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], query: Annotated[Optional[str], Field(default=None, description="Search for a match in the firstname, lastname or in the email")], filter: Annotated[Optional[str], Field(default=None, description="Custom search query for a subset of properties")], search: Annotated[Optional[str], Field(default=None, description="Custom search query for most properties")], limit: Annotated[Optional[str], Field(default=None, description="Max amount of results to return")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Get the list of users
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def okta_list_users(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], query: Annotated[str, Field(default=None, description="Search for a match in the firstname, lastname or in the email")], filter: Annotated[str, Field(default=None, description="Custom search query for a subset of properties")], search: Annotated[str, Field(default=None, description="Custom search query for most properties")], limit: Annotated[str, Field(default=None, description="Max amount of results to return")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Get the list of users
+
+Action Parameters: Query: Search for a match in the firstname, lastname or in the email., Filter: Custom search query for a subset of properties., Search: Custom search query for most properties., Limit: Max amount of results to return.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None

@@ -24,12 +24,15 @@ def register_tools(mcp: FastMCP):
     # This function registers all tools (actions) for the Websense integration.
 
     @mcp.tool()
-    async def websense_block_url_api(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], category_name: Annotated[str, Field(..., description="The API manage category name.")], urls: Annotated[Optional[str], Field(default=None, description="The URLs to block, comma separated.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Block a URL in WebSense API category
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def websense_block_url_api(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], category_name: Annotated[str, Field(..., description="The API manage category name.")], urls: Annotated[str, Field(default=None, description="The URLs to block, comma separated.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Block a URL in WebSense API category
+
+Action Parameters: CategoryName: The API manage category name., URLs: The URLs to block, comma-separated.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -101,7 +104,7 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def websense_unblock_url_api(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], category_name: Annotated[str, Field(..., description="The API manage category name.")], url: Annotated[Optional[str], Field(default=None, description="The url to block.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
+    async def websense_unblock_url_api(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], category_name: Annotated[str, Field(..., description="The API manage category name.")], url: Annotated[str, Field(default=None, description="The url to block.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """Unblock URL in WebSense API category
 
         Returns:
@@ -179,11 +182,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def websense_get_category_urls_api(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], category_name: Annotated[str, Field(..., description="The API manage category name")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Get a list off all category's URLs
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Get a list off all category's URLs
+
+Action Parameters: CategoryName: The API manage category name.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None

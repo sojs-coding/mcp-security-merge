@@ -25,11 +25,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def intsights_ask_an_analyst(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], alert_id: Annotated[str, Field(..., description="Specify the ID of the alert where you want to ask the analyst.")], comment: Annotated[str, Field(..., description="Specify the comment for the analyst.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Ask an analyst regarding the alert in IntSights.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Ask an analyst regarding the alert in IntSights.
+
+Action Parameters: Alert ID: Specify the ID of the alert where you want to ask the analyst., Comment: Specify the comment for the analyst.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -174,12 +177,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def intsights_close_alert(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], alert_id: Annotated[str, Field(..., description="Specify the ID of the alert which you want to close.")], reason: Annotated[List[Any], Field(..., description="Specify the reason why the alert needs to be closed.")], additional_info: Annotated[Optional[str], Field(default=None, description="Specify additional information explaining why the alert should be closed.")], rate: Annotated[Optional[str], Field(default=None, description="Specify the rating of the alert. Maximum is 5.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Close alert in IntSights.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def intsights_close_alert(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], alert_id: Annotated[str, Field(..., description="Specify the ID of the alert which you want to close.")], reason: Annotated[List[Any], Field(..., description="Specify the reason why the alert needs to be closed.")], additional_info: Annotated[str, Field(default=None, description="Specify additional information explaining why the alert should be closed.")], rate: Annotated[str, Field(default=None, description="Specify the rating of the alert. Maximum is 5.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Close alert in IntSights.
+
+Action Parameters: Alert ID: Specify the ID of the alert which you want to close., Reason: Specify the reason why the alert needs to be closed., Additional Info: Specify additional information explaining why the alert should be closed., Rate: Specify the rating of the alert. Maximum is 5.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -254,12 +260,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def intsights_assign_alert(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], alert_id: Annotated[str, Field(..., description="Specify the ID of the alert on which you want to change the assignment.")], assignee_id: Annotated[Optional[str], Field(default=None, description="Specify the ID of the analyst that should be assigned to the alert. Note: If both Assignee ID and Assignee Email Address are specified, action will prioritize Assignee ID.")], assignee_email_address: Annotated[Optional[str], Field(default=None, description="Specify the email address of the analyst that should be assigned to the alert. Note: If both Assignee ID and Assignee Email Address are specified, action will prioritize Assignee ID.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Assign alert to an analyst in IntSights.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def intsights_assign_alert(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], alert_id: Annotated[str, Field(..., description="Specify the ID of the alert on which you want to change the assignment.")], assignee_id: Annotated[str, Field(default=None, description="Specify the ID of the analyst that should be assigned to the alert. Note: If both Assignee ID and Assignee Email Address are specified, action will prioritize Assignee ID.")], assignee_email_address: Annotated[str, Field(default=None, description="Specify the email address of the analyst that should be assigned to the alert. Note: If both Assignee ID and Assignee Email Address are specified, action will prioritize Assignee ID.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Assign alert to an analyst in IntSights.
+
+Action Parameters: Alert ID: Specify the ID of the alert on which you want to change the assignment., Assignee ID: Specify the ID of the analyst that should be assigned to the alert. Note: If both "Assignee ID" and "Assignee Email Address" are specified, action will prioritize "Assignee ID"., Assignee Email Address: Specify the email address of the analyst that should be assigned to the alert. Note: If both "Assignee ID" and "Assignee Email Address" are specified, action will prioritize "Assignee ID".
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -407,12 +416,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def intsights_download_alert_csv(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], alert_id: Annotated[str, Field(..., description="Specify the ID of the alert for which you want to download CSV.")], download_folder_path: Annotated[str, Field(..., description="Specify the path to the folder, where you want to store the CSV file.")], overwrite: Annotated[Optional[bool], Field(default=None, description="If enabled, action will overwrite the file with the same name.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Download CSV file containing information related to alert in IntSights.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def intsights_download_alert_csv(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], alert_id: Annotated[str, Field(..., description="Specify the ID of the alert for which you want to download CSV.")], download_folder_path: Annotated[str, Field(..., description="Specify the path to the folder, where you want to store the CSV file.")], overwrite: Annotated[bool, Field(default=None, description="If enabled, action will overwrite the file with the same name.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Download CSV file containing information related to alert in IntSights.
+
+Action Parameters: Alert ID: Specify the ID of the alert for which you want to download CSV., Download Folder Path: Specify the path to the folder, where you want to store the CSV file., Overwrite: If enabled, action will overwrite the file with the same name.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -486,11 +498,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def intsights_reopen_alert(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], alert_id: Annotated[str, Field(..., description="Specify the ID of the alert which you want to reopen.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Reopen alert in IntSights.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Reopen alert in IntSights.
+
+Action Parameters: Alert ID: Specify the ID of the alert which you want to reopen.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -561,11 +576,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def intsights_get_alert_image(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], alert_image_i_ds: Annotated[str, Field(..., description="Specify the comma-separated list of alert image IDs. Example: id1,id2.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Retrieve information about alert images in IntSights.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Retrieve information about alert images in IntSights.
+
+Action Parameters: Alert Image IDs: Specify the comma-separated list of alert image IDs. Example: id1,id2.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -636,11 +654,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def intsights_add_note(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], alert_id: Annotated[str, Field(..., description="Specify the ID of the alert to which you want to add a note.")], note: Annotated[str, Field(..., description="Specify the note for the alert.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Add a note to the alert in IntSights.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Add a note to the alert in IntSights.
+
+Action Parameters: Alert ID: Specify the ID of the alert to which you want to add a note., Note: Specify the note for the alert.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None

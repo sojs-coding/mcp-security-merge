@@ -25,11 +25,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def blue_liv_add_labels_to_threats(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], module_type: Annotated[str, Field(..., description="Specify the module type the resource belongs to")], module_id: Annotated[str, Field(..., description="Specify the module ID the resource belongs to")], resource_id: Annotated[str, Field(..., description="Specify the Resource IDs, as a comma separated list, to add the labels to")], label_names: Annotated[str, Field(..., description="Specify the label names you would like to apply to the specified threats, as a comma separated list. Please pay attention to lowercase and uppercase.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """The action will add the specified label name to the specified threat IDs
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+The action will add the specified label name to the specified threat IDs
+
+Action Parameters: Module Type: Specify the module type the resource belongs to., Module ID: Specify the module ID the resource belongs to., Resource ID: Specify the Resource IDs, i na comma separated list, to add the labels to., Label Names: Specify the label names you would like to apply to the specified threats, in a comma-separated list. Please pay attention to lowercase and uppercase.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -177,11 +180,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def blue_liv_add_comment_to_a_threat(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], module_type: Annotated[str, Field(..., description="Specify the module type the resource belongs to")], module_id: Annotated[str, Field(..., description="Specify the module ID the resource belongs to")], resource_id: Annotated[str, Field(..., description="Specify the Resource ID to add the comment to")], comment_text: Annotated[str, Field(..., description="Provide the comment you would like to add to the resource")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """The action will add a desired text comment to a specific threat. 
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+The action will add a desired text comment to a specific threat.
+
+Action Parameters: Module Type: Specify the module type the resource belongs to., Module ID: Specify the module ID the resource belongs to., Resource ID: Specify the Resource ID to add the comment to., Comment Text: Provide the comment you would like to add to the resource.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -254,12 +260,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def blue_liv_list_entity_threats(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], label_filter: Annotated[Optional[str], Field(default=None, description="Specify a comma-separated list of labels, that will be used to filter threats. Note: label filter works with \"OR\" logic.")], module_filter: Annotated[Optional[str], Field(default=None, description="Specify a comma-separated list of modules, that will be used to filter threats.")], max_threats_to_return: Annotated[Optional[str], Field(default=None, description="Specify how many threats to return per entity. If nothing is specified action will return 50 threats.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """List threats related to entities in Blueliv. Supported entities: All.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def blue_liv_list_entity_threats(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], label_filter: Annotated[str, Field(default=None, description="Specify a comma-separated list of labels, that will be used to filter threats. Note: label filter works with \"OR\" logic.")], module_filter: Annotated[str, Field(default=None, description="Specify a comma-separated list of modules, that will be used to filter threats.")], max_threats_to_return: Annotated[str, Field(default=None, description="Specify how many threats to return per entity. If nothing is specified action will return 50 threats.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+List threats related to entities in Blueliv. Supported entities: All.
+
+Action Parameters: Label Filter: Specify a comma-separated list of labels, that will be used to filter threats. Note: label filter works with "OR" logic., Module Filter: Specify a comma-separated list of modules, that will be used to filter threats., Max Threats To Return: Specify how many threats to return per entity. If nothing is specified, action will return 50 threats.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -335,11 +344,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def blue_liv_mark_threat_as_a_favorite(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], module_type: Annotated[str, Field(..., description="Specify the module type the resource belongs to")], module_id: Annotated[str, Field(..., description="Specify the module ID the resource belongs to")], resource_id: Annotated[str, Field(..., description="Specify the Resource ID to add the comment to")], favorite_status: Annotated[List[Any], Field(..., description="Provide the Favorite status you would like to apply on the specified threat")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """The action will mark the specified threat as a favorite threat in BlueLiv
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+The action will mark the specified threat as a favorite threat in BlueLiv
+
+Action Parameters: Module Type: Specify the module type the resource belongs to., Module ID: Specify the module ID the resource belongs to., Resource ID: Specify the Resource ID to add the comment to., Favorite Status: Provide the Favorite status you would like to apply on the specified threat.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -412,12 +424,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def blue_liv_enrich_entities(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], lowest_score_to_mark_as_suspicious: Annotated[str, Field(..., description="Specify what should be the lowest score for the entity to be marked as suspicious. Maximum: 10.")], create_insight: Annotated[Optional[bool], Field(default=None, description="If enabled, action will create insights containing information about entities.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Enrich entities using information from Threat Context module of Blueliv. Supported entities: IP, Hash, URL, Threat Actor, Threat Campaign, Threat Signature, CVE. Note: only MD5, SHA1, SHA256 and SHA512 hashes are supported.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def blue_liv_enrich_entities(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], lowest_score_to_mark_as_suspicious: Annotated[str, Field(..., description="Specify what should be the lowest score for the entity to be marked as suspicious. Maximum: 10.")], create_insight: Annotated[bool, Field(default=None, description="If enabled, action will create insights containing information about entities.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Enrich entities using information from Threat Context module of Blueliv. Supported entities: IP, Hash, URL, Threat Actor, Threat Campaign, Threat Signature, CVE. Note: only MD5, SHA1, SHA256 and SHA512 hashes are supported.
+
+Action Parameters: Lowest Score To Mark as Suspicious: Specify what should be the lowest score for the entity to be marked as suspicious. Maximum: 10., Create Insight: If enabled, action will create insights containing information about entities.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None

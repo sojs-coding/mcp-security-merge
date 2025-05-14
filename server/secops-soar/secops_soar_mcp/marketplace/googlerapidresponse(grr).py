@@ -24,7 +24,7 @@ def register_tools(mcp: FastMCP):
     # This function registers all tools (actions) for the GoogleGRR integration.
 
     @mcp.tool()
-    async def google_grr_list_hunts(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], creator: Annotated[Optional[str], Field(default=None, description="Return hunts created by a specified user.")], offset: Annotated[Optional[str], Field(default=None, description="Specify Found hunts starting offset.")], max_results_to_return: Annotated[Optional[str], Field(default=None, description="Specify how many hunts to return in the response.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
+    async def google_grr_list_hunts(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], creator: Annotated[str, Field(default=None, description="Return hunts created by a specified user.")], offset: Annotated[str, Field(default=None, description="Specify Found hunts starting offset.")], max_results_to_return: Annotated[str, Field(default=None, description="Specify how many hunts to return in the response.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """Get all available hunts.
 
         Returns:
@@ -104,7 +104,7 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def google_grr_list_launched_flows(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], offset: Annotated[Optional[str], Field(default=None, description="Specify Found flows starting offset.")], max_results_to_return: Annotated[Optional[str], Field(default=None, description="Specify how many flows to return in the response.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
+    async def google_grr_list_launched_flows(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], offset: Annotated[str, Field(default=None, description="Specify Found flows starting offset.")], max_results_to_return: Annotated[str, Field(default=None, description="Specify how many flows to return in the response.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """List flows launched on a specified client.
 
         Returns:
@@ -556,7 +556,7 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def google_grr_list_clients(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], offset: Annotated[Optional[str], Field(default=None, description="Specify Found clients starting offset.")], max_results_to_return: Annotated[Optional[str], Field(default=None, description="Specify how many clients to return in the response.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
+    async def google_grr_list_clients(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], offset: Annotated[str, Field(default=None, description="Specify Found clients starting offset.")], max_results_to_return: Annotated[str, Field(default=None, description="Specify how many clients to return in the response.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """Search Clients in order to start interacting with them.
 
         Returns:

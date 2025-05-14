@@ -24,7 +24,7 @@ def register_tools(mcp: FastMCP):
     # This function registers all tools (actions) for the JuniperVSRX integration.
 
     @mcp.tool()
-    async def juniper_vsrx_add_ip_to_address_set(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], address_set_name: Annotated[str, Field(..., description="ul")], zone_name: Annotated[Optional[str], Field(default=None, description="ul")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
+    async def juniper_vsrx_add_ip_to_address_set(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], address_set_name: Annotated[str, Field(..., description="ul")], zone_name: Annotated[str, Field(default=None, description="ul")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """Add IP address to an address set.
 
         Returns:
@@ -101,7 +101,7 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def juniper_vsrx_remove_ip_from_address_set(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], address_set_name: Annotated[str, Field(..., description="ul")], zone_name: Annotated[Optional[str], Field(default=None, description="ul")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
+    async def juniper_vsrx_remove_ip_from_address_set(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], address_set_name: Annotated[str, Field(..., description="ul")], zone_name: Annotated[str, Field(default=None, description="ul")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """Remove IP address from address set.
 
         Returns:

@@ -25,11 +25,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def domain_tools_recent_domains(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], string_query: Annotated[str, Field(..., description="Search for new domains containing a particular word")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Search for new domains containing a  particular word
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Search for new domains containing a  particular word
+
+Action Parameters: String Query: Search for new domains containing a particular word.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -174,11 +177,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def domain_tools_get_domain_risk(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], threshold: Annotated[str, Field(..., description="Mark entity as suspicious if the domain risk score pass the given threshold. e.g. 3")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Enrich external domain entity with the domain risk score given by DomainTools data
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Enrich external domain entity with the domain risk score given by DomainTools data
+
+Action Parameters: Threshold: Mark entity as suspicious if the domain risk score passes the given threshold. e.g. 3.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None

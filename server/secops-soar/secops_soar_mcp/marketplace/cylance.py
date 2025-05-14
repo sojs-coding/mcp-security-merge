@@ -24,12 +24,15 @@ def register_tools(mcp: FastMCP):
     # This function registers all tools (actions) for the Cylance integration.
 
     @mcp.tool()
-    async def cylance_add_to_global_list(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], list_type: Annotated[str, Field(..., description="The list to add the hash to. e.g. GlobalSafe")], category: Annotated[Optional[str], Field(default=None, description="The category of the hash")], reason: Annotated[Optional[str], Field(default=None, description="The reason for adding the hash to the list")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Add a hash to one of the two global lists: GlobalSafe or GlobalQuarantine
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def cylance_add_to_global_list(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], list_type: Annotated[str, Field(..., description="The list to add the hash to. e.g. GlobalSafe")], category: Annotated[str, Field(default=None, description="The category of the hash")], reason: Annotated[str, Field(default=None, description="The reason for adding the hash to the list")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Add a hash to one of the two global lists: GlobalSafe or GlobalQuarantine
+
+Action Parameters: List Type: The list to add the hash to. Example: GlobalSafe, Category: The category of the hash., Reason: The reason for adding the hash to the list.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -104,11 +107,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def cylance_get_threat(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], threshold: Annotated[str, Field(..., description="Mark entity as suspicious if the threat Cylance score pass the given threshold. e.g. 3")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Enrich a hash with data from Cylance
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Enrich a hash with data from Cylance
+
+Action Parameters: Threshold: Mark entity as suspicious if the threat Cylance score pass the given threshold. Example: 3
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -401,11 +407,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def cylance_get_global_list(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], list_type: Annotated[str, Field(..., description="Name of the global list. e.g. GlobalSafe")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Retrieve a list of all hashes in the specified global list (GlobalSafe or GlobalQuarantine)
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Retrieve a list of all hashes in the specified global list (GlobalSafe or GlobalQuarantine)
+
+Action Parameters: List Type: Name of the global list. Example: GlobalSafe
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -475,12 +484,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def cylance_change_zone(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], zones_to_add: Annotated[Optional[str], Field(default=None, description="The new Zone to add. Comma separated.")], zones_to_remove: Annotated[Optional[str], Field(default=None, description="The Zone to be removed. Comma separated.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Change zone for an endpoint (group of endpoints)
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def cylance_change_zone(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], zones_to_add: Annotated[str, Field(default=None, description="The new Zone to add. Comma separated.")], zones_to_remove: Annotated[str, Field(default=None, description="The Zone to be removed. Comma separated.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Change zone for an endpoint (group of endpoints)
+
+Action Parameters: Zones to Add: The new Zone to Add. Comma separated., Zones to Remove: The Zone to be removed. Comma separated.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -554,11 +566,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def cylance_delete_from_global_list(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], list_type: Annotated[str, Field(..., description="The list to delete the hash from. e.g. GlobalSafe")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Remove a hash for the specified global list (GlobalSafe or GlobalQuarantine)
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Remove a hash for the specified global list (GlobalSafe or GlobalQuarantine)
+
+Action Parameters: Parameter: Description, List Type: The list to delete the hash from. Example: GlobalSafe
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -629,11 +644,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def cylance_change_policy(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], policy_name: Annotated[str, Field(..., description="The new policy name")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Change the policy of an endpoint to an existing policy
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Change the policy of an endpoint to an existing policy
+
+Action Parameters: Policy Name: The new policy name.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -777,12 +795,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def cylance_get_threat_download_link(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], threat_sha256_hash: Annotated[Optional[str], Field(default=None, description="Threat SHA256 hashes, in a comma separated list. Note - if parameter value will be left empty, action will use file hash entities as input.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Action fetches The URL you can use to download the file. The action only provides the URL, it does not download the file for you.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def cylance_get_threat_download_link(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], threat_sha256_hash: Annotated[str, Field(default=None, description="Threat SHA256 hashes, in a comma separated list. Note - if parameter value will be left empty, action will use file hash entities as input.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Action fetches The URL you can use to download the file. The action only provides the URL, it does not download the file for you.
+
+Action Parameters: Threat SHA256 Hash: Threat SHA256 hashes, in a comma separated list. Note: If parameter value will be left empty, action will use file hash entities as input.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None

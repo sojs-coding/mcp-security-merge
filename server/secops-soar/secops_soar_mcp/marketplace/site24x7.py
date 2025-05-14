@@ -99,11 +99,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def site24x7_generate_refresh_token(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], authorization_code: Annotated[str, Field(..., description="Specify the authorization code.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Generate a refresh token needed for Integration configuration. Please refer to the documentation portal for more details.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Generate a refresh token needed for Integration configuration. Please refer to the documentation portal for more details.
+
+Action Parameters: Authorization Code: Specify the authorization code.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None

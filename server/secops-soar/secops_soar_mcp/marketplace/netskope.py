@@ -25,11 +25,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def netskope_block_file(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], file_id: Annotated[str, Field(..., description="ID of a file, needed to identify a file.")], quarantine_profile_id: Annotated[str, Field(..., description="ID of a quarantine profile.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Block a quarantined file.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Block a quarantined file.
+
+Action Parameters: File ID: Required The ID of the file to block in Netskope., Quarantine Profile ID: Required The ID of the quarantine profile to use when blocking the file.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -100,12 +103,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def netskope_list_quarantined_files(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], start_time: Annotated[Optional[str], Field(default=None, description="Restrict events to those that have timestamps greater than this (unixtime). Needed only if time period is not passed.")], end_time: Annotated[Optional[str], Field(default=None, description="Restrict events to those that have timestamps less than this (unixtime). Needed only if time period is not passed.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """List quarantined files.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def netskope_list_quarantined_files(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], start_time: Annotated[str, Field(default=None, description="Restrict events to those that have timestamps greater than this (unixtime). Needed only if time period is not passed.")], end_time: Annotated[str, Field(default=None, description="Restrict events to those that have timestamps less than this (unixtime). Needed only if time period is not passed.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+List quarantined files.
+
+Action Parameters: Start Time: Optional A start time to restrict events with the timestamps greater than the value of this parameter in the Unix format., End Time: Optional An end time to restrict events with the timestamps less than the value of this parameter in the Unix format.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -178,12 +184,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def netskope_list_alerts(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], query: Annotated[Optional[str], Field(default=None, description="This acts as a filter for all the cloud app events in the alerts database.")], type: Annotated[Optional[str], Field(default=None, description="The type of the alert to filter by. Valid values: anomaly | 'Compromised Credential' | policy | 'Legal Hold' | malsite | Malware | DLP | watchlist | quarantine | Remediation.")], time_period: Annotated[Optional[str], Field(default=None, description="Time period to search alerts at (milliseconds backwards). Valid Values: 3600 | 86400 | 604800 | 2592000.")], start_time: Annotated[Optional[str], Field(default=None, description="Restrict alerts to those that have timestamps greater than this (unixtime). Needed only if time period is not passed.")], end_time: Annotated[Optional[str], Field(default=None, description="Restrict alerts to those that have timestamps less than this (unixtime). Needed only if time period is not passed.")], is_acknowledged: Annotated[Optional[bool], Field(default=None, description="Whether to get only acknowledged alerts.")], limit: Annotated[Optional[str], Field(default=None, description="Number of results to return. Default: 100.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """List alerts.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def netskope_list_alerts(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], query: Annotated[str, Field(default=None, description="This acts as a filter for all the cloud app events in the alerts database.")], type: Annotated[str, Field(default=None, description="The type of the alert to filter by. Valid values: anomaly | 'Compromised Credential' | policy | 'Legal Hold' | malsite | Malware | DLP | watchlist | quarantine | Remediation.")], time_period: Annotated[str, Field(default=None, description="Time period to search alerts at (milliseconds backwards). Valid Values: 3600 | 86400 | 604800 | 2592000.")], start_time: Annotated[str, Field(default=None, description="Restrict alerts to those that have timestamps greater than this (unixtime). Needed only if time period is not passed.")], end_time: Annotated[str, Field(default=None, description="Restrict alerts to those that have timestamps less than this (unixtime). Needed only if time period is not passed.")], is_acknowledged: Annotated[bool, Field(default=None, description="Whether to get only acknowledged alerts.")], limit: Annotated[str, Field(default=None, description="Number of results to return. Default: 100.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+List alerts.
+
+Action Parameters: Query: OptionalA query to filter the cloud application events in the alerts database., Type: OptionalA type of alerts to filter by.The possible values are as follows:Anomaly Compromised CredentialPolicy Legal HoldMalsite MalwareDLP WatchlistQuarantine Remediation, Time Period: OptionalThe time period in milliseconds prior to now to search for alerts.The possible values are 3600, 86400, 604800, and 2592000., Start Time: OptionalA start time to filter alerts with timestamps greater than the specified Unix epoch time.Use this parameter only if you didn't set the Time Period parameter., End Time: OptionalAn end time to filter alerts with timestamps less than the specified Unix epoch time.Use this parameter only if you didn't set the Time Period parameter., Is Acknowledged: OptionalIf selected, the integration filters for acknowledged alerts.Not selected by default., Limit: OptionalThe number of the results to return. The default value is 100.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -267,11 +276,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def netskope_allow_file(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], file_id: Annotated[str, Field(..., description="ID of a file, needed to identify a file.")], quarantine_profile_id: Annotated[str, Field(..., description="ID of a quarantine profile.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Allow a quarantined file.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Allow a quarantined file.
+
+Action Parameters: File ID: Required The ID of the file to allow., Quarantine Profile ID: Required The ID of the quarantine profile that is associated with the file.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -416,12 +428,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def netskope_list_events(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], query: Annotated[Optional[str], Field(default=None, description="This acts as a filter for all the cloud app events in the events database.")], type: Annotated[Optional[str], Field(default=None, description="The type of the alert to filter by. Valid values: page | application | audit | infrastructure.")], time_period: Annotated[Optional[str], Field(default=None, description="Time period to search events at (milliseconds backwards). Valid Values: 3600 | 86400 | 604800 | 2592000.")], start_time: Annotated[Optional[str], Field(default=None, description="Restrict events to those that have timestamps greater than this (unixtime). Needed only if time period is not passed.")], end_time: Annotated[Optional[str], Field(default=None, description="Restrict events to those that have timestamps less than this (unixtime). Needed only if time period is not passed.")], limit: Annotated[Optional[str], Field(default=None, description="Number of results to return. Default: 100.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """List events.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def netskope_list_events(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], query: Annotated[str, Field(default=None, description="This acts as a filter for all the cloud app events in the events database.")], type: Annotated[str, Field(default=None, description="The type of the alert to filter by. Valid values: page | application | audit | infrastructure.")], time_period: Annotated[str, Field(default=None, description="Time period to search events at (milliseconds backwards). Valid Values: 3600 | 86400 | 604800 | 2592000.")], start_time: Annotated[str, Field(default=None, description="Restrict events to those that have timestamps greater than this (unixtime). Needed only if time period is not passed.")], end_time: Annotated[str, Field(default=None, description="Restrict events to those that have timestamps less than this (unixtime). Needed only if time period is not passed.")], limit: Annotated[str, Field(default=None, description="Number of results to return. Default: 100.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+List events.
+
+Action Parameters: Query: OptionalA query to filter the cloud application events in the events database., Type: OptionalA type of alerts to filter by.The possible values are as follows:page applicationaudit infrastructure, Time Period: OptionalThe time period in milliseconds prior to now to search for events.The possible values are as follows: 3600, 86400, 604800, and 2592000., Start Time: OptionalA start time to filter events with timestamps greater than the specified Unix epoch time.Use this parameter only if you didn't set the Time Period parameter., End Time: OptionalAn end time to filter events with timestamps less than the specified Unix epoch time.Use this parameter only if you didn't set the Time Period parameter., Limit: OptionalThe number of the results to return. The default value is 100.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -503,11 +518,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def netskope_download_file(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], file_id: Annotated[str, Field(..., description="ID of a file, needed to identify a file.")], quarantine_profile_id: Annotated[str, Field(..., description="ID of a quarantine profile.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Download a quarantined file.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Download a quarantined file.
+
+Action Parameters: File ID: Required The ID of the file to download from quarantine., Quarantine Profile ID: Required The ID of the quarantine profile which the file belongs to.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -578,12 +596,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def netskope_list_clients(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], query: Annotated[Optional[str], Field(default=None, description="This acts as a filter on all the entries in the database.")], limit: Annotated[Optional[str], Field(default=None, description="Number of results to return. Default: 25.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """List clients.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def netskope_list_clients(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], query: Annotated[str, Field(default=None, description="This acts as a filter on all the entries in the database.")], limit: Annotated[str, Field(default=None, description="Number of results to return. Default: 25.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+List clients.
+
+Action Parameters: Query: Optional Filters the clients retrieved from the database., Limit: Optional Limits the number of clients returned by the action. The default value is 25.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None

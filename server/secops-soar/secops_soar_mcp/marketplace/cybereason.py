@@ -24,12 +24,15 @@ def register_tools(mcp: FastMCP):
     # This function registers all tools (actions) for the Cybereason integration.
 
     @mcp.tool()
-    async def cybereason_list_reputation_items(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], filter_logic: Annotated[Optional[List[Any]], Field(default=None, description="Specify what filter logic should be applied.")], filter_value: Annotated[Optional[str], Field(default=None, description="Specify what value should be used in the filter. If \u201cEqual\u201c is selected, action will try to find the exact match among results and if \u201cContains\u201c is selected, action will try to find results that contain that substring. If nothing is provided in this parameter, the filter will not be applied.")], max_results_to_return: Annotated[Optional[str], Field(default=None, description="Specify how many results to return. Default: 50")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """List information about items with reputation in Cybereason.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def cybereason_list_reputation_items(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], filter_logic: Annotated[List[Any], Field(default=None, description="Specify what filter logic should be applied.")], filter_value: Annotated[str, Field(default=None, description="Specify what value should be used in the filter. If \u201cEqual\u201c is selected, action will try to find the exact match among results and if \u201cContains\u201c is selected, action will try to find results that contain that substring. If nothing is provided in this parameter, the filter will not be applied.")], max_results_to_return: Annotated[str, Field(default=None, description="Specify how many results to return. Default: 50")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+List information about items with reputation in Cybereason.
+
+Action Parameters: Filter Logic: Specify what filter logic should be applied., Filter Value: Specify the value that should be used in the filter. If "Equal" is selected, the action tries to find the exact match among results.If "Contains" is selected, the action tries to find results that contain the specified substring.If nothing is provided in this parameter, the filter is not applied., Max Results To Return: Specify the number of results to return.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -104,12 +107,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def cybereason_execute_custom_investigation_search(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], query_filters_json: Annotated[Union[str, dict], Field(..., description="Specify the query that needs to be executed. Note: the query should follow a strict pattern of \"{API field } {Operator} {Value}\". For multiple values you need to provide an \"OR\" key. Each new filter needs to be a separate item in the list. Each key represents the request type, for example, machine or user. Please refer to the documentation portal to understand what an API field name is. Possible operators: Equals NotEquals ContainsIgnoreCase NotContainsIgnoreCase LessThan LessOrEqualsTo GreaterThan GreaterOrEqualsTo Between Includes NotIncludes")], fields_to_return: Annotated[str, Field(..., description="Specify a comma-separated list of fields that need to be returned. Note: you need to provide API field names.")], max_results_to_return: Annotated[Optional[str], Field(default=None, description="Specify how many results to return. Default: 50.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Execute investigation search based on parameters in Cybereason. This action supports nested queries for different item types.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def cybereason_execute_custom_investigation_search(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], query_filters_json: Annotated[Union[str, dict], Field(..., description="Specify the query that needs to be executed. Note: the query should follow a strict pattern of \"{API field } {Operator} {Value}\". For multiple values you need to provide an \"OR\" key. Each new filter needs to be a separate item in the list. Each key represents the request type, for example, machine or user. Please refer to the documentation portal to understand what an API field name is. Possible operators: Equals NotEquals ContainsIgnoreCase NotContainsIgnoreCase LessThan LessOrEqualsTo GreaterThan GreaterOrEqualsTo Between Includes NotIncludes")], fields_to_return: Annotated[str, Field(..., description="Specify a comma-separated list of fields that need to be returned. Note: you need to provide API field names.")], max_results_to_return: Annotated[str, Field(default=None, description="Specify how many results to return. Default: 50.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Execute investigation search based on parameters in Cybereason. This action supports nested queries for different item types.
+
+Action Parameters: Query Filters JSON: Specify the query that needs to be executed. Note: The query should follow a strict pattern of "{API field } {Operator} {Value}". For multiple values you need to provide an "OR" key. Each new filter needs to be a separate item in the list. Each key represents the request type, for example, machine or user.Possible operators: Equals NotEquals ContainsIgnoreCaseNotContainsIgnoreCaseLessThanLessOrEqualsToGreaterThanGreaterOrEqualsToBetweenIncludesNotIncludes, Fields To Return: Specify a comma-separated list of fields that need to be returned. Note: You need to provide API field names., Max Results To Return: Specify the number of results to return.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -256,12 +262,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def cybereason_get_sensor_details(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], create_insight: Annotated[Optional[bool], Field(default=None, description="If enabled, action will create an insight containing information about the sensor.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Get sensor details of entities in Cybereason. Supported entities: Hostname, IP address.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def cybereason_get_sensor_details(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], create_insight: Annotated[bool, Field(default=None, description="If enabled, action will create an insight containing information about the sensor.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Get sensor details of entities in Cybereason. Supported entities: Hostname, IP address.
+
+Action Parameters: Parameter: Description, Create Insight: If enabled, the action creates an insight containing information about the sensor.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -333,11 +342,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def cybereason_add_comment_to_malop(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], malop_id: Annotated[str, Field(..., description="Specify the ID of the malop to which you want to add a comment.")], comment: Annotated[str, Field(..., description="Specify the comment for the malop.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Add a comment to an existing malop in Cybereason.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Add a comment to an existing malop in Cybereason.
+
+Action Parameters: Malop ID: Specify the ID of the malop to which you want to add a comment., Comment to Add: Specify the comment for the malop.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -483,11 +495,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def cybereason_set_reputation(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], reputation_list_type: Annotated[List[Any], Field(..., description="Specify the reputation that needs to be applied to an entity.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Set a reputation for entity in Cybereason. Supported entities: File Hash, IP Address, URL (action will extract domain part). Note: only MD5 and SHA1 hashes are supported.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Set a reputation for entity in Cybereason. Supported entities: File Hash, IP Address, URL (action will extract domain part). Note: only MD5 and SHA1 hashes are supported.
+
+Action Parameters: Reputation List Type: Specify the reputation that needs to be applied to an entity.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -928,12 +943,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def cybereason_list_malop_affected_machines(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], malop_id: Annotated[str, Field(..., description="Specify the ID of the malop for which you want to return affected machines.")], results_limit: Annotated[str, Field(..., description="Specify how many results to return. Default: 100")], create_hostname_entity: Annotated[Optional[bool], Field(default=None, description="If enabled, action will create an entity based on machines name.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """List machines affected by the Malop in Cybereason.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def cybereason_list_malop_affected_machines(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], malop_id: Annotated[str, Field(..., description="Specify the ID of the malop for which you want to return affected machines.")], results_limit: Annotated[str, Field(..., description="Specify how many results to return. Default: 100")], create_hostname_entity: Annotated[bool, Field(default=None, description="If enabled, action will create an entity based on machines name.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+List machines affected by the Malop in Cybereason.
+
+Action Parameters: Malop ID: Specify the ID of the malop for which you want to return affected machines., Results Limit: Specify how many results to return., Create Hostname Entity: If enabled, the action creates an entity based on machines name.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -1006,12 +1024,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def cybereason_list_processes(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], results_limit: Annotated[str, Field(..., description="Specify how many processes to return.")], process_name: Annotated[Optional[str], Field(default=None, description="Specify a comma-separated list of process names for which you want to return data.")], machine_name: Annotated[Optional[str], Field(default=None, description="Specify a comma-separated list of machine names on which you want to search for processes.")], has_suspicions: Annotated[Optional[bool], Field(default=None, description="If enabled, action will only return processes that are labeled as suspicious.")], has_incoming_connection: Annotated[Optional[bool], Field(default=None, description="If enabled, action will only return processes that have incoming connections.")], has_outgoing_connection: Annotated[Optional[bool], Field(default=None, description="If enabled, action will only return processes that have outgoing connections.")], has_external_connection: Annotated[Optional[bool], Field(default=None, description="If enabled, action will only return processes that have external connections.")], unsigned_process_with_unknown_reputation: Annotated[Optional[bool], Field(default=None, description="If enabled, action will only return unsigned processes with unknown reputation.")], running_from_temporary_folder: Annotated[Optional[bool], Field(default=None, description="If enabled, action will only return processes running from a temporary folder.")], privilege_escalation: Annotated[Optional[bool], Field(default=None, description="If enabled, action will only return processes with escalated privileges.")], malicious_use_of_ps_exec: Annotated[Optional[bool], Field(default=None, description="If enabled, action will only return processes related to malicious use of PsExec.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """List processes based on provided criteria in Cybereason.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def cybereason_list_processes(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], results_limit: Annotated[str, Field(..., description="Specify how many processes to return.")], process_name: Annotated[str, Field(default=None, description="Specify a comma-separated list of process names for which you want to return data.")], machine_name: Annotated[str, Field(default=None, description="Specify a comma-separated list of machine names on which you want to search for processes.")], has_suspicions: Annotated[bool, Field(default=None, description="If enabled, action will only return processes that are labeled as suspicious.")], has_incoming_connection: Annotated[bool, Field(default=None, description="If enabled, action will only return processes that have incoming connections.")], has_outgoing_connection: Annotated[bool, Field(default=None, description="If enabled, action will only return processes that have outgoing connections.")], has_external_connection: Annotated[bool, Field(default=None, description="If enabled, action will only return processes that have external connections.")], unsigned_process_with_unknown_reputation: Annotated[bool, Field(default=None, description="If enabled, action will only return unsigned processes with unknown reputation.")], running_from_temporary_folder: Annotated[bool, Field(default=None, description="If enabled, action will only return processes running from a temporary folder.")], privilege_escalation: Annotated[bool, Field(default=None, description="If enabled, action will only return processes with escalated privileges.")], malicious_use_of_ps_exec: Annotated[bool, Field(default=None, description="If enabled, action will only return processes related to malicious use of PsExec.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+List processes based on provided criteria in Cybereason.
+
+Action Parameters: Process Name: Specify a comma-separated list of process names for which you want to return data., Machine Name: Specify a comma-separated list of machine names on which you want to search for processes., Has Suspicions: If enabled, the action only returns processes that are labeled as suspicious., Has Incoming Connection: If enabled, the action only returns processes that have incoming connections.., Has Outgoing Connection: If enabled, the action only returns processes that have outgoing connections., Has External Connection: If enabled, the action only returns processes that have external connections., Unsigned process with unknown reputation: If enabled, the action only returns unsigned processes with unknown reputation., Running from temporary folder: If enabled, the action only returns processes running from a temporary folder., Privilege Escalation: If enabled, the action only returns processes with escalated privileges., Malicious use of PsExec: If enabled, the action only returns processes related to malicious use of PsExec., Results Limit: Specify the number of processes to return.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -1177,12 +1198,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def cybereason_execute_simple_investigation_search(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], fields_to_return: Annotated[str, Field(..., description="Specify a comma-separated list of fields that need to be returned. Note: you need to provide API field names.")], request_type: Annotated[Optional[List[Any]], Field(default=None, description="Specify what should be queried.")], query_filters: Annotated[Optional[str], Field(default=None, description="Specify the query that needs to be executed. Note: this query should follow a strict pattern of \"{API field} {Operator} {Value}\". For multiple values you need to provide an \"OR\" key. Each new filter needs to start from a new line. Please refer to the documentation portal to understand what an API field name is. Possible operators: Equals NotEquals ContainsIgnoreCase NotContainsIgnoreCase LessThan LessOrEqualsTo GreaterThan GreaterOrEqualsTo Between Includes NotIncludes")], max_results_to_return: Annotated[Optional[str], Field(default=None, description="Specify how many results to return. Default: 50.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Execute investigation search based on parameters in Cybereason. Note: this action doesn't support nested queries. Only one type of data, for example, machines or users can be queried at once. For nested queries refer to action "Execute Custom Investigation Search". Please refer to the documentation portal for more details.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def cybereason_execute_simple_investigation_search(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], fields_to_return: Annotated[str, Field(..., description="Specify a comma-separated list of fields that need to be returned. Note: you need to provide API field names.")], request_type: Annotated[List[Any], Field(default=None, description="Specify what should be queried.")], query_filters: Annotated[str, Field(default=None, description="Specify the query that needs to be executed. Note: this query should follow a strict pattern of \"{API field} {Operator} {Value}\". For multiple values you need to provide an \"OR\" key. Each new filter needs to start from a new line. Please refer to the documentation portal to understand what an API field name is. Possible operators: Equals NotEquals ContainsIgnoreCase NotContainsIgnoreCase LessThan LessOrEqualsTo GreaterThan GreaterOrEqualsTo Between Includes NotIncludes")], max_results_to_return: Annotated[str, Field(default=None, description="Specify how many results to return. Default: 50.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Execute investigation search based on parameters in Cybereason. Note: this action doesn't support nested queries. Only one type of data, for example, machines or users can be queried at once. For nested queries refer to action "Execute Custom Investigation Search". Please refer to the documentation portal for more details.
+
+Action Parameters: Query Filters JSON: Specify the query that needs to be executed. Note: The query should follow a strict pattern of "{API field } {Operator} {Value}". For multiple values you need to provide an "OR" key. Each new filter needs to be a separate item in the list. Each key represents the request type, for example, machine or user. Possible operators: Equals NotEqualsContainsIgnoreCaseNotContainsIgnoreCase LessThanLessOrEqualsToGreaterThanGreaterOrEqualsToBetweenIncludesNotIncludes, Fields To Return: Specify a comma-separated list of fields that need to be returned. Note: You need to provide API field names., Max Results To Return: Specify the number of results to return.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -1258,12 +1282,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def cybereason_enrich_entities(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], create_insights: Annotated[Optional[bool], Field(default=None, description="If enabled, action will create an insight for each enriched entity.")], only_malicious_entity_insight: Annotated[Optional[bool], Field(default=None, description="If enabled, action will create an insight only for entities that have type: ransomware, maltool, unwanted, malware, blacklist. Note: this affects only IP Address, File Hash and URL entities, for Hostname entity action will still create an insight.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Enrich entities using information from Cybereason. Supported entities: Hostname, IP Address, File Hash, URL (action will strip domain part from URL entity). Note: IP Address for this action refers to external IP addresses. Only MD5 and SHA-1 hashes are supported.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def cybereason_enrich_entities(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], create_insights: Annotated[bool, Field(default=None, description="If enabled, action will create an insight for each enriched entity.")], only_malicious_entity_insight: Annotated[bool, Field(default=None, description="If enabled, action will create an insight only for entities that have type: ransomware, maltool, unwanted, malware, blacklist. Note: this affects only IP Address, File Hash and URL entities, for Hostname entity action will still create an insight.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Enrich entities using information from Cybereason. Supported entities: Hostname, IP Address, File Hash, URL (action will strip domain part from URL entity). Note: IP Address for this action refers to external IP addresses. Only MD5 and SHA-1 hashes are supported.
+
+Action Parameters: Create Insight: If enabled, the action creates an insight for each enriched entity., Only Malicious Entity Insight: If enabled, the action creates an insight only for entities that have type: ransomware, maltool, unwanted, malware, blacklist. Note: This affects only the IP Address, File Hash and URL entities. For the Hostname entity, the action still creates an insight.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -1336,12 +1363,15 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def cybereason_list_files(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], results_limit: Annotated[str, Field(..., description="Specify how many files to return.")], file_hash: Annotated[Optional[str], Field(default=None, description="Specify a comma-separated list of file hashes for which you want to return data. Note: action only supports SHA-1 and MD5 hashes. If you provide values for this parameter, then parameter \u201cResults Limit\u201c is ignored. Action will try to find information about all provided hashes.")], fields_to_return: Annotated[Optional[str], Field(default=None, description="Specify a comma-separated list of fields that you want to return. If nothing is provided, action will work with predefined fields. Possible values: md5String,ownerMachine,avRemediationStatus,isSigned,signatureVerified,sha1String,maliciousClassificationType,createdTime,modifiedTime,size,correctedPath,productName,productVersion,companyName,internalName,elementDisplayName.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Get information about files from Cybereason.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
+    async def cybereason_list_files(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], results_limit: Annotated[str, Field(..., description="Specify how many files to return.")], file_hash: Annotated[str, Field(default=None, description="Specify a comma-separated list of file hashes for which you want to return data. Note: action only supports SHA-1 and MD5 hashes. If you provide values for this parameter, then parameter \u201cResults Limit\u201c is ignored. Action will try to find information about all provided hashes.")], fields_to_return: Annotated[str, Field(default=None, description="Specify a comma-separated list of fields that you want to return. If nothing is provided, action will work with predefined fields. Possible values: md5String,ownerMachine,avRemediationStatus,isSigned,signatureVerified,sha1String,maliciousClassificationType,createdTime,modifiedTime,size,correctedPath,productName,productVersion,companyName,internalName,elementDisplayName.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """
+Get information about files from Cybereason.
+
+Action Parameters: File Hash: Specify a comma-separated list of file hashes for which you want to return data.Note: This action only supports the SHA-1 and MD5 hashes. If you provide values for this parameter, then the "Results Limit" parameter is ignored. Action tries to find information about all provided hashes., Results Limit: Specify the number of files to return., Fields To Return: Specify a comma-separated list of fields that you want to return.If nothing is provided, the action works with predefined fields.Possible values: md5String,ownerMachine,avRemediationStatus,isSigned,signatureVerified,sha1String,maliciousClassificationType,createdTime,modifiedTime,size,correctedPath,productName,productVersion,companyName,internalName,elementDisplayName.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -1416,11 +1446,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def cybereason_get_malop(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], malop_id: Annotated[str, Field(..., description="Specify the ID of the malop for which you want to return details.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Retrieve detailed information about a malop in Cybereason.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Retrieve detailed information about a malop in Cybereason.
+
+Action Parameters: Malop ID: Specify the ID of the malop for which you want to return details.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -1491,11 +1524,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def cybereason_list_malop_processes(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], malop_id: Annotated[str, Field(..., description="Specify the ID of the malop for which you want to return related processes.")], results_limit: Annotated[str, Field(..., description="Specify how many results to return.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """List processes related to the Malop in Cybereason.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+List processes related to the Malop in Cybereason.
+
+Action Parameters: Malop ID: Specify the ID of the malop for which you want to return related processes., Results Limit: Specify the number of results to return.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
@@ -1641,11 +1677,14 @@ def register_tools(mcp: FastMCP):
 
     @mcp.tool()
     async def cybereason_update_malop_status(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], malop_id: Annotated[str, Field(..., description="Specify the ID of the malop that needs to be updated.")], status: Annotated[List[Any], Field(..., description="Specify the new status for the malop.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
-        """Update status for the Malop in Cybereason. Note: detection malops support only "Remediated", "Not Relevant" or "Open" statuses.
-
-        Returns:
-            dict: A dictionary containing the result of the action execution.
         """
+Update status for the Malop in Cybereason. Note: detection malops support only "Remediated", "Not Relevant" or "Open" statuses.
+
+Action Parameters: Malop ID: Specify the ID of the malop that needs to be updated., Status: Specify the new status for the malop.
+
+Returns:
+dict: A dictionary containing the result of the action execution.
+"""
         final_target_entities: Optional[List[TargetEntity]] = None
         final_scope: Optional[str] = None
         is_predefined_scope: Optional[bool] = None
