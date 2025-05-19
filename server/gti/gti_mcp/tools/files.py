@@ -214,12 +214,12 @@ async def get_file_behavior_report(
 
 @server.tool()
 async def get_file_behavior_summary(hash: str, ctx: Context) -> typing.Dict[str, typing.Any]:
-  """Retrieve a summary of all the file behaviour reports from all the sandboxes runned by VirusTotal.
+  """Retrieve a summary of all the file behavior reports from all the sandboxes.
 
   Args:
     hash (required): MD5/SHA1/SHA256) hash that identifies the file.
   Returns:
-    The file behaviour summary.
+    The file behavior summary.
   """
 
   res = await vt_client(ctx).get_async(f"/files/{hash}/behaviour_summary")
