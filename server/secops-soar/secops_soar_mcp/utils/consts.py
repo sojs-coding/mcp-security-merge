@@ -25,7 +25,7 @@ class Endpoints:
     BASE_CASE_URL = "/api/1p/external/v1/cases"
     BASE_SPECIFIC_CASE_URL = BASE_CASE_URL + "/{CASE_ID}"
     BASE_CASE_COMMENTS_URL = BASE_SPECIFIC_CASE_URL + "/comments"
-    BASE_ALERT_URL = "/api/1p/external/v1.0/cases/{CASE_ID}/alerts"
+    BASE_ALERT_URL = "/api/1p/external/v1.0/cases/{CASE_ID}/caseAlerts"
     LIST_ALERT_GROUP_IDENTIFIERS_BY_CASE = (
         BASE_ALERT_URL + "?$select=alertGroupIdentifier"
     )
