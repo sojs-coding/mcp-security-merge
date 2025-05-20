@@ -113,6 +113,15 @@ os.makedirs(static_dir, exist_ok=True)
 # Set static paths for custom CSS/JS/images
 html_static_path = ["_static", "img"]
 
+html_sidebars = {
+    "**": [
+        "sidebar/brand.html",
+        "sidebar/custom_github_link.html",
+        "sidebar/search.html",
+        "sidebar/navigation.html",
+    ]
+}
+
 # Theme options
 html_theme_options = {
     "light_css_variables": {

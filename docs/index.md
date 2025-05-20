@@ -15,8 +15,6 @@ These servers allow security professionals to leverage AI assistants for securit
 
 ## Navigation
 
-👉 Use the navigation menu on the left to explore the documentation.
-
 If you're new to this project, we recommend starting with the [Usage Guide](usage_guide.md) to learn how to set up and configure the MCP servers.
 
 ## Quick Links
@@ -25,6 +23,7 @@ If you're new to this project, we recommend starting with the [Usage Guide](usag
 - **[Configuration Reference](usage_guide.md#mcp-server-configuration-reference)** - Configure the MCP servers for your environment
 - **[Usage Examples](usage_guide.md#usage-examples)** - See examples of how to interact with the MCP servers
 - **[Development Guide](development_guide.md)** - Learn how to contribute to or extend the project
+- **[GitHub Repository](https://github.com/google/mcp-security)** - Access the project's source code and contribute.
 
 ## MCP Servers
 
