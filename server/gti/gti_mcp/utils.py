@@ -75,16 +75,19 @@ async def fetch_object_relationships(
     resource_collection_type: str,
     resource_id: str,
     relationships: typing.List[str],
-    params: dict[str, typing.Any] | None = None):
+    params: dict[str, typing.Any] | None = None,
+    descriptors_only: bool = True):
   """Fetches the given relationships descriptors from the given object."""
   rel_futures = {}
+  # If true, returns descriptors instead of full objects.
+  descriptors = '/relationship' if descriptors_only else ''
   async with asyncio.TaskGroup() as tg:
     for rel_name in relationships:
       rel_futures[rel_name] = tg.create_task(
           consume_vt_iterator(
               vt_client,
               f"/{resource_collection_type}/{resource_id}"
-              f"/relationship/{rel_name}", params=params))
+              f"{descriptors}/{rel_name}", params=params))
 
   data = {}
   for name, items in rel_futures.items():

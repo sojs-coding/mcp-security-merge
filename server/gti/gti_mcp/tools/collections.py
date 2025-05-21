@@ -78,32 +78,33 @@ async def get_collection_report(id: str, ctx: Context) -> typing.Dict[str, typin
 
 @server.tool()
 async def get_entities_related_to_a_collection(
-    id: str, relationship_name: str, ctx: Context
+    id: str, relationship_name: str, descriptors_only: bool, ctx: Context
 ) -> typing.Dict[str, typing.Any]:
   """Retrieve entities related to the the given collection ID.
 
     The following table shows a summary of available relationships for collection objects.
 
-    | Relationship         | Return object type                                |
-    | :------------------- | :------------------------------------------------ |
-    | associations         | List of associated threats                        |
-    | attack_techniques    | List of attack techniques                         |
-    | domains              | List of Domains                                   |
-    | files                | List of Files                                     |
-    | ip_addresses         | List of IP addresses                              |
-    | urls                 | List of URLs                                      |
-    | threat_actors        | List of related threat actors                     |
-    | malware_families     | List of related malware families                  |
-    | software_toolkits    | List of related tools                             |
-    | campaigns            | List of related campaigns                         |
-    | vulnerabilities      | List of related vulnerabilities                   |
-    | reports              | List of reports                                   |
-    | suspected_threat_actors | List of related suspected threat actors        |
-    | hunting_rulesets     | Google Threat Intelligence Yara rules that identify the given collection |
+    | Relationship         | Description                                       | Return type  |
+    | -------------------- | ------------------------------------------------- | ------------ |
+    | associations         | List of associated threats                        | collection   |
+    | attack_techniques    | List of attack techniques                         | attack_technique |
+    | domains              | List of Domains                                   | domain       |
+    | files                | List of Files                                     | file         |
+    | ip_addresses         | List of IP addresses                              | ip_address   |
+    | urls                 | List of URLs                                      | url          |
+    | threat_actors        | List of related threat actors                     | collection   |
+    | malware_families     | List of related malware families                  | collection   |
+    | software_toolkits    | List of related tools                             | collection   |
+    | campaigns            | List of related campaigns                         | collection   |
+    | vulnerabilities      | List of related vulnerabilities                   | collection   |
+    | reports              | List of reports                                   | collection   |
+    | suspected_threat_actors | List of related suspected threat actors        | collection   |
+    | hunting_rulesets     | Google Threat Intelligence Yara rules that identify the given collection | hunting_ruleset |
 
     Args:
       id (required): Collection identifier.
       relationship_name (required): Relationship name.
+      descriptors_only (required): Bool. Must be True when the target object type is one of file, domain, url, ip_address or collection.
     Returns:
       List of objects related to the collection.
   """
@@ -114,7 +115,11 @@ async def get_entities_related_to_a_collection(
       }
 
   res = await utils.fetch_object_relationships(
-      vt_client(ctx), "collections", id, [relationship_name])
+      vt_client(ctx), 
+      "collections", 
+      id, 
+      [relationship_name],
+      descriptors_only=descriptors_only)
   return utils.sanitize_response(res.get(relationship_name, []))
 
 

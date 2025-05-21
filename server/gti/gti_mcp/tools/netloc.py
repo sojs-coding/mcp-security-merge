@@ -108,47 +108,51 @@ async def get_domain_report(domain: str, ctx: Context) -> typing.Dict[str, typin
 
 
 @server.tool()
-async def get_entities_related_to_a_domain(domain: str, relationship_name: str, ctx: Context) -> typing.Dict[str, typing.Any]:
+async def get_entities_related_to_a_domain(
+    domain: str, relationship_name: str, descriptors_only: bool, ctx: Context
+) -> typing.Dict[str, typing.Any]:
   """Retrieve entities related to the the given domain.
 
     The following table shows a summary of available relationships for domain objects.
 
-    | Relationship                | Description                                                |
-    | :-------------------------- | :--------------------------------------------------------- |
-    | associations                | Domain's associated objects (reports, campaigns, IoC collections, malware families, software toolkits, vulnerabilities, threat-actors), without filtering by the associated object type.                                                             | Everyone. | List of [reports](ref:report-object), [campaigns](ref:campaign-object), [IoC collections](ref:ioc-collection-object), [malware families](ref:malware-family-object), [software toolkits](ref:software-toolkit-object), [vulnerabilities](ref:vulnerability-object), [threat-actors](ref:threat-actor-object) objecs.|
-    | caa_records                 | Records CAA for the domain.                                |
-    | campaigns                   | Campaigns associated to the domain.                        |
-    | cname_records               | Records CNAME for the domain.                              |
-    | collections                 | IoC Collections associated to the domain.                  |
-    | comments                    | Community posted comments about the domain.                |
-    | communicating_files         | Files that communicate with the domain.                    |
-    | downloaded_files            | Files downloaded from that domain.                         |
-    | graphs                      | Graphs including the domain.                               |
-    | historical_ssl_certificates | SSL certificates associated with the domain.               |
-    | historical_whois            | WHOIS information for the domain.                          |
-    | immediate_parent            | Domain's immediate parent.                                 |
-    | malware_families            | Malware families associated to the domain.                 |
-    | memory_pattern_parents      | Files having a domain as string on memory during sandbox execution.  |
-    | mx_records                  | Records MX for the domain.                                 |
-    | ns_records                  | Records NS for the domain.                                 |
-    | parent                      | Domain's top parent.                                       |
-    | referrer_files              | Files containing the domain.                               |
-    | related_comments            | Community posted comments in the domain's related objects. |
-    | related_reports             | Reports that are directly and indirectly related to the domain. |
-    | related_threat_actors       | Threat actors related to the domain.                       |
-    | reports                     | Reports directly associated to the domain.                 |
-    | resolutions                 | DNS resolutions for the domain.                            |
-    | siblings                    | Domain's sibling domains.                                  |
-    | soa_records                 | Records SOA for the domain.                                |
-    | software_toolkits           | Software and Toolkits associated to the domain.            |
-    | subdomains                  | Domain's subdomains.                                       |
-    | urls                        | URLs having this domain.                                   |
-    | user_votes                  | Current user's votes.                                      |
-    | votes                       | Domain's votes.                                            |
-    | vulnerabilities             | Vulnerabilities associated to the domain.                  |
+    | Relationship                | Description                                                | Return type  |
+    | --------------------------- | ---------------------------------------------------------- | ------------ |
+    | associations                | Domain's associated objects (reports, campaigns, IoC collections, malware families, software toolkits, vulnerabilities, threat-actors), without filtering by the associated object type.                                                             | Everyone. | List of [reports](ref:report-object), [campaigns](ref:campaign-object), [IoC collections](ref:ioc-collection-object), [malware families](ref:malware-family-object), [software toolkits](ref:software-toolkit-object), [vulnerabilities](ref:vulnerability-object), [threat-actors](ref:threat-actor-object) objecs.| collection |
+    | caa_records                 | Records CAA for the domain.                                | domain       |
+    | campaigns                   | Campaigns associated to the domain.                        | collection   |
+    | cname_records               | Records CNAME for the domain.                              | domain       |
+    | collections                 | IoC Collections associated to the domain.                  | collection   |
+    | comments                    | Community posted comments about the domain.                | comment      |
+    | communicating_files         | Files that communicate with the domain.                    | file         |
+    | downloaded_files            | Files downloaded from that domain.                         | file         |
+    | graphs                      | Graphs including the domain.                               | graph        |
+    | historical_ssl_certificates | SSL certificates associated with the domain.               | ssl-cert     |
+    | historical_whois            | WHOIS information for the domain.                          | whois        |
+    | immediate_parent            | Domain's immediate parent.                                 | domain       |
+    | malware_families            | Malware families associated to the domain.                 | collection   |
+    | memory_pattern_parents      | Files having a domain as string on memory during sandbox execution. | file |
+    | mx_records                  | Records MX for the domain.                                 | domain       |
+    | ns_records                  | Records NS for the domain.                                 | domain       |
+    | parent                      | Domain's top parent.                                       | domain       |
+    | referrer_files              | Files containing the domain.                               | file         |
+    | related_comments            | Community posted comments in the domain's related objects. | comment      |
+    | related_reports             | Reports that are directly and indirectly related to the domain. | collection |
+    | related_threat_actors       | Threat actors related to the domain.                       | collection   |
+    | reports                     | Reports directly associated to the domain.                 | collection   |
+    | resolutions                 | DNS resolutions for the domain.                            | resolution   |
+    | siblings                    | Domain's sibling domains.                                  | domain       |
+    | soa_records                 | Records SOA for the domain.                                | domain       |
+    | software_toolkits           | Software and Toolkits associated to the domain.            | collection   |
+    | subdomains                  | Domain's subdomains.                                       | domain       |
+    | urls                        | URLs having this domain.                                   | url          |
+    | user_votes                  | Current user's votes.                                      | vote         |
+    | votes                       | Domain's votes.                                            | vote         |
+    | vulnerabilities             | Vulnerabilities associated to the domain.                  | collection   |
 
     Args:
       domain (required): Domain to analyse.
+      relationship_name (required): Relationship name.
+      descriptors_only (required): Bool. Must be True when the target object type is one of file, domain, url, ip_address or collection.
     Returns:
       List of entities related to the domain.
   """
@@ -159,7 +163,10 @@ async def get_entities_related_to_a_domain(domain: str, relationship_name: str, 
     }
 
   res = await utils.fetch_object_relationships(
-      vt_client(ctx), "domains", domain, [relationship_name])
+      vt_client(ctx), 
+      "domains", domain, 
+      relationships=[relationship_name],
+      descriptors_only=descriptors_only)
   return utils.sanitize_response(res.get(relationship_name, []))
 
 
@@ -182,38 +189,42 @@ async def get_ip_address_report(ip_address: str, ctx: Context) -> typing.Dict[st
 
 
 @server.tool()
-async def get_entities_related_to_an_ip_address(ip_address: str, relationship_name: str, ctx: Context) -> typing.Dict[str, typing.Any]:
+async def get_entities_related_to_an_ip_address(
+    ip_address: str, relationship_name: str, descriptors_only: bool, ctx: Context
+) -> typing.Dict[str, typing.Any]:
   """Retrieve entities related to the the given IP Address.
 
     The following table shows a summary of available relationships for IP Address objects.
 
-    | Relationship                | Description                                            |
-    | :-------------------------- | :----------------------------------------------------- |
-    | associations                | IP's associated objects (reports, campaigns, IoC collections, malware families, software toolkits, vulnerabilities, threat-actors), without filtering by the associated object type.                                               |
-    | campaigns                   | Campaigns associated to the IP address.                |
-    | collections                 | IoC Collections associated to the IP address.          |
-    | comments                    | Comments for the IP address.                           |
-    | communicating_files         | Files that communicate with the IP address.            |
-    | downloaded_files            | Files downloaded from the IP address.                  |
-    | graphs                      | Graphs including the IP address.                       |
-    | historical_ssl_certificates | SSL certificates associated with the IP.               |
-    | historical_whois            | WHOIS information for the IP address.                  |
-    | malware_families            | Malware families associated to the IP address.         |
-    | memory_pattern_parents      | Files having an IP as string on memory during sandbox execution.         |
-    | referrer_files              | Files containing the IP address.                       |
-    | related_comments            | Community posted comments in the IP's related objects. |
-    | related_reports             | Reports that are directly and indirectly related to the IP. |
-    | related_threat_actors       | Threat actors related to the IP address.               |
-    | reports                     | Reports directly associated to the IP.                 |
-    | resolutions                 | IP address' resolutions                                |
-    | software_toolkits           | Software and Toolkits associated to the IP address.    |
-    | urls                        | URLs related to the IP address.                        |
-    | user_votes                  | IP's votes made by current signed-in user.             |
-    | votes                       | IP's votes.                                            |
-    | vulnerabilities             | Vulnerabilities associated to the IP address.          |
+    | Relationship                | Description                                            | Return type  |
+    | --------------------------- | ------------------------------------------------------ | ------------ |
+    | associations                | IP's associated objects (reports, campaigns, IoC collections, malware families, software toolkits, vulnerabilities, threat-actors), without filtering by the associated object type. | collection |
+    | campaigns                   | Campaigns associated to the IP address.                | collection   |
+    | collections                 | IoC Collections associated to the IP address.          | collection   |
+    | comments                    | Comments for the IP address.                           | comment      |
+    | communicating_files         | Files that communicate with the IP address.            | file         |
+    | downloaded_files            | Files downloaded from the IP address.                  | file         |
+    | graphs                      | Graphs including the IP address.                       | graph        |
+    | historical_ssl_certificates | SSL certificates associated with the IP.               | ssl-cert     |
+    | historical_whois            | WHOIS information for the IP address.                  | whois        |
+    | malware_families            | Malware families associated to the IP address.         | collection   |
+    | memory_pattern_parents      | Files having an IP as string on memory during sandbox execution. | file |
+    | referrer_files              | Files containing the IP address.                       | file         |
+    | related_comments            | Community posted comments in the IP's related objects. | comment      |
+    | related_reports             | Reports that are directly and indirectly related to the IP. | collection |
+    | related_threat_actors       | Threat actors related to the IP address.               | collection   |
+    | reports                     | Reports directly associated to the IP.                 | collection   |
+    | resolutions                 | IP address' resolutions                                | resolution   |
+    | software_toolkits           | Software and Toolkits associated to the IP address.    | collection   |
+    | urls                        | URLs related to the IP address.                        | url          |
+    | user_votes                  | IP's votes made by current signed-in user.             | vote         |
+    | votes                       | IP's votes.                                            | vote         |
+    | vulnerabilities             | Vulnerabilities associated to the IP address.          | collection   |
 
     Args:
       ip_address (required): IP Addres to analyse.
+      relationship_name (required): Relationship name.
+      descriptors_only (required): Bool. Must be True when the target object type is one of file, domain, url, ip_address or collection.
     Returns:
       List of entities related to the IP Address.
   """
@@ -224,5 +235,9 @@ async def get_entities_related_to_an_ip_address(ip_address: str, relationship_na
     }
 
   res = await utils.fetch_object_relationships(
-      vt_client(ctx), "ip_addresses", ip_address, [relationship_name])
+      vt_client(ctx), 
+      "ip_addresses",
+      ip_address,
+      relationships=[relationship_name],
+      descriptors_only=descriptors_only)
   return utils.sanitize_response(res.get(relationship_name, []))
