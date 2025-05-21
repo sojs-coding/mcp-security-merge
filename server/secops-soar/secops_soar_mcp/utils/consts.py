@@ -30,10 +30,13 @@ class Endpoints:
         BASE_ALERT_URL + "?$select=alertGroupIdentifier"
     )
     BASE_SPECIFIC_ALERT_URL = BASE_ALERT_URL + "/{ALERT_ID}"
-    LIST_INVOLVED_EVENTS_BY_ALERT = BASE_SPECIFIC_ALERT_URL + "/involvedEvents"
     FETCH_FULL_UNIQUE_ENTITY = "/api/external/v1/entities/GetEntityData"
     SEARCH_ENTITY = "/api/external/v1.0/entity-search/entities"
     GET_SCOPES = "/api/external/v1/settings/GetScopes"
     GET_ALERT_GROUP_IDENTIFIERS_ENTITIES = (
         "/api/external/v1/case-overview/GetAlertsEntities"
+    )
+    # the below endpoint uses 'alerts' instead of 'caseAlerts', because of a bug that was introduced to the SOAR server
+    LIST_INVOLVED_EVENTS_BY_ALERT = (
+        "/api/1p/external/v1.0/cases/{CASE_ID}/alerts/{ALERT_ID}/involvedEvents"
     )
