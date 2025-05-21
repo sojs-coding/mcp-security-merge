@@ -84,7 +84,7 @@ async def get_url_report(url: str, ctx: Context) -> typing.Dict[str, typing.Any]
       "urls",
       "url",
       url_id,
-      ["associations"],
+      relationships=["associations"],
       params={"exclude_attributes": "last_analysis_results"})
   return utils.sanitize_response(res)
 
