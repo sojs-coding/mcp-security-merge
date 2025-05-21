@@ -57,9 +57,14 @@ COLLECTION_TYPES = {
 async def get_collection_report(id: str, ctx: Context) -> typing.Dict[str, typing.Any]:
   """At Google Threat Intelligence, threats are modeled as "collections". This tool retrieves them from the platform.
 
-  They have different sub types like: "malware-family", "threat-actor", "campaign", "report" or a generic "collection". You can find it in the "collection_type" field.
+  They have different collections types like: 
+    - "malware-family"
+    - "threat-actor"
+    - "campaign"
+    - "report"
+    - "collection". 
 
-  You must always include the subtype and identifier as a parameter for the tool the pattern will always be subtype--<id> such as "report--6e908e6adec4d5121a4b4e5ff5fdeb304f5148cf2377bfc070781353287dcb4c".
+  You can find the collection type in the "collection_type" field.
 
   Args:
     id (required): Google Threat Intelligence identifier.
