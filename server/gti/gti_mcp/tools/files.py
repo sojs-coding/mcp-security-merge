@@ -198,7 +198,7 @@ async def get_file_behavior_report(
       "file_behaviours",
       "file_behaviour",
       file_behaviour_id,
-      [
+      relationships=[
           "contacted_domains",
           "contacted_ips",
           "contacted_urls",
