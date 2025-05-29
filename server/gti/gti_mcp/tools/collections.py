@@ -83,7 +83,7 @@ async def get_collection_report(id: str, ctx: Context) -> typing.Dict[str, typin
 
 @server.tool()
 async def get_entities_related_to_a_collection(
-    id: str, relationship_name: str, descriptors_only: bool, ctx: Context
+    id: str, relationship_name: str, descriptors_only: bool, ctx: Context, limit: int = 10
 ) -> typing.Dict[str, typing.Any]:
   """Retrieve entities related to the the given collection ID.
 
@@ -110,6 +110,7 @@ async def get_entities_related_to_a_collection(
       id (required): Collection identifier.
       relationship_name (required): Relationship name.
       descriptors_only (required): Bool. Must be True when the target object type is one of file, domain, url, ip_address or collection.
+      limit: Limit the number of collections to retrieve. 10 by default.
     Returns:
       List of objects related to the collection.
   """
@@ -124,7 +125,8 @@ async def get_entities_related_to_a_collection(
       "collections", 
       id, 
       [relationship_name],
-      descriptors_only=descriptors_only)
+      descriptors_only=descriptors_only,
+      limit=limit)
   return utils.sanitize_response(res.get(relationship_name, []))
 
 
@@ -197,7 +199,7 @@ async def search_threats(
   Args:
     query (required): Search query to find threats.
     collection_type: Filter your search results to a specific *type* of threat
-    limit: Limit the number of threats to retrieve. 10 by default.
+    limit: Limit the number of threats to retrieve. 5 by default.
     order_by: Order results by the given order key. "relevance-" by default.
 
   Returns:

@@ -80,7 +80,7 @@ For more detailed instructions on setting up environment variables, refer to the
 Threats like actors, malware, campaigns, reports, and vulnerabilities are modeled as "collections" in GTI.
 
 - **`get_collection_report(id)`**: Retrieves a specific collection report by its ID (e.g., `report--<hash>`, `threat-actor--<hash>`).
-- **`get_entities_related_to_a_collection(id, relationship_name)`**: Gets related entities (domains, files, IPs, URLs, other collections) for a given collection ID. Valid values for `relationship_name` include:
+- **`get_entities_related_to_a_collection(id, relationship_name, limit=10)`**: Gets related entities (domains, files, IPs, URLs, other collections) for a given collection ID. Valid values for `relationship_name` include:
   - `related_reference`: Related references or documents
   - `execution_parents`: Parent processes/files
   - `dropped_files`: Files dropped by malware
@@ -88,7 +88,7 @@ Threats like actors, malware, campaigns, reports, and vulnerabilities are modele
   - `contacted_urls`: URLs accessed by a threat
   - `contacted_ips`: IP addresses contacted by a threat
   - `embedded_collections`: Other collections embedded within this one
-- **`search_threats(query, limit=10, order_by="relevance-")`**: Performs a general search for threats (collections) using GTI query syntax. Supports filtering by `collection_type:"<type>"` within the query.
+- **`search_threats(query, limit=5, order_by="relevance-")`**: Performs a general search for threats (collections) using GTI query syntax. Supports filtering by `collection_type:"<type>"` within the query.
 - **`search_campaigns(query, limit=10, order_by="relevance-")`**: Searches specifically for collections of type `campaign`.
 - **`search_threat_actors(query, limit=10, order_by="relevance-")`**: Searches specifically for collections of type `threat-actor`.
 - **`search_malware_families(query, limit=10, order_by="relevance-")`**: Searches specifically for collections of type `malware-family`.
@@ -100,7 +100,7 @@ Threats like actors, malware, campaigns, reports, and vulnerabilities are modele
 ### Files
 
 - **`get_file_report(hash)`**: Retrieves a comprehensive analysis report for a file based on its MD5, SHA1, or SHA256 hash.
-- **`get_entities_related_to_a_file(hash, relationship_name)`**: Gets related entities (domains, IPs, URLs, behaviours, etc.) for a given file hash. Valid values for `relationship_name` include:
+- **`get_entities_related_to_a_file(hash, relationship_name, limit=10)`**: Gets related entities (domains, IPs, URLs, behaviours, etc.) for a given file hash. Valid values for `relationship_name` include:
   - `contacted_domains`: Domains contacted by the file
   - `contacted_ips`: IP addresses contacted by the file
   - `contacted_urls`: URLs accessed by the file
@@ -118,7 +118,7 @@ Threats like actors, malware, campaigns, reports, and vulnerabilities are modele
 ### Network Locations (Domains & IPs)
 
 - **`get_domain_report(domain)`**: Retrieves a comprehensive analysis report for a domain.
-- **`get_entities_related_to_a_domain(domain, relationship_name)`**: Gets related entities (files, resolutions, subdomains, URLs, etc.) for a given domain. Valid values for `relationship_name` include:
+- **`get_entities_related_to_a_domain(domain, relationship_name, limit=10)`**: Gets related entities (files, resolutions, subdomains, URLs, etc.) for a given domain. Valid values for `relationship_name` include:
   - `communicating_files`: Files that communicate with this domain
   - `referrer_files`: Files that refer to this domain
   - `resolutions`: DNS resolutions for this domain
@@ -126,7 +126,7 @@ Threats like actors, malware, campaigns, reports, and vulnerabilities are modele
   - `subdomains`: Subdomains of this domain
   - `urls`: URLs associated with this domain
 - **`get_ip_address_report(ip_address)`**: Retrieves a comprehensive analysis report for an IPv4 or IPv6 address.
-- **`get_entities_related_to_an_ip_address(ip_address, relationship_name)`**: Gets related entities (files, resolutions, URLs, etc.) for a given IP address. Valid values for `relationship_name` include:
+- **`get_entities_related_to_an_ip_address(ip_address, relationship_name, limit=10)`**: Gets related entities (files, resolutions, URLs, etc.) for a given IP address. Valid values for `relationship_name` include:
   - `communicating_files`: Files that communicate with this IP
   - `downloaded_files`: Files downloaded from this IP
   - `referrer_files`: Files that refer to this IP
@@ -136,7 +136,7 @@ Threats like actors, malware, campaigns, reports, and vulnerabilities are modele
 ### URLs
 
 - **`get_url_report(url)`**: Retrieves a comprehensive analysis report for a URL.
-- **`get_entities_related_to_an_url(url, relationship_name)`**: Gets related entities (files, domains, IPs, redirects, etc.) for a given URL. Valid values for `relationship_name` include:
+- **`get_entities_related_to_an_url(url, relationship_name, limit=10)`**: Gets related entities (files, domains, IPs, redirects, etc.) for a given URL. Valid values for `relationship_name` include:
   - `downloaded_files`: Files downloaded from this URL
   - `communicating_files`: Files that communicate with this URL
   - `redirecting_urls`: URLs that redirect to this URL

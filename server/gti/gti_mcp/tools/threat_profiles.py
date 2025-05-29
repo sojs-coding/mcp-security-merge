@@ -130,13 +130,14 @@ async def get_threat_profile_recommendations(
 
     Args:
       profile_id (str): Threat Profile identifier at Google Threat Intelligence.
+      limit: Limit the number of objects to retrieve. 10 by default.
 
     Returns:
       List of Threat (collection) objects identifiers associated to 
       the Threat Profile. Use `get_collection_report` to retrieve the full objects.
   """
   res = await utils.fetch_object_relationships(
-      vt_client(ctx), "threat_profiles", profile_id, ['recommendations'])
+      vt_client(ctx), "threat_profiles", profile_id, ['recommendations'], limit=limit)
   return utils.sanitize_response(res.get('recommendations', []))
 
 

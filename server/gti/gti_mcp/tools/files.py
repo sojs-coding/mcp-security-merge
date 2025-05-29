@@ -105,7 +105,7 @@ async def get_file_report(hash: str, ctx: Context) -> typing.Dict[str, typing.An
 
 @server.tool()
 async def get_entities_related_to_a_file(
-    hash: str, relationship_name: str, descriptors_only: bool, ctx: Context,
+    hash: str, relationship_name: str, descriptors_only: bool, ctx: Context, limit: int = 10, 
 ) -> typing.Dict[str, typing.Any]:
     """Retrieve entities related to the the given file hash.
 
@@ -165,6 +165,7 @@ async def get_entities_related_to_a_file(
       hash (required): MD5/SHA1/SHA256) hash that identifies the file.
       relationship_name (required): Relationship name.
       descriptors_only (required): Bool. Must be True when the target object type is one of file, domain, url, ip_address or collection.
+      limit: Limit the number of files to retrieve. 10 by default.
     Returns:
       List of objects related to the given file.
     """
@@ -179,7 +180,8 @@ async def get_entities_related_to_a_file(
         "files",
         hash, 
         relationships=[relationship_name],
-        descriptors_only=descriptors_only)
+        descriptors_only=descriptors_only,
+        limit=limit)
     return utils.sanitize_response(res.get(relationship_name, []))
 
 

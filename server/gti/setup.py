@@ -26,7 +26,7 @@ setup(
         "vt-py",
     ],
     extras_require={
-        "test": ["pytest", "pytest_httpserver", "pytest_asyncio"]
+        "test": ["pytest", "pytest_httpserver", "pytest_asyncio", "pytest-mock"]
     },
     entry_points={
         "console_scripts": [
