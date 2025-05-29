@@ -271,7 +271,7 @@ async def test_get_reports(
     argvalues=[
         (
             "get_entities_related_to_a_file",
-            {"hash": "275a021bbfb6489e54d471899f7db9d1663fc695ec2fe2a2c4538aabf651fd0f", "relationship_name": "associations"},
+            {"hash": "275a021bbfb6489e54d471899f7db9d1663fc695ec2fe2a2c4538aabf651fd0f", "relationship_name": "associations", "descriptors_only": "True"},
             "/api/v3/files/275a021bbfb6489e54d471899f7db9d1663fc695ec2fe2a2c4538aabf651fd0f/relationship/associations",
             {
                 "data": [{"type": "object", "id": "obj-id", "attributes": {"foo": "foo", "bar": ""}}],
@@ -280,7 +280,7 @@ async def test_get_reports(
         ), 
         (
             "get_entities_related_to_a_domain",
-            {"domain": "theevil.com", "relationship_name": "associations"},
+            {"domain": "theevil.com", "relationship_name": "associations", "descriptors_only": "True"},
             "/api/v3/domains/theevil.com/relationship/associations",
             {
                 "data": [{"type": "object", "id": "obj-id", "attributes": {"foo": "foo", "bar": ""}}],
@@ -289,7 +289,7 @@ async def test_get_reports(
         ),   
         (
             "get_entities_related_to_an_ip_address",
-            {"ip_address": "8.8.8.8", "relationship_name": "associations"},
+            {"ip_address": "8.8.8.8", "relationship_name": "associations", "descriptors_only": "True"},
             "/api/v3/ip_addresses/8.8.8.8/relationship/associations",
             {
                 "data": [{"type": "object", "id": "obj-id", "attributes": {"foo": "foo", "bar": ""}}],
@@ -298,7 +298,7 @@ async def test_get_reports(
         ), 
         (
             "get_entities_related_to_an_url",
-            {"url": "http://theevil.com/", "relationship_name": "associations"},
+            {"url": "http://theevil.com/", "relationship_name": "associations", "descriptors_only": "True"},
             "/api/v3/urls/aHR0cDovL3RoZWV2aWwuY29tLw/relationship/associations",
             {
                 "data": [{"type": "object", "id": "obj-id", "attributes": {"foo": "foo", "bar": ""}}],
@@ -307,7 +307,7 @@ async def test_get_reports(
         ),
         (
             "get_entities_related_to_a_collection",
-            {"id": "collection_id", "relationship_name": "associations"},
+            {"id": "collection_id", "relationship_name": "associations", "descriptors_only": "True"},
             "/api/v3/collections/collection_id/relationship/associations",
             {
                 "data": [{"type": "object", "id": "obj-id", "attributes": {"foo": "foo", "bar": ""}}],
@@ -491,7 +491,7 @@ async def test_get_simple_tools(
                 "type": "collection",
                 "attributes": {"foo": "foo", "bar": "bar"},
                 "relationships": {
-                    rel_name: [{"type": "object", "id": "obj-id", "attributes": {"foo": "foo", "bar": ""}}]
+                    rel_name: [{"type": "object", "id": "obj-id", "attributes": {"foo": "foo"}}]
                     for rel_name in tools.COLLECTION_KEY_RELATIONSHIPS
                 }
             },

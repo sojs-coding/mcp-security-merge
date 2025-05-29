@@ -9,8 +9,8 @@ Threat Intelligence suite.
 ### Collections (Threats)
 
 - **`get_collection_report(id)`**: Retrieves a specific collection report by its ID (e.g., `report--<hash>`, `threat-actor--<hash>`).
-- **`get_entities_related_to_a_collection(id, relationship_name)`**: Gets related entities (domains, files, IPs, URLs, other collections) for a given collection ID.
-- **`search_threats(query, limit=10, order_by="relevance-")`**: Performs a general search for threats (collections) using GTI query syntax.
+- **`get_entities_related_to_a_collection(id, relationship_name, limit=10)`**: Gets related entities (domains, files, IPs, URLs, other collections) for a given collection ID.
+- **`search_threats(query, limit=5, order_by="relevance-")`**: Performs a general search for threats (collections) using GTI query syntax.
 - **`search_campaigns(query, limit=10, order_by="relevance-")`**: Searches specifically for collections of type `campaign`.
 - **`search_threat_actors(query, limit=10, order_by="relevance-")`**: Searches specifically for collections of type `threat-actor`.
 - **`search_malware_families(query, limit=10, order_by="relevance-")`**: Searches specifically for collections of type `malware-family`.
@@ -22,7 +22,7 @@ Threat Intelligence suite.
 ### Files
 
 - **`get_file_report(hash)`**: Retrieves a comprehensive analysis report for a file based on its MD5, SHA1, or SHA256 hash.
-- **`get_entities_related_to_a_file(hash, relationship_name)`**: Gets related entities (domains, IPs, URLs, behaviours, etc.) for a given file hash.
+- **`get_entities_related_to_a_file(hash, relationship_name, limit=10)`**: Gets related entities (domains, IPs, URLs, behaviours, etc.) for a given file hash.
 - **`get_file_behavior_report(file_behaviour_id)`**: Retrieves a specific sandbox behavior report for a file.
 - **`get_file_behavior_summary(hash)`**: Retrieves a summary of all sandbox behavior reports for a file hash.
 
@@ -33,14 +33,14 @@ Threat Intelligence suite.
 ### Network Locations (Domains & IPs)
 
 - **`get_domain_report(domain)`**: Retrieves a comprehensive analysis report for a domain.
-- **`get_entities_related_to_a_domain(domain, relationship_name)`**: Gets related entities for a given domain.
+- **`get_entities_related_to_a_domain(domain, relationship_name, limit=10)`**: Gets related entities for a given domain.
 - **`get_ip_address_report(ip_address)`**: Retrieves a comprehensive analysis report for an IPv4 or IPv6 address.
-- **`get_entities_related_to_an_ip_address(ip_address, relationship_name)`**: Gets related entities for a given IP address.
+- **`get_entities_related_to_an_ip_address(ip_address, relationship_name, limit=10)`**: Gets related entities for a given IP address.
 
 ### URLs
 
 - **`get_url_report(url)`**: Retrieves a comprehensive analysis report for a URL.
-- **`get_entities_related_to_an_url(url, relationship_name)`**: Gets related entities for a given URL.
+- **`get_entities_related_to_an_url(url, relationship_name, limit=10)`**: Gets related entities for a given URL.
 
 ### Hunting
 
@@ -51,7 +51,7 @@ Threat Intelligence suite.
 
 - **`list_threat_profiles`**: List your Threat Profiles at Google Threat Intelligence.
 - **`get_threat_profile(profile_id)`**: Get Threat Profile object.
-- **`get_threat_profile_recommendations(profile_id)`**: Returns the list of objects associated to the given Threat Profile.
+- **`get_threat_profile_recommendations(profile_id, limit=10)`**: Returns the list of objects associated to the given Threat Profile.
 - **`get_threat_profile_associations_timeline(profile_id)`**: Retrieves the associations timeline for the given Threat Profile.
 
 ## Configuration

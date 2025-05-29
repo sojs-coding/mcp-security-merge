@@ -76,7 +76,8 @@ async def fetch_object_relationships(
     resource_id: str,
     relationships: typing.List[str],
     params: dict[str, typing.Any] | None = None,
-    descriptors_only: bool = True):
+    descriptors_only: bool = True,
+    limit: int = 10):
   """Fetches the given relationships descriptors from the given object."""
   rel_futures = {}
   # If true, returns descriptors instead of full objects.
@@ -87,7 +88,7 @@ async def fetch_object_relationships(
           consume_vt_iterator(
               vt_client,
               f"/{resource_collection_type}/{resource_id}"
-              f"{descriptors}/{rel_name}", params=params))
+              f"{descriptors}/{rel_name}", params=params, limit=limit))
 
   data = {}
   for name, items in rel_futures.items():

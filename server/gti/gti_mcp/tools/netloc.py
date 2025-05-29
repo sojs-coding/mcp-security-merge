@@ -109,7 +109,7 @@ async def get_domain_report(domain: str, ctx: Context) -> typing.Dict[str, typin
 
 @server.tool()
 async def get_entities_related_to_a_domain(
-    domain: str, relationship_name: str, descriptors_only: bool, ctx: Context
+    domain: str, relationship_name: str, descriptors_only: bool, ctx: Context, limit: int = 10
 ) -> typing.Dict[str, typing.Any]:
   """Retrieve entities related to the the given domain.
 
@@ -153,6 +153,7 @@ async def get_entities_related_to_a_domain(
       domain (required): Domain to analyse.
       relationship_name (required): Relationship name.
       descriptors_only (required): Bool. Must be True when the target object type is one of file, domain, url, ip_address or collection.
+      limit: Limit the number of entities to retrieve. 10 by default.
     Returns:
       List of entities related to the domain.
   """
@@ -166,7 +167,8 @@ async def get_entities_related_to_a_domain(
       vt_client(ctx), 
       "domains", domain, 
       relationships=[relationship_name],
-      descriptors_only=descriptors_only)
+      descriptors_only=descriptors_only,
+      limit=limit)
   return utils.sanitize_response(res.get(relationship_name, []))
 
 
@@ -190,7 +192,7 @@ async def get_ip_address_report(ip_address: str, ctx: Context) -> typing.Dict[st
 
 @server.tool()
 async def get_entities_related_to_an_ip_address(
-    ip_address: str, relationship_name: str, descriptors_only: bool, ctx: Context
+    ip_address: str, relationship_name: str, descriptors_only: bool, ctx: Context, limit: int = 10
 ) -> typing.Dict[str, typing.Any]:
   """Retrieve entities related to the the given IP Address.
 
@@ -225,6 +227,7 @@ async def get_entities_related_to_an_ip_address(
       ip_address (required): IP Addres to analyse.
       relationship_name (required): Relationship name.
       descriptors_only (required): Bool. Must be True when the target object type is one of file, domain, url, ip_address or collection.
+      limit: Limit the number of entities to retrieve. 10 by default.
     Returns:
       List of entities related to the IP Address.
   """
@@ -239,5 +242,6 @@ async def get_entities_related_to_an_ip_address(
       "ip_addresses",
       ip_address,
       relationships=[relationship_name],
-      descriptors_only=descriptors_only)
+      descriptors_only=descriptors_only,
+      limit=limit)
   return utils.sanitize_response(res.get(relationship_name, []))

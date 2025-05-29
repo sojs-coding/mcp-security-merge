@@ -101,7 +101,7 @@ async def get_hunting_ruleset(ruleset_id: str, ctx: Context) -> typing.Dict[str,
 
 @server.tool()
 async def get_entities_related_to_a_hunting_ruleset(
-    ruleset_id: str, relationship_name: str, ctx: Context
+    ruleset_id: str, relationship_name: str, ctx: Context, limit: int = 10
 ) -> typing.Dict[str, typing.Any]:
   """Retrieve entities related to the the given Hunting Ruleset.
 
@@ -114,6 +114,7 @@ async def get_entities_related_to_a_hunting_ruleset(
     Args:
       ruleset_id (required): Hunting ruleset identifier.
       relationship_name (required): Relationship name.
+      limit: Limit the number of entities to retrieve. 10 by default.
     Returns:
       List of objects related to the Hunting ruleset.
   """
@@ -124,6 +125,6 @@ async def get_entities_related_to_a_hunting_ruleset(
       }
 
   res = await utils.fetch_object_relationships(
-      vt_client(ctx), "intelligence/hunting_rulesets", ruleset_id, [relationship_name])
+      vt_client(ctx), "intelligence/hunting_rulesets", ruleset_id, [relationship_name], limit=limit)
   return utils.sanitize_response(res.get(relationship_name, []))
 

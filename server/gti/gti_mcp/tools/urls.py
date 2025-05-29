@@ -91,7 +91,7 @@ async def get_url_report(url: str, ctx: Context) -> typing.Dict[str, typing.Any]
 
 @server.tool()
 async def get_entities_related_to_an_url(
-    url: str, relationship_name: str, descriptors_only: bool, ctx: Context
+    url: str, relationship_name: str, descriptors_only: bool, ctx: Context, limit: int = 10
 ) -> typing.Dict[str, typing.Any]:
   """Retrieve entities related to the the given URL.
 
@@ -136,6 +136,7 @@ async def get_entities_related_to_an_url(
       url (required): URL to analyse.
       relationship_name (required): Relationship name.
       descriptors_only (required): Bool. Must be True when the target object type is one of file, domain, url, ip_address or collection.
+      limit: Limit the number of objects to retrieve. 10 by default.
     Returns:
       List of entities related to the URL.
   """
@@ -151,5 +152,6 @@ async def get_entities_related_to_an_url(
       "urls", 
       url_id,
       relationships=[relationship_name],
-      descriptors_only=descriptors_only)
+      descriptors_only=descriptors_only,
+      limit=limit)
   return utils.sanitize_response(res.get(relationship_name, []))
