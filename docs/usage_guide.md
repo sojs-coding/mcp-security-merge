@@ -106,7 +106,7 @@ Additionally, for the secops-soar MCP server, you will need use the CA list bund
         "--directory",
         "/path/to/the/repo/server/secops-soar",
         "run",
-        "secops_soar_mcp.py",
+        "server.py",
         "--integrations",
         "CSV,OKTA"
       ],
