@@ -194,3 +194,6 @@ temp/
 
 # The service account json
 object-viewer-sa.json
+
+# don't commit any local database
+app_data.db
