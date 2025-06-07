@@ -187,3 +187,10 @@ config.json
 
 # Visual Studio Code
 .vscode/
+
+# files are written locally in this directory.
+# should ignore them.
+temp/
+
+# The service account json
+object-viewer-sa.json
