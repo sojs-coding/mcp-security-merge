@@ -126,7 +126,7 @@ if [ "$1" = "deploy" ]; then
 
 elif [ "$1" = "run" ]; then
   echo "Creating .env file with specified variables..."
-  # Create the .env file with the specified variables
+  # Create the .env file with the variables from the container's environment
   create_env_file "/tmp/.env" \
     "LOAD_SECOPS_MCP=$LOAD_SECOPS_MCP" \
     "CHRONICLE_PROJECT_ID=$CHRONICLE_PROJECT_ID" \

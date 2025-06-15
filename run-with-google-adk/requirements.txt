@@ -1,3 +1,4 @@
--e git+https://github.com/google/adk-python.git@main#egg=google-adk
-uv
+google-cloud-aiplatform[agent_engines]
 markdown
+uv
+google-adk

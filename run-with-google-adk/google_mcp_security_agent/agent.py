@@ -19,10 +19,9 @@ import logging
 from utils_extensions_cbs_tools.extensions import MCPToolSetWithSchemaAccess
 from utils_extensions_cbs_tools.tools import store_file, get_file_link, list_files
 from utils_extensions_cbs_tools.callbacks import bmc_trim_llm_request, bac_setup_state_variable
+from typing import TextIO
+import sys
 
-from .crowdstrike_agent import crowdstrike_agent
-
-# TODO fix logging
 logging.basicConfig(
     level=logging.INFO)
 
@@ -48,8 +47,18 @@ def get_all_tools():
     env_file_path="/tmp/.env"
     uv_dir_prefix="./server"
 
-  logging.info(f"Using Env File Path - {env_file_path}, Current directory is - {os.getcwd()}")
+  if os.environ.get("AE_RUN","N") == "Y":
+    env_file_path="../../../google_mcp_security_agent/.env"
+    uv_dir_prefix="./server"
 
+  logging.info(f"Using Env File Path - {env_file_path}, Current directory is - {os.getcwd()}, uv_dir_prefix is - {uv_dir_prefix}")
+
+  # required temporarily for https://github.com/google/adk-python/issues/1024
+  errlog_ae : TextIO = sys.stderr
+  if os.environ.get("AE_RUN","N") == "Y":
+    errlog_ae = None
+    
+  
   if os.environ.get("LOAD_SCC_MCP") == "Y":
     scc_tools = MCPToolSetWithSchemaAccess(
                   connection_params=StdioConnectionParams(
@@ -62,7 +71,8 @@ def get_all_tools():
                                         ]
                     ),
                   timeout=timeout),
-                tool_set_name="scc"
+                tool_set_name="scc",
+                errlog=errlog_ae 
                 )
 
   if os.environ.get("LOAD_SECOPS_MCP") == "Y":
@@ -79,7 +89,8 @@ def get_all_tools():
                                         ]
                     ),
                   timeout=timeout),
-                tool_set_name="secops_mcp"
+                tool_set_name="secops_mcp",
+                errlog=errlog_ae
                 )
 
   if os.environ.get("LOAD_GTI_MCP") == "Y":
@@ -96,7 +107,8 @@ def get_all_tools():
                                         ]
                     ),
                   timeout=timeout),
-                tool_set_name="gti_mcp"
+                tool_set_name="gti_mcp",
+                errlog=errlog_ae
                 )    
 
 
@@ -112,11 +124,12 @@ def get_all_tools():
                                           env_file_path,
                                           "server.py",
                                           "--integrations",
-                                          "CSV,OKTA"
+                                          os.environ.get("SECOPS_INTEGRATIONS","CSV,OKTA")
                                         ]
                     ),
                   timeout=timeout),
-                tool_set_name="secops_soar_mcp"
+                tool_set_name="secops_soar_mcp",
+                errlog=errlog_ae
                 )    
 
   logging.info("MCP Toolsets created successfully.")
@@ -135,7 +148,7 @@ def create_agent():
       tools=tools,
       before_model_callback=bmc_trim_llm_request,
       before_agent_callback=bac_setup_state_variable,
-      sub_agents=[crowdstrike_agent],
+      # sub_agents=[add your sub agents here],
       description="You are the google_mcp_security_agent."
 
   )

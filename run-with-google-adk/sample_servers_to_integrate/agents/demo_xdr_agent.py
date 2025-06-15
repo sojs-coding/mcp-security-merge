@@ -19,6 +19,8 @@ import logging
 from utils_extensions_cbs_tools.extensions import MCPToolSetWithSchemaAccess
 from utils_extensions_cbs_tools.callbacks import bmc_trim_llm_request
 
+from typing import TextIO
+import sys
 
 # TODO improve logging
 logging.basicConfig(
@@ -31,52 +33,59 @@ if os.environ.get("MINIMAL_LOGGING","N") == "Y":
 
 is_any_variable_unset = any(
     os.getenv(var, "NOT_SET") == "NOT_SET"
-    for var in ["CRWD_CLIENT_ID","CRWD_CLIENT_SECRET",]
+    for var in ["XDR_CLIENT_ID","XDR_CLIENT_SECRET",]
 )
 if is_any_variable_unset:
   print(f"Please set all required environment variables, check .env file")
   exit(1)
 
 def get_all_tools():
-  """Get Tools from Crowdstrike MCP"""
-  logging.info("Attempting to connect to MCP servers for Crowdstrike...")
-  crwd_tools = None # Initialize scc_tools
+  """Get Tools from XDR MCP"""
+  logging.info("Attempting to connect to MCP servers for XDR...")
+  xdr_tools = None # Initialize scc_tools
   
   uv_dir_prefix="../server"
   if os.environ.get("REMOTE_RUN","N") == "Y":
     uv_dir_prefix="./server"
 
+  if os.environ.get("AE_RUN","N") == "Y":
+    uv_dir_prefix="./server"    
+
+  # required temporarily for https://github.com/google/adk-python/issues/1024
+  errlog_ae : TextIO = sys.stderr
+  if os.environ.get("AE_RUN","N") == "Y":
+    errlog_ae = None
+
   timeout = float(os.environ.get("STDIO_PARAM_TIMEOUT","60.0"))
 
-  if os.environ.get("LOAD_CROWD_MCP") == "Y":
+  if os.environ.get("LOAD_XDR_MCP") == "Y":
 
-    crwd_tools = MCPToolSetWithSchemaAccess(
+    xdr_tools = MCPToolSetWithSchemaAccess(
                   connection_params=StdioConnectionParams(
                     server_params=StdioServerParameters(
                       command='python',
-                      args=[ f"{uv_dir_prefix}/crowdstrike/server.py",
-                              "--crwd-api-base",
-                              "https://api.us-2.crowdstrike.com",
+                      args=[ f"{uv_dir_prefix}/demo_xdr/xdr_mcp_server.py",
                               "--client-id",
-                              os.environ.get("CRWD_CLIENT_ID"),
+                              os.environ.get("XDR_CLIENT_ID"),
                               "--client-secret",
-                              os.environ.get("CRWD_CLIENT_SECRET")
+                              os.environ.get("XDR_CLIENT_SECRET")
                             ]
                     ),
                   timeout=timeout),
-                tool_set_name="crowdstrike_tools"
+                tool_set_name="demo_xdr_tools",
+                errlog=errlog_ae
                 )
 
-  logging.info("MCP Toolsets for Crowdstrike created successfully.")
-  return [crwd_tools]
+  logging.info("MCP Toolsets for XDR created successfully.")
+  return [xdr_tools]
 
 tools:any = [item for item in get_all_tools() if item is not None]
 
-crowdstrike_agent = LlmAgent(
+demo_xdr_agent = LlmAgent(
     model=os.environ.get("GOOGLE_MODEL"), 
-    name="crowdstrike_agent",
-    instruction="You help users to gather information about their hosts from their Falcon backend to investigate. Do take calculated guesses based on your own knowledge base to help the user as much as you can, even if you may not know much about the Falcon product itself. At the end of a query when there is some data do let them know your opinion and the steps you carried to achieve the output.",
+    name="demo_xdr_agent",
+    instruction="You help users to gather information about their hosts from their XDR backend to investigate. Do take calculated guesses based on your own knowledge base to help the user as much as you can, even if you may not know much about the XDR product itself. At the end of a query when there is some data do let them know your opinion and the steps you carried to achieve the output.",
     tools=tools,
     before_model_callback=bmc_trim_llm_request,
-    description="You are the crowdstrike_agent. Anything not related to crowstrike please delegate to google_mcp_security_agent"
+    description="You are the demo_xdr_agent. Anything not related to XDR please delegate to google_mcp_security_agent"
 )

@@ -75,6 +75,7 @@ origins = [
     "http://localhost:5500", # Common for Live Server in VS Code
     "http://127.0.0.1:5500",
     "http://127.0.0.1:8000",
+    "*"
 ]
 
 app.add_middleware(
@@ -108,9 +109,9 @@ os.makedirs(static_dir, exist_ok=True)
 
 app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
-if os.environ.get("GOOGLE_API_KEY") == "NOT_SET":
-  print("Please set a Google API Key using - https://aistudio.google.com/app/apikey")
-  exit(1)
+# if os.environ.get("GOOGLE_API_KEY") == "NOT_SET":
+#   print("Please set a Google API Key using - https://aistudio.google.com/app/apikey")
+#   exit(1)
 
 session_runner_map={}
 
@@ -259,9 +260,6 @@ async def chat_endpoint(request_body: ChatRequest):
   return StreamingResponse(event_generator(), media_type="text/event-stream")
 
 # To run this application:
-# 1. Save the above code as main.py
-# 2. Make sure you have a 'static' directory in the same location as main.py.
-#    The script will create dummy index.html and app.js inside 'static' if they don't exist.
-# 3. Install dependencies: pip install -r requirements.txt
-# 4. Run the server: uvicorn main:app --reload
-# 5. Open your browser to http://localhost:8000/
+# 1. Install dependencies: pip install -r requirements.txt
+# 2. Run the server: uvicorn main:app --reload
+# 3. Open your browser to http://localhost:8000/

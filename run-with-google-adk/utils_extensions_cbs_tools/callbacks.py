@@ -11,9 +11,7 @@ from google.adk.models import LlmResponse, LlmRequest
 def bmc_trim_llm_request(
     callback_context: CallbackContext, llm_request: LlmRequest
 ) -> Optional[LlmResponse]:
-    """
-    Please check the notes.md for more details on why we are doing this.       
-    """
+
     max_prev_user_interactions = int(os.environ.get("MAX_PREV_USER_INTERACTIONS","-1"))
 
     # Everytime the entire new / full list comes from Execution Logic

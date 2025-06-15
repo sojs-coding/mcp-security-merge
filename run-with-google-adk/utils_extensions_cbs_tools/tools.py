@@ -95,6 +95,15 @@ def get_file_link(user_name:str,file_name:str)->dict:
             "links": ""
         }
 
+    # make sure that the file name has user scope and html extension
+    # as we always add files to artifact registry in user scope 
+    # and with an html extension.
+    
+    if not file_name.startswith("user:"):
+        file_name = "user:" + file_name
+    if not file_name.endswith(".html"):
+        file_name = file_name + ".html"        
+
     try:
         storage_client = storage.Client.from_service_account_json(os.environ.get("GCS_SA_JSON"))
         bucket_name = os.environ.get("GCS_ARTIFACT_SERVICE_BUCKET")
