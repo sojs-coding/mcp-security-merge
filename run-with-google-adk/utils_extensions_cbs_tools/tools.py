@@ -123,7 +123,7 @@ def get_file_link(user_name:str,file_name:str)->dict:
             # Generate the signed URL
             # For a v4 signed URL, you must specify the expiration as a datetime object.
             # url valid for 10 minutes
-            expiration_seconds=600
+            expiration_seconds=int(os.environ.get("SIGNED_URL_DURATION_MIN",10)) * 60
             expiration_time = datetime.timedelta(seconds=expiration_seconds)
             signed_url = blob.generate_signed_url(
                 version="v4",
