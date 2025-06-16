@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# this script runs from the top level directory (mcp-security when deploying and /app when running in container)
-
 #!/bin/bash
 
 ENV_FILE="./google_mcp_security_agent/.env"
