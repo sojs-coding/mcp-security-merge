@@ -18,13 +18,20 @@ ENV_FILE="./google_mcp_security_agent/.env"
 
 list_of_vars=`cat $ENV_FILE  | grep = | grep -v ^# | cut -d "=" -f1 | tr "\n" "," | sed s/,$//g`
 
+update="n"
+update_resource_name="not_available"
+
+if [[ $# -eq 1 ]] then
+  update="y"
+  update_resource_name=$1
+fi
 
 echo "Copying ../server directory to current directory"
 cp -r ../server .
 
 echo "Running AE deployment ..."
 
-python ae_remote_deployment_sec.py $list_of_vars
+python ae_remote_deployment_sec.py $list_of_vars $update $update_resource_name
 
 deploy_status=$? #get the status
 

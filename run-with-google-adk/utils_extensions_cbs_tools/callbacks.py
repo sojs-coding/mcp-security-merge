@@ -1,3 +1,17 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 from google.adk.agents.callback_context import CallbackContext
 import os
 import logging
@@ -28,7 +42,6 @@ def bmc_trim_llm_request(
             item = llm_request.contents[i]
             
             # Check if the item is a user message and has text content
-            # TODO test for transfer agent scenario where the role is user and text is present but should not be trimmed.
             if item.role == "user" and item.parts[0] and item.parts[0].text and item.parts[0].text != "For context:":
                 logging.info(f"Encountered a user message => {item.parts[0].text}")
                 user_message_count += 1
@@ -61,12 +74,18 @@ def bac_setup_state_variable(callback_context: CallbackContext) -> Optional[type
     # Only applicable for ADK WEB UI. 
     # As we can provide state in when we have access to the session (in custom runner).
     # keeping it consistent with the ADK web as user_name is defaulted to 'user'
+   
     if "user_name" not in current_state:
       logging.info("Creating default state to update the prompt")
+      user_name = "user"
+
+      if os.environ.get("AE_RUN","N") == "Y":
+          user_name = callback_context._invocation_context.session.user_id
+
       initial_state = {
-        "user_name":"user"
+        "user_name":user_name
       }      
       callback_context.state.update(initial_state)
     else:
-      logging.info(f"Found user_name  with value {current_state["user_name"]}...")       
+      logging.info(f"Found user_name with value {current_state["user_name"]}...")       
     return None

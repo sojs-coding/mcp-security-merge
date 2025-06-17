@@ -372,12 +372,13 @@ Here are the steps -
 2. Create a bucket (one time activity) and update the env variable - `AE_STAGING_BUCKET` with the bucket name.
 3. Make sure the envvariables - `GOOGLE_CLOUD_PROJECT` and `GOOGLE_CLOUD_LOCATION` are updated.
 4. `cd run-with-google-adk`
-5. `./ae_deploy_run.sh`
-6. Please note the output where it says - 
+5. `chmod +x ae_deploy_run.sh`
+6. `./ae_deploy_run.sh`
+7. Please note the output where it says - 
 
    `AgentEngine created. Resource name: projects/********/locations/****/reasoningEngines/**********`.
-7. This creates an Agent engine Agent called `google_security_agent`
-8. Verify it [here](https://console.cloud.google.com/vertex-ai/agents/agent-engines) on the Google Cloud Console.
+8. This creates an Agent engine Agent called `google_security_agent`
+9. Verify it [here](https://console.cloud.google.com/vertex-ai/agents/agent-engines) on the Google Cloud Console.
 
 How to test?
 
@@ -388,12 +389,17 @@ Agent Engine as such does not come with any UI, but we have provided one rudimen
 3. Access the UI locally on http://localhost:8000
 4. You can provide a username on the UI and then use the same username to load your previous session.
 
+### Redeploying Agent
+You might need to redeploy the agent. In which case please use the same steps as deployment but when calling `./ae_deploy_run.sh`, please provide the agent engine resource name from previous deployment.
+
+```bash
+# replace with your agent engine agent resource name.
+./ae_deploy_run.sh projects/********/locations/****/reasoningEngines/**********
+
+```
+
 > 🪧 **NOTE:**  
 > First response takes time.
-
-> 🪧 **NOTE:**  
-> Delete the deployment from Agent Engine ([Agent Engine Console](https://console.cloud.google.com/vertex-ai/agents/agent-engines)) when redeploying.
-
 
 
 ## 4. Improving performance and optimizing costs.
@@ -413,11 +419,11 @@ A user interaction involves
 4. LLM call with Initial System PRompt, User Query, Tool Information, Tool Request, Tool Response
 5. Final LLM response
 
-Now the subsequent interaction might need all of the above (e.g. User query 0 let's investigate all IPs from this response)
+Now the subsequent interaction might need all of the above (e.g. User query - let's investigate all IPs from this response)
 
-But generally after a few user interactions - all previous interactions might not be needed.
+But generally after a few user interactions - only the recent interactions (user query and responses to that query) are required.
 
-So by tweaking an environment variable `MAX_PREV_USER_INTERACTIONS` which is set to 3 by default - you can control the number of such conversations sent to the LLM thereby limiting the context size, improving performance and optimizing costs.
+By tweaking an environment variable `MAX_PREV_USER_INTERACTIONS` which is set to 3 by default - you can control the number of such conversations sent to the LLM thereby limiting the context size, improving performance and optimizing costs.
 
 ## 5. Integrating your own MCP servers with Google Security MCP servers
 
