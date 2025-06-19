@@ -100,10 +100,11 @@ async def get_session_and_user_id(username: str,start_new_session: str="N"):
     # in case username is not sent, use default_user
     user_id = "default_user" if username == "None" else username
     agent_resource=os.environ.get("AGENT_ENGINE_RESOURCE_NAME")
-    #print(agent_resource)
+    print(f"Agent Resource - {agent_resource}")
     remote_app = agent_engines.get(agent_resource)
-
+    print(f"Current User Id - {user_id}")
     remote_sessions = remote_app.list_sessions(user_id=user_id)
+    print(f"remote_sessions - {remote_sessions}")
     session_available = False
 
     if start_new_session != "Y":

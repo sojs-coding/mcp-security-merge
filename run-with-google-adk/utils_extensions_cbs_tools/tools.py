@@ -41,7 +41,7 @@ async def store_file(tool_context:ToolContext,**kwargs)->dict:
    html_file_name=file_name+".html"
    # write to the disk and then save into the artifact service
    # writing to disk is totally optional
-   with open(f"./temp/{file_name}.html", "w", encoding="utf-8") as f:
+   with open(f"{os.environ.get("LOCAL_DIR_FOR_FILES","/tmp")}/{file_name}.html", "w", encoding="utf-8") as f:
         f.write(html_output)
 
    file_artifact = types.Part.from_bytes( # from_text is available but does not work with GCS.

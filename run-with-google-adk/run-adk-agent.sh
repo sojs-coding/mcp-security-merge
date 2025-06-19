@@ -18,6 +18,11 @@
 SAMPLE_ENV_FILE="./google_mcp_security_agent/sample.env.properties"
 ENV_FILE="./google_mcp_security_agent/.env"
 
+# Required for creating local files
+if [[ ! -d ./temp ]] then
+  mkdir ./temp
+fi
+
 # Function to mask environment variable values
 mask_env_value() {
   local value="$1"

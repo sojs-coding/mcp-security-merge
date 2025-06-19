@@ -22,6 +22,10 @@ from utils_extensions_cbs_tools.callbacks import bmc_trim_llm_request, bac_setup
 from typing import TextIO
 import sys
 
+from .demo_idp_agent import demo_idp_agent
+from .demo_xdr_agent import demo_xdr_agent
+
+
 logging.basicConfig(
     level=logging.INFO)
 
@@ -148,7 +152,7 @@ def create_agent():
       tools=tools,
       before_model_callback=bmc_trim_llm_request,
       before_agent_callback=bac_setup_state_variable,
-      # sub_agents=[add your sub agents here],
+      sub_agents=[demo_xdr_agent.root_agent, demo_idp_agent.root_agent],
       description="You are the google_mcp_security_agent."
 
   )
