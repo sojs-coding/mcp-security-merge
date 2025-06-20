@@ -186,7 +186,7 @@ INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
 
 ```
 
-Access the Agent 🤖 interface by going to `http://localhost:8000`
+Access the Agent 🤖 interface by going to `http://localhost:8000`. Make sure you select `google_mcp_security_agent` in the UI.
 
 > 🪧 **NOTE:**  
 > First response usually takes a bit longer as the agent is loading the tools from the MCP server(s).
@@ -390,7 +390,7 @@ Agent Engine as such does not come with any UI, but we have provided one rudimen
 4. You can provide a username on the UI and then use the same username to load your previous session.
 
 ### Redeploying Agent
-You might need to redeploy the agent. In which case please use the same steps as deployment but when calling `./ae_deploy_run.sh`, please provide the agent engine resource name from previous deployment.
+You might need to redeploy the agent. In which case please use the same steps as deployment but when calling `./ae_deploy_run.sh`, please provide the agent engine resource name from previous deployment as an additional parameter (shown below).
 
 ```bash
 # replace with your agent engine agent resource name.
@@ -434,14 +434,83 @@ You/your customers might be using other security products (like EDR/XDR provider
 
 You can use one agent to access functionality of all these products.
 
-Since this repository provides and opiniated, prebuilt agent - we are providing sample MCP servers and agents (as templates) for you to try out integrations and then use your MCP servers to integrate (and deploy to Cloud Run or Agent Engine)
+#### Reference MCP servers -
+Since this repository provides and opiniated, prebuilt agent - we are providing sample MCP servers and agents (as templates) for you to try out integrations and then use your own MCP servers to integrate (and deploy to Cloud Run or Agent Engine)
 
 Here are the steps 
 
 1. Copy the contents of `run-with-google-adk/sample_servers_to_integrate/mcp_servers` to `server` (at the top level)
 2. Copy `run-with-google-adk/sample_servers_to_integrate/agents/demo_xdr_agent.py` and `run-with-google-adk/sample_servers_to_integrate/agents/demo_idp_agent.py` to `run-with-google-adk/google_mcp_security_agent`
-3. Import the agents from `demo_xdr_agent.py` and `demo_idp_agent.py` and add them as sub agents into `agent.py` in `run-with-google-adk/google_mcp_security_agent/`
+3. Import the agents from `demo_xdr_agent.py` and `demo_idp_agent.py` and add them as `sub agents` into `agent.py` in `run-with-google-adk/google_mcp_security_agent/`
 4. Add following to the the default prompt -  "You have following sub agents - demo_xdr_agent and demo_idp_agent, delegeate when you are asked to check about a host from XDR and a user from IDP."
+
+Here's the updated code
+
+```python
+# agent.py in google_mcp_security_agent
+
+# rest of the file
+from .demo_idp_agent import demo_idp_agent
+from .demo_xdr_agent import demo_xdr_agent
+# rest of the file
+
+# check value of the input variable sub_agents in the agent creation below.
+def create_agent():
+  tools:any = [item for item in get_all_tools() if item is not None]
+  tools.append(store_file)
+  tools.append(get_file_link)
+  tools.append(list_files)
+
+  agent = LlmAgent(
+      model=os.environ.get("GOOGLE_MODEL"), 
+      name="google_mcp_security_agent",
+      instruction=os.environ.get("DEFAULT_PROMPT"),
+      tools=tools,
+      before_model_callback=bmc_trim_llm_request,
+      before_agent_callback=bac_setup_state_variable,
+      sub_agents=[demo_xdr_agent.root_agent, demo_idp_agent.root_agent],
+      description="You are the google_mcp_security_agent."
+
+  )
+  return agent
+
+```
+
+Also make sure that the .env file has the required variables uncommented
+
+```properties
+# rest of the .env file
+
+# Add Your MCP server variables here, sample provided, please check the documentation
+# MCP-1
+LOAD_XDR_MCP=Y
+XDR_CLIENT_ID=abc123
+XDR_CLIENT_SECRET=xyz456
+# MCP-2
+LOAD_IDP_MCP=Y
+IDP_CLIENT_ID=abc123
+IDP_CLIENT_SECRET=xyz456
+
+```
+
+And now you can run the agent locally as before and ask it questions like
+
+1. `let's check alerts for web-server-iowa in demo xdr`  
+2. `Ok let's find recent logins for the user oleg in the IDP`
+
+And notice how the agent transfers control to the sub agents for these reference subagents and through the sample MCP servers you get the response.
+Screenshots provided below.
+
+> 🪧 **NOTE:**  
+> Now you can use your own MCP servers, create subagents the way you did for the reference servers and test and deploy the agent with your sub agents. You can delete the reference implementation (servers, sub agents and env variables) after testing and understanding the overall process.
+
+Screenshots using sample / reference MCP servers that are integrated with Google Security MCP servers under the prebuilt agent.
+
+Sample XDR
+![](./static/demo-xdr.png)
+
+Sample IDP
+![](./static/demo-idp.png)
 
 
 ## 6. Additional Features

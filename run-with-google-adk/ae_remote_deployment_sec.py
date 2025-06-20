@@ -77,7 +77,7 @@ if update == "n":
         "./utils_extensions_cbs_tools", # a directory
         "./server", # a directory
         "./temp",
-        "./object-viewer-sa.json", # a file
+        #"./object-viewer-sa.json", # a file
     ],
     env_vars=env_vars_to_send # send all required variables to agent engine.
     )

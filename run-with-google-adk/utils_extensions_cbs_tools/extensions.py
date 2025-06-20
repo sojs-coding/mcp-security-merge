@@ -19,8 +19,7 @@ from google.adk.tools.mcp_tool.mcp_session_manager import retry_on_closed_resour
 from typing import List
 from typing import Optional, Union, TextIO
 from google.adk.agents.readonly_context import ReadonlyContext
-from google.adk.tools.mcp_tool.mcp_tool import MCPTool
-from google.adk.tools.base_tool import BaseTool
+from google.adk.tools.mcp_tool.mcp_tool import MCPTool, BaseTool
 from google.adk.tools.mcp_tool.mcp_session_manager import  StdioServerParameters, StdioConnectionParams, SseConnectionParams,StreamableHTTPConnectionParams
 from mcp.types import ListToolsResult
 from .cache import tools_cache
@@ -61,7 +60,7 @@ class MCPToolSetWithSchemaAccess(MCPToolset):
     logging.info(f"MCPToolSetWithSchemaAccess initialized with tool_set_name: '{self.tool_set_name}'")  
     self._session = None
 
-  @retry_on_closed_resource
+  @retry_on_closed_resource("_reinitialize_session")
   @override
   async def get_tools(
       self,
@@ -77,7 +76,8 @@ class MCPToolSetWithSchemaAccess(MCPToolset):
         List[BaseTool]: A list of tools available under the specified context.
     """
     # Get session from session manager
-    session = await self._mcp_session_manager.create_session()
+    if not self._session:
+      self._session = await self._mcp_session_manager.create_session()
 
     if self.tool_set_name in tools_cache.keys():
       logging.info(f"Tools found in cache for toolset {self.tool_set_name}, returning them")  
@@ -85,18 +85,7 @@ class MCPToolSetWithSchemaAccess(MCPToolset):
     else:
       logging.info(f"No tools found in cache for toolset {self.tool_set_name}, loading")
 
-    # Fetch available tools from the MCP server
-    tools_response: ListToolsResult = await session.list_tools()
-
-    # Apply filtering based on context and tool_filter
-    tools = []
-    for tool in tools_response.tools:
-      mcp_tool = MCPTool(
-          mcp_tool=tool,
-          mcp_session_manager=self._mcp_session_manager,
-          auth_scheme=self._auth_scheme,
-          auth_credential=self._auth_credential,
-      )
+    tools_response: ListToolsResult = await self._session.list_tools()
 
     # Apply filtering based on context and tool_filter
     tools = []
