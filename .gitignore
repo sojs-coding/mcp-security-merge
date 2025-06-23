@@ -197,3 +197,7 @@ object-viewer-sa.json
 
 # don't commit any local database
 app_data.db
+
+# Don't commit the evaluation data
+*.evalset.json
+.adk/
