@@ -187,3 +187,17 @@ config.json
 
 # Visual Studio Code
 .vscode/
+
+# files are written locally in this directory.
+# should ignore them.
+temp/
+
+# The service account json
+object-viewer-sa.json
+
+# don't commit any local database
+app_data.db
+
+# Don't commit the evaluation data
+*.evalset.json
+.adk/
