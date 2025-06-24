@@ -76,7 +76,7 @@ if update == "n":
         "./google_mcp_security_agent", # a directory
         "./utils_extensions_cbs_tools", # a directory
         "./server", # a directory
-        "./temp",
+        #"./temp",
         #"./object-viewer-sa.json", # a file
     ],
     env_vars=env_vars_to_send # send all required variables to agent engine.
