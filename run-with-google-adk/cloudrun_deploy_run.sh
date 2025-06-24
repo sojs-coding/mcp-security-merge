@@ -141,7 +141,7 @@ EOF
   
  
   # Deploy the service with the dynamically constructed environment variables
-  gcloud run deploy mcp-security-agent-service-adk130 \
+  gcloud run deploy mcp-security-agent-service \
     --source . \
     --region "$GOOGLE_CLOUD_LOCATION" \
     --project "$GOOGLE_CLOUD_PROJECT" \

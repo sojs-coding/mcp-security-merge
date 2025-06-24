@@ -116,8 +116,6 @@ async def get_session_and_user_id(username: str,start_new_session: str="N"):
     
     if not session_available:
         print("No sessions fetched for the given user and engine combination / or new requested - creating one")
-        # session already has it as 'userId': 'u_456' (only when on agent Engine) but in the prompt (and bac_setup_state_variable) we have been using user_name
-        # which is more generic for other run types (local, adk, custom-ui and so on)
         remote_session = remote_app.create_session(user_id=user_id)
 
     print(f"Using remote session -> {remote_session["id"]}")
