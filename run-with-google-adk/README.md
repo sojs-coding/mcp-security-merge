@@ -11,6 +11,8 @@ This guide provides instructions on how to run the prebuilt ADK (Agent Developme
 [4. Improving performance and optimizing costs.](#4-improving-performance-and-optimizing-costs)  
 [5. Integrating your own MCP servers with Google Security MCP servers](#5-integrating-your-own-mcp-servers-with-google-security-mcp-servers)  
 [6. Additional Features](#6-additional-features)  
+[7. Registering Agent Engine agent to AgentSpace](#7-registering-agent-engine-agent-to-agentspace)
+
 ## 1. Running Agent locally (Setup time - about 5 minutes)
 
 ### Prerequisites
@@ -516,3 +518,100 @@ Sample IDP
 ## 6. Additional Features
 
 The prebuilt agent also allows creating files and signed URLs to these files. A possible scenario is when you want to create a report. You can say "add the summary as markdown to summary_146.md". This creates a file and saves it using the artifact service. You can later ask for a shareable link to this file - "create a link to file summary_146.md"
+
+## 7. Registering Agent Engine Agent to AgentSpace
+
+1. When an agent is deployed on Agent Engine ([guide](#3-deploying-and-running-agent-on-agent-engine)) you get a resource name. Make sure you have it to carry out next steps
+2. Go to the Agentspace [page](https://console.cloud.google.com/gen-app-builder/engines) in Google Cloud Console.
+3. Create an App (Type - AgentSpace)
+4. Note down the app details including the app name (e.g. google-security-agent-app_1750057151234)
+5. Make sure that you have the Agent Space Admin role while performing the following actions
+6. Enable Discovery Engine API for your project
+7. Provide the following roles to the Discovery Engine Service Account  
+   Vertex AI viewer  
+   Vertex AI user  
+8. Please note that these roles need to be provided into the project housing your Agent Engine Agent. Also you need to enable the show Google provided role grants to access the Discovery Engine Service Account.
+9. Now to register the agent and make it available to your application use the following shell script. Please replace the variables `AGENT_SPACE_PROJECT_ID ,AGENT_SPACE_APP_NAME ,AGENT_ENGINE_PROJECT_NUMBER , AGENT_LOCATION` and `REASONING_ENGINE_NUMBER` before running the script.
+
+```bash
+#!/bin/bash
+
+TARGET_URL="https://discoveryengine.googleapis.com/v1alpha/projects/AGENT_SPACE_PROJECT_ID/locations/global/collections/default_collection/engines/AGENT_SPACE_APP_NAME/assistants/default_assistant/agents" # 
+
+JSON_DATA=$(cat <<EOF
+{
+    "displayName": "Google Security Agent",
+    "description": "Allows security operations on Google Security Products",
+    "adk_agent_definition": 
+    {
+        "tool_settings": {
+            "tool_description": "Various Tools from SIEM, SOAR and SCC"
+        },
+        "provisioned_reasoning_engine": {
+            "reasoning_engine":"projects/AGENT_ENGINE_PROJECT_NUMBER/locations/AGENT_LOCATION/reasoningEngines/REASONING_ENGINE_NUMBER"
+        }
+    }
+}
+EOF
+)
+
+echo "Sending POST request to: $TARGET_URL"
+echo "Request Body:"
+echo "$JSON_DATA"
+echo ""
+
+# Perform the POST request using curl
+curl -X POST \
+     -H "Content-Type: application/json" \
+     -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+     -H "X-Goog-User-Project: AGENT_SPACE_PROJECT_ID" \
+     -d "$JSON_DATA" \
+     "$TARGET_URL"
+
+echo "" # Add a newline after curl output for better readability
+echo "cURL command finished."
+
+```
+
+10. You can verify the Agent Registration by running the following shell script. Please replace the variables `AGENT_SPACE_PROJECT_ID` and `AGENT_SPACE_APP_NAME`.
+
+```bash
+#!/bin/bash
+
+curl -X GET \
+-H "Authorization: Bearer $(gcloud auth print-access-token)" \
+-H "Content-Type: application/json" \
+-H "X-Goog-User-Project: AGENT_SPACE_PROJECT_ID" \
+"https://discoveryengine.googleapis.com/v1alpha/projects/AGENT_SPACE_PROJECT_ID/locations/global/collections/default_collection/engines/AGENT_SPACE_APP_NAME/assistants/default_assistant/agents" 
+
+```
+
+11. For both the Creation and Verification you should get an output like the following
+
+```bash
+# Sample output
+{
+  "agents": [
+    {
+      "name": "projects/PROJECT_NUM/locations/global/collections/default_collection/engines/APP_NAME/assistants/default_assistant/agents/NUMBER",
+      "displayName": "Google Security Agent",
+      "description": "Allows security operations on Google Security Products",
+      "adkAgentDefinition": {
+        "toolSettings": {
+          "toolDescription": "Various Tools from SIEM, SOAR and SCC"
+        },
+        "provisionedReasoningEngine": {
+          "reasoningEngine": "projects/PROJECT_NUM/locations/REGION/reasoningEngines/NUMBER"
+        }
+      },
+      "state": "CONFIGURED"
+    }
+  ]
+}
+
+```
+
+You can find more about AgentSpace registration [here](https://cloud.google.com/agentspace/agentspace-enterprise/docs/assistant#create-assistant-existing-app).
+
+
+
