@@ -446,32 +446,27 @@ Here are the steps
 3. Import the agents from `demo_xdr_agent.py` and `demo_idp_agent.py` and add them as `sub agents` into `agent.py` in `run-with-google-adk/google_mcp_security_agent/`
 4. Add following to the the default prompt -  "You have following sub agents - demo_xdr_agent and demo_idp_agent, delegeate when you are asked to check about a host from XDR and a user from IDP."
 
-Here's the updated code
+Here's the updated code (only additional lines are shown in \<add/> tag)
 
 ```python
 # agent.py in google_mcp_security_agent
 
-# rest of the file
+# rest of the imports
+# <add>
 from .demo_idp_agent import demo_idp_agent
 from .demo_xdr_agent import demo_xdr_agent
+# </add>
 # rest of the file
 
 # check value of the input variable sub_agents in the agent creation below.
 def create_agent():
-  tools:any = [item for item in get_all_tools() if item is not None]
-  tools.append(store_file)
-  tools.append(get_file_link)
-  tools.append(list_files)
+
+# rest of the code 
 
   agent = LlmAgent(
-      model=os.environ.get("GOOGLE_MODEL"), 
-      name="google_mcp_security_agent",
-      instruction=os.environ.get("DEFAULT_PROMPT"),
-      tools=tools,
-      before_model_callback=bmc_trim_llm_request,
-      before_agent_callback=bac_setup_state_variable,
+      # <add>
       sub_agents=[demo_xdr_agent.root_agent, demo_idp_agent.root_agent],
-      description="You are the google_mcp_security_agent."
+      # </add> 
 
   )
   return agent
