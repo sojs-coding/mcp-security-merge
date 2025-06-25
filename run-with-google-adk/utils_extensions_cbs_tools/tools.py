@@ -41,7 +41,7 @@ async def store_file(tool_context:ToolContext,**kwargs)->dict:
    html_file_name=file_name+".html"
    # write to the disk and then save into the artifact service
    # writing to disk is totally optional
-   with open(f"{os.environ.get("LOCAL_DIR_FOR_FILES","/tmp")}/{file_name}.html", "w", encoding="utf-8") as f:
+   with open(f"{os.environ.get('LOCAL_DIR_FOR_FILES','/tmp')}/{file_name}.html", "w", encoding="utf-8") as f:
         f.write(html_output)
 
    file_artifact = types.Part.from_bytes( # from_text is available but does not work with GCS.
@@ -121,7 +121,7 @@ def get_file_link(user_name:str,file_name:str)->dict:
     try:
         storage_client = storage.Client.from_service_account_json(os.environ.get("GCS_SA_JSON"))
         bucket_name = os.environ.get("GCS_ARTIFACT_SERVICE_BUCKET")
-        ultimate_directory = f"{os.environ.get("APP_NAME")}/{user_name}/user/{file_name}"
+        ultimate_directory = f"{os.environ.get('APP_NAME')}/{user_name}/user/{file_name}"
         # GCS stores files as versions (not GCS versions but file named 0,1,2,3 within the ultimate folder)
         blobs = storage_client.list_blobs(bucket_name, prefix=ultimate_directory)
 

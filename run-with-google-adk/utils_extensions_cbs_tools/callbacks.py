@@ -87,5 +87,5 @@ def bac_setup_state_variable(callback_context: CallbackContext) -> Optional[type
       }      
       callback_context.state.update(initial_state)
     else:
-      logging.info(f"Found user_name with value {current_state["user_name"]}...")       
+      logging.info(f"Found user_name with value {current_state['user_name']}...")
     return None
