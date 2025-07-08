@@ -124,7 +124,7 @@ def sanitize_response(data: typing.Any) -> typing.Any:
     return data
 
 
-def json_to_markdown(data: dict) -> str:
+def parse_collection_commonalities(data: dict) -> str:
     """
     Converts a dictionary from a JSON file to a markdown string.
     """

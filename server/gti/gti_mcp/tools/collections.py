@@ -421,7 +421,7 @@ async def get_collection_feature_matches(
   """Retrieves Indicators of Compromise (IOCs) from a collection that match a specific feature.
 
   This tool allows you to pivot from a commonality to the specific IOCs within a collection that exhibit that feature.
-  Definition of commonalities: shared characteristics and hidden relationships between various digital artificats (e.g., files, URLs, domains, IPs...).
+  Definition of commonalities: shared characteristics and hidden relationships between various Indicators of Compromise (e.g., files, URLs, domains, IPs...).
   Args:
     collection_id (required): The ID of the collection to search within.
     feature_type (required): The type of feature to search for (e.g., 'attack_techniques').
@@ -450,14 +450,14 @@ async def get_collection_feature_matches(
 
 @server.tool()
 async def get_collections_commonalities(hash: str, ctx: Context) -> str:
-  """Retrieve the commonalities of a collection identified by its hash.
+  """Retrieve the common characteristics or features (attributes / relationships) of the indicators of compromise (IoC) within a collection, identified by its ID.
   Args:
-    hash (required): (hash/imphash/vhash) hash that identifies the collection.
+    collection_id (required): Collection identifier.
   Returns:
     Markdown-formatted string with the commonalities of the collection.
   """
   async with vt_client(ctx) as client:
-    data = await client.get_async(f"/collections/{hash}?attributes=aggregations")
+    data = await client.get_async(f"/collections/{collection_id}?attributes=aggregations")
     data = await data.json_async()
     sanitized_data = utils.sanitize_response(data["data"])
     markdown_output = utils.json_to_markdown(sanitized_data)
