@@ -683,3 +683,127 @@ async def test_search_threats(
         assert isinstance(result.content[0], mcp.types.TextContent)
         assert json.loads(result.content[0].text) == expected
 
+
+@pytest.mark.asyncio(loop_scope="session")
+@pytest.mark.parametrize(
+    argnames=[
+        "tool_name", "tool_arguments", "vt_endpoint", "vt_request_params", "vt_object_response", "expected",
+    ],
+    argvalues=[
+        (
+            "get_collection_feature_matches",
+            {
+                "collection_id": "collection_id",
+                "feature_type": "attack_techniques",
+                "feature_id": "T1497.001",
+                "entity_type": "file",
+                "search_space": "collection",
+                "entity_type_plural": "files",
+                "descriptors_only": True,
+            },
+            "/api/v3/collections/collection_id/features/search",
+            {
+                "feature_type": "attack_techniques",
+                "feature_id": "T1497.001",
+                "entity_type": "file",
+                "search_space": "collection",
+                "type": "files",
+                "descriptors_only": "true",
+            },
+            {
+                "data": {
+                    "id": "file_id",
+                    "type": "file",
+                    "attributes": {"foo": "foo", "bar": "bar"},
+                }
+            },
+            {
+                "id": "file_id",
+                "type": "file",
+                "attributes": {"foo": "foo", "bar": "bar"},
+            },
+        ),
+    ],
+    indirect=["vt_endpoint", "vt_request_params", "vt_object_response"],
+)
+@pytest.mark.usefixtures("vt_get_object_with_params_mock")
+async def test_get_collection_feature_matches(
+    vt_get_object_with_params_mock,
+    tool_name,
+    tool_arguments,
+    expected,
+):
+    """Test get_collection_feature_matches tool."""
+
+    async with client_session(server._mcp_server) as client:
+        result = await client.call_tool(tool_name, arguments=tool_arguments)
+        assert isinstance(result, mcp.types.CallToolResult)
+        assert result.isError == False
+        assert len(result.content) == 1
+        assert isinstance(result.content[0], mcp.types.TextContent)
+        assert json.loads(result.content[0].text) == expected
+
+
+@pytest.mark.asyncio(loop_scope="session")
+@pytest.mark.parametrize(
+    argnames=[
+        "tool_name", "tool_arguments", "vt_endpoint", "vt_request_params", "vt_object_response", "expected",
+    ],
+    argvalues=[
+        (
+            "get_collections_commonalities",
+            {"hash": "67869ffd5a02cfc31584dfcf9b7516e7f443cbd1d8cfae4436b5cc38c9fdecf6"},
+            "/api/v3/collections/67869ffd5a02cfc31584dfcf9b7516e7f443cbd1d8cfae4436b5cc38c9fdecf6",
+            {"attributes": "aggregations"},
+            {
+                "data": {
+                    "id": "67869ffd5a02cfc31584dfcf9b7516e7f443cbd1d8cfae4436b5cc38c9fdecf6",
+                    "type": "collection",
+                    "links": {
+                        "self": "https://www.virustotal.com/api/v3/collections/67869ffd5a02cfc31584dfcf9b7516e7f443cbd1d8cfae4436b5cc38c9fdecf6"
+                    },
+                    "attributes": {
+                        "aggregations": {
+                            "files": {
+                                "itw_urls": [
+                                    {
+                                        "value": "https://pcsdl.com/short-url-v2/000585065547/scenario/f91705e56983ba3c3cd940d62bc2ed35___158e5ef2-6f0f-46fd-b1b7-feaa02550432.vbs?protocol=https",
+                                        "count": 1,
+                                        "total_related": 1,
+                                        "prevalence": 1.0
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            },
+            (
+                "# Commonalities for 67869ffd5a02cfc31584dfcf9b7516e7f443cbd1d8cfae4436b5cc38c9fdecf6\n\n"
+                "## files commonalities\n\n"
+                "### itw urls\n"
+                "- 1 matches of https://pcsdl.com/short-url-v2/000585065547/scenario/f91705e56983ba3c3cd940d62bc2ed35___158e5ef2-6f0f-46fd-b1b7-feaa02550432.vbs?protocol=https with a prevalence of 1\n\n"
+            )
+        ),
+    ],
+    indirect=["vt_endpoint", "vt_request_params", "vt_object_response"],
+)
+@pytest.mark.usefixtures("vt_get_object_with_params_mock")
+async def test_get_collections_commonalities(
+    vt_get_object_with_params_mock,
+    tool_name,
+    tool_arguments,
+    expected,
+    vt_object_response
+):
+    """Test test_get_collections_commonalities tool."""
+
+    # Execute tool call.
+    async with client_session(server._mcp_server) as client:
+        result = await client.call_tool(tool_name, arguments=tool_arguments)
+        assert isinstance(result, mcp.types.CallToolResult)
+        assert result.isError == False
+        assert len(result.content) == 1
+        assert isinstance(result.content[0], mcp.types.TextContent)
+        assert isinstance(result.content[0].text, str)
+        assert result.content[0].text == expected

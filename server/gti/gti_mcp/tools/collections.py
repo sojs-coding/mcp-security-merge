@@ -407,3 +407,58 @@ async def get_collection_mitre_tree(id: str, ctx: Context) -> typing.Dict:
     data = await data.json_async()
   return utils.sanitize_response(data["data"])
 
+@server.tool()
+async def get_collection_feature_matches(
+    collection_id: str,
+    feature_type: str,
+    feature_id: str,
+    entity_type: str,
+    search_space: str,
+    entity_type_plural: str,
+    ctx: Context,
+    descriptors_only: bool=True,
+) -> typing.Dict[str, typing.Any]:
+  """Retrieves Indicators of Compromise (IOCs) from a collection that match a specific feature.
+
+  This tool allows you to pivot from a commonality to the specific IOCs within a collection that exhibit that feature.
+  Definition of commonalities: shared characteristics and hidden relationships between various digital artificats (e.g., files, URLs, domains, IPs...).
+  Args:
+    collection_id (required): The ID of the collection to search within.
+    feature_type (required): The type of feature to search for (e.g., 'attack_techniques').
+    feature_id (required): The specific value of the feature (e.g., 'T1497.001').
+    entity_type (required): The type of IOC to retrieve (e.g., 'file', 'domain', 'url').
+    search_space (required): The scope of the search. Use 'collection' to search only within the specified collection, or 'corpus' to search across the entire VirusTotal dataset.
+    entity_type_plural (required): The plural of 'entity_type'.
+    descriptors_only (optional): Returns only the descriptors.
+  Returns:
+    A dictionary containing the list of matching IOCs.
+  """
+  async with vt_client(ctx) as client:
+    params = {
+        "feature_type": feature_type,
+        "feature_id": feature_id,
+        "entity_type": entity_type,
+        "search_space": search_space,
+        "type": entity_type_plural,
+        "descriptors_only": str(descriptors_only).lower(),
+    }
+    
+    response = await client.get_async(f"/collections/{collection_id}/features/search", params=params)
+    data = await response.json_async()
+    return utils.sanitize_response(data["data"])
+
+
+@server.tool()
+async def get_collections_commonalities(hash: str, ctx: Context) -> str:
+  """Retrieve the commonalities of a collection identified by its hash.
+  Args:
+    hash (required): (hash/imphash/vhash) hash that identifies the collection.
+  Returns:
+    Markdown-formatted string with the commonalities of the collection.
+  """
+  async with vt_client(ctx) as client:
+    data = await client.get_async(f"/collections/{hash}?attributes=aggregations")
+    data = await data.json_async()
+    sanitized_data = utils.sanitize_response(data["data"])
+    markdown_output = utils.json_to_markdown(sanitized_data)
+  return markdown_output
