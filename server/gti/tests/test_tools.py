@@ -711,11 +711,11 @@ async def test_search_threats(
                 "descriptors_only": "true",
             },
             {
-                "data": {
+                "data": [{
                     "id": "file_id",
                     "type": "file",
                     "attributes": {"foo": "foo", "bar": "bar"},
-                }
+                }]
             },
             {
                 "id": "file_id",
@@ -752,7 +752,7 @@ async def test_get_collection_feature_matches(
     argvalues=[
         (
             "get_collections_commonalities",
-            {"hash": "67869ffd5a02cfc31584dfcf9b7516e7f443cbd1d8cfae4436b5cc38c9fdecf6"},
+            {"collection_id": "67869ffd5a02cfc31584dfcf9b7516e7f443cbd1d8cfae4436b5cc38c9fdecf6"},
             "/api/v3/collections/67869ffd5a02cfc31584dfcf9b7516e7f443cbd1d8cfae4436b5cc38c9fdecf6",
             {"attributes": "aggregations"},
             {
