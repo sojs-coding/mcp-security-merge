@@ -424,59 +424,59 @@ async def get_collection_feature_matches(
   Commonalities are shared characteristics and hidden relationships between various Indicators of Compromise (e.g., files, URLs, domains, IPs).
 
   Available feature types by entity type:
-  **Files**:
-    - `android_certificates`, `android_main_activities`, `android_package_names`, `attributions`, `behash`,
-    - `collections`, `compressed_parents`, `contacted_domains`, `contacted_ips`, `contacted_urls`,
-    - `crowdsourced_ids_results`, `crowdsourced_yara_results`, `elfhash`, `email_parents`,
-    - `embedded_domains`, `embedded_ips`, `embedded_urls`, `execution_parents`, `imphash`,
-    - `itw_domains`, `itw_urls`, `mutexes_created`, `mutexes_opened`, `pcap_parents`,
-    - `registry_keys_deleted`, `registry_keys_opened`, `registry_keys_set`, `tags`, `vhash`, `file_types`,
-    - `crowdsourced_sigma_results`, `deb_info_packages`, `debug_codeview_guids`, `debug_codeview_names`,
-    - `debug_timestamps`, `dropped_files_path`, `dropped_files_sha256`, `elfinfo_exports`,
-    - `elfinfo_imports`, `exiftool_authors`, `exiftool_companies`, `exiftool_create_dates`,
-    - `exiftool_creators`, `exiftool_last_modified`, `exiftool_last_printed`, `exiftool_producers`,
-    - `exiftool_subjects`, `exiftool_titles`, `filecondis_dhash`, `main_icon_dhash`,
-    - `main_icon_raw_md5`, `netassembly_mvid`, `nsrl_info_filenames`, `office_application_names`,
-    - `office_authors`, `office_creation_datetimes`, `office_last_saved`, `office_macro_names`,
-    - `permhash`, `pe_info_imports`, `pe_info_exports`, `pe_info_section_md5`,
-    - `pe_info_section_names`, `pwdinfo_values`, `sandbox_verdicts`, `signature_info_comments`,
-    - `signature_info_copyrights`, `signature_info_descriptions`, `signature_info_identifiers`,
-    - `signature_info_internal_names`, `signature_info_original_names`, `signature_info_products`,
-    - `symhash`, `trusted_verdict_filenames`, `rich_pe_header_hash`, `telfhash`, `tlshhash`,
-    - `email_senders`, `email_subjects`, `popular_threat_category`, `popular_threat_name`,
-    - `suggested_threat_label`, `attack_techniques`, `malware_config_family_name`,
-    - `malware_config_campaign_id`, `malware_config_campaign_group`, `malware_config_dga_seed`,
-    - `malware_config_dns_server`, `malware_config_service`, `malware_config_registry_key`,
-    - `malware_config_event`, `malware_config_pipe`, `malware_config_mutex`, `malware_config_folder`,
-    - `malware_config_file`, `malware_config_process_inject_target`, `malware_config_crypto_key`,
-    - `malware_config_displayed_message`, `malware_config_c2_url`, `malware_config_download_url`,
-    - `malware_config_misc_url`, `malware_config_decoy_url`, `malware_config_c2_user_agent`,
-    - `malware_config_download_user_agent`, `malware_config_misc_user_agent`,
-    - `malware_config_decoy_user_agent`, `malware_config_c2_password`,
-    - `malware_config_misc_username`, `malware_config_misc_password`,
-    - `malware_config_host_port`, `malware_config_dropped_file`,
-    - `malware_config_dropped_file_path`, `malware_config_registry_value`,
-    - `malware_config_download_password`, `malware_config_c2_username`,
-    - `malware_config_download_username`, `malware_config_exfiltration_username`,
-    - `malware_config_exfiltration_password`, `malware_config_exfiltration_url`,
-    - `malware_config_exfiltration_user_agent`, `malware_config_pivot_hash`,
-    - `memory_pattern_urls`
+  Files:
+    - android_certificates, android_main_activities, android_package_names, attributions, behash,
+      collections, compressed_parents, contacted_domains, contacted_ips, contacted_urls,
+      crowdsourced_ids_results, crowdsourced_yara_results, elfhash, email_parents,
+      embedded_domains, embedded_ips, embedded_urls, execution_parents, imphash,
+      itw_domains, itw_urls, mutexes_created, mutexes_opened, pcap_parents,
+      registry_keys_deleted, registry_keys_opened, registry_keys_set, tags, vhash, file_types,
+      crowdsourced_sigma_results, deb_info_packages, debug_codeview_guids, debug_codeview_names,
+      debug_timestamps, dropped_files_path, dropped_files_sha256, elfinfo_exports,
+      elfinfo_imports, exiftool_authors, exiftool_companies, exiftool_create_dates,
+      exiftool_creators, exiftool_last_modified, exiftool_last_printed, exiftool_producers,
+      exiftool_subjects, exiftool_titles, filecondis_dhash, main_icon_dhash,
+      main_icon_raw_md5, netassembly_mvid, nsrl_info_filenames, office_application_names,
+      office_authors, office_creation_datetimes, office_last_saved, office_macro_names,
+      permhash, pe_info_imports, pe_info_exports, pe_info_section_md5,
+      pe_info_section_names, pwdinfo_values, sandbox_verdicts, signature_info_comments,
+      signature_info_copyrights, signature_info_descriptions, signature_info_identifiers,
+      signature_info_internal_names, signature_info_original_names, signature_info_products,
+      symhash, trusted_verdict_filenames, rich_pe_header_hash, telfhash, tlshhash,
+      email_senders, email_subjects, popular_threat_category, popular_threat_name,
+      suggested_threat_label, attack_techniques, malware_config_family_name,
+      malware_config_campaign_id, malware_config_campaign_group, malware_config_dga_seed,
+      malware_config_dns_server, malware_config_service, malware_config_registry_key,
+      malware_config_event, malware_config_pipe, malware_config_mutex, malware_config_folder,
+      malware_config_file, malware_config_process_inject_target, malware_config_crypto_key,
+      malware_config_displayed_message, malware_config_c2_url, malware_config_download_url,
+      malware_config_misc_url, malware_config_decoy_url, malware_config_c2_user_agent,
+      malware_config_download_user_agent, malware_config_misc_user_agent,
+      malware_config_decoy_user_agent, malware_config_c2_password,
+      malware_config_misc_username, malware_config_misc_password,
+      malware_config_host_port, malware_config_dropped_file,
+      malware_config_dropped_file_path, malware_config_registry_value,
+      malware_config_download_password, malware_config_c2_username,
+      malware_config_download_username, malware_config_exfiltration_username,
+      malware_config_exfiltration_password, malware_config_exfiltration_url,
+      malware_config_exfiltration_user_agent, malware_config_pivot_hash,
+      memory_pattern_urls
 
-  **Domains**:
-    - `attributions`, `collections`, `communicating_files`, `downloaded_files`,
-    - `favicon_dhash`, `favicon_raw_md5`, `urls`, `registrant_names`
+  Domains:
+    - attributions, collections, communicating_files, downloaded_files,
+      favicon_dhash, favicon_raw_md5, urls, registrant_names
 
-  **IP Addresses**:
-    - `attributions`, `collections`, `communicating_files`, `downloaded_files`, `urls`
+  IP Addresses:
+    - attributions, collections, communicating_files, downloaded_files, urls
 
-  **URLs**:
-    - `attributions`, `http_response_contents`, `collections`, `contacted_domains`,
-    - `communicating_files`, `cookie_names`, `cookie_values`, `downloaded_files`,
-    - `domains`, `embedded_js`, `favicon_dhash`, `favicon_raw_md5`, `html_titles`,
-    - `ip_addresses`, `memory_patterns`, `outgoing_links`, `path`, `prefix_paths`,
-    - `suffix_paths`, `ports`, `users`, `passwords`, `user_passwords`, `query_strings`,
-    - `query_param_keys`, `query_param_values`, `query_param_key_values`,
-    - `referring_files`, `tags`, `tracker_ids`
+  URLs:
+    - attributions, http_response_contents, collections, contacted_domains,
+      communicating_files, cookie_names, cookie_values, downloaded_files,
+      domains, embedded_js, favicon_dhash, favicon_raw_md5, html_titles,
+      ip_addresses, memory_patterns, outgoing_links, path, prefix_paths,
+      suffix_paths, ports, users, passwords, user_passwords, query_strings,
+      query_param_keys, query_param_values, query_param_key_values,
+      referring_files, tags, tracker_ids
 
   Args:
     collection_id (required): The ID of the collection to search within.
