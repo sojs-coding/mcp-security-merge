@@ -407,6 +407,122 @@ async def get_collection_mitre_tree(id: str, ctx: Context) -> typing.Dict:
     data = await data.json_async()
   return utils.sanitize_response(data["data"])
 
+
+@server.tool()
+async def create_collection(
+    name: str,
+    description: str,
+    iocs: typing.List[str],
+    ctx: Context,
+    private: bool = False,
+) -> typing.Dict[str, typing.Any]:
+  """Creates a new collection in Google Threat Intelligence.
+
+  Args:
+    name (required): The name of the collection.
+    description (required): A description of the collection.
+    iocs (required): Indicators of Compromise (IOCs) to include in the
+      collection. The items in the list can be domains, files, ip_addresses, or urls.
+      At least one IOC must be provided.
+    private: Indicates whether the collection should be private.
+  Returns:
+    A dictionary representing the newly created collection.
+  """
+  async with vt_client(ctx) as client:
+    collection_data = {
+        "data": {
+            "attributes": {"name": name, "description": description, "private": private},
+            "type": "collection",
+            "raw_items": ", ".join(iocs),
+        }
+    }
+    
+    res = await client.post_async("/collections", json_data=collection_data)
+    data = await res.json_async()
+  return utils.sanitize_response(data["data"])
+
+
+@server.tool()
+async def update_collection_attributes(
+    id: str,
+    ctx: Context,
+    attributes: typing.Dict[str, typing.Any] = None,
+) -> typing.Dict[str, typing.Any]:
+  """Allows updating a collection's attributes (such as name or description)
+  Args:
+    id (required): The ID of the collection to update.
+    attributes: Available attributes in a collection:
+        *  name: string
+        *  description: string
+        *  private: boolean
+        *  tags: array of strings
+        *  alt_names: array of strings
+  Returns:
+    A dictionary representing the updated collection.
+  """
+  async with vt_client(ctx) as client:
+    collection_data = {"data": {"attributes": attributes, "type": "collection"}}          
+
+    res = await client.patch_async(
+        f"/collections/{id}", json_data=collection_data
+    )
+    data = await res.json_async()
+  return utils.sanitize_response(data["data"])
+
+
+@server.tool()
+async def update_iocs_in_collection(
+    id: str,
+    ctx: Context,
+    relationship: str,
+    iocs: typing.List[str],
+    operation: str,
+) -> typing.Dict[str, typing.Any]:
+  """Updates (add or remove) Indicators of Compromise (IOCs) to a collection.
+  Args:
+    id (required): The ID of the collection to update.
+    relationship (required): The type of relationship to add. Can be "domains", "files",
+      "ip_addresses", or "urls".
+    iocs (required): List of IOCs to add to the collection. For "urls", these
+      are the full URLs. For other types, they are the identifiers (hashes for
+      files, domain names for domains, etc.).
+    operation (required): The operation to perform. Can be "add" or "remove".
+
+  Returns:
+    A dictionary representing the result of the operation, typically a list of
+    relationship objects created.
+  """
+  async with vt_client(ctx) as client:
+
+    singular_type_map = {
+        "domains": "domain",
+        "files": "file",
+        "ip_addresses": "ip_address",
+        "urls": "url",
+    }
+
+    if relationship not in singular_type_map:
+      return {"error": f"Invalid IOC type '{relationship}'. Must be one of {list(singular_type_map.keys())}"}
+
+    singular_type = singular_type_map[relationship]
+
+    if relationship == "urls":
+      items = [{"type": singular_type, "url": ioc} for ioc in iocs]
+    else:
+      items = [{"type": singular_type, "id": ioc} for ioc in iocs]
+
+    payload = {"data": items}
+    if operation == "add":
+      res = await client.post_async(f"/collections/{id}/{relationship}", json_data=payload)
+    elif operation == "remove":
+      res = await client.delete_async(f"/collections/{id}/{relationship}", json_data=payload)
+    else:
+      return {"error": f"Invalid operation '{operation}'. Must be one of 'add' or 'remove'"}
+
+    status = res._aiohttp_resp.status
+    return 'Sucesssfully updated collection' if status == 200 else 'Error updating collection'
+
+
 @server.tool()
 async def get_collection_feature_matches(
     collection_id: str,

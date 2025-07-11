@@ -807,3 +807,228 @@ async def test_get_collections_commonalities(
         assert isinstance(result.content[0], mcp.types.TextContent)
         assert isinstance(result.content[0].text, str)
         assert result.content[0].text == expected
+
+
+@pytest.mark.asyncio(loop_scope="session")
+@pytest.mark.parametrize(
+    argnames=[
+        "tool_arguments",
+        "vt_endpoint",
+        "vt_request_params",
+        "vt_object_response",
+        "expected",
+    ],
+    argvalues=[
+        (
+            {
+                "name": "My Collection",
+                "description": "Test collection",
+                "iocs": ["evil-domain.com", "165.227.148.68"],
+                "private": False
+            },
+            "/api/v3/collections",
+            {
+                "data": {
+                    "attributes": {
+                        "name": "My Collection",
+                        "description": "Test collection",
+                        "private": False,
+                    }, 
+                    "raw_items": "evil-domain.com, 165.227.148.68",
+                    "type": "collection",
+                }
+            },
+            {
+                "data": {
+                    "id": "new_collection_id",
+                    "type": "collection",
+                    "attributes": {
+                        "name": "My Collection",
+                        "description": "Test collection",
+                        "foo": "foo",
+                        "bar": "bar",
+                    },
+                    "links": {
+                        "self": "/api/v3/collections/new_collection_id"
+                    },
+                }
+            },
+            {
+                "id": "new_collection_id",
+                "type": "collection",
+                "attributes": {
+                    "name": "My Collection",
+                    "description": "Test collection",
+                    "foo": "foo",
+                    "bar": "bar",
+                },
+                "links": {
+                    "self": "/api/v3/collections/new_collection_id"
+                },
+            },
+        ),
+    ],
+    indirect=["vt_endpoint", "vt_request_params", "vt_object_response"],
+)
+@pytest.mark.usefixtures("vt_post_object_mock")
+async def test_create_collection(
+    vt_post_object_mock,
+    tool_arguments,
+    expected,
+):
+    """Test `create_collection` tool."""
+
+    # Execute tool call.
+    async with client_session(server._mcp_server) as client:
+        result = await client.call_tool("create_collection", arguments=tool_arguments)
+        assert isinstance(result, mcp.types.CallToolResult)
+        assert not result.isError
+        assert len(result.content) == 1
+        assert isinstance(result.content[0], mcp.types.TextContent)
+        assert json.loads(result.content[0].text) == expected
+
+
+@pytest.mark.asyncio(loop_scope="session")
+@pytest.mark.parametrize(
+    argnames=[
+        "tool_arguments",
+        "vt_endpoint",
+        "vt_request_params",
+        "vt_object_response",
+        "expected",
+    ],
+    argvalues=[
+        (
+            {
+                "id": "my_collection_id",
+                "attributes": {"name": "Updated Collection Name", "description": "Updated description."},
+            },
+            "/api/v3/collections/my_collection_id",
+            {
+                "data": {
+                    "attributes": {"name": "Updated Collection Name", "description": "Updated description."},
+                    "type": "collection",
+                }
+            },
+            {
+                "data": {
+                    "id": "my_collection_id",
+                    "type": "collection",
+                    "attributes": {"name": "Updated Collection Name", "description": "Updated description."},
+                }
+            },
+            {
+                "id": "my_collection_id",
+                "type": "collection",
+                "attributes": {"name": "Updated Collection Name", "description": "Updated description."},
+            },
+        ),
+    ],
+    indirect=["vt_endpoint", "vt_request_params", "vt_object_response"],
+)
+@pytest.mark.usefixtures("vt_patch_object_mock")
+async def test_update_collection_attributes(
+    vt_patch_object_mock,
+    tool_arguments,
+    expected,
+):
+    """Test `update_collection_attributes` tool."""
+
+    async with client_session(server._mcp_server) as client:
+        result = await client.call_tool("update_collection_attributes", arguments=tool_arguments)
+        assert isinstance(result, mcp.types.CallToolResult)
+        assert not result.isError
+        assert len(result.content) == 1
+        assert isinstance(result.content[0], mcp.types.TextContent)
+        assert json.loads(result.content[0].text) == expected
+
+
+@pytest.mark.asyncio(loop_scope="session")
+@pytest.mark.parametrize(
+    argnames=[
+        "tool_arguments", "vt_endpoint", "vt_request_params", "vt_object_response"
+    ],
+    argvalues=[
+        # Case 1: Add domains
+        (
+            {"id": "c_id", "relationship": "domains", "iocs": ["evil.com"], "operation": "add"},
+            "/api/v3/collections/c_id/domains",
+            {"data": [{"type": "domain", "id": "evil.com"}]},
+            {},
+        ),
+        # Case 2: Add URLs (special handling in the tool)
+        (
+            {"id": "c_id", "relationship": "urls", "iocs": ["http://bad-url.com/path"], "operation": "add"},
+            "/api/v3/collections/c_id/urls",
+            {"data": [{"type": "url", "url": "http://bad-url.com/path"}]},
+            {},
+        ),
+    ],
+    indirect=["vt_endpoint", "vt_request_params", "vt_object_response"],
+)
+@pytest.mark.usefixtures("vt_post_object_mock")
+async def test_add_iocs_in_collection_success(
+    vt_post_object_mock,
+    tool_arguments,
+    vt_endpoint, 
+    vt_request_params, 
+    vt_object_response,
+):
+    """Test successful 'add' operations for `update_iocs_in_collection`."""
+    async with client_session(server._mcp_server) as client:
+        result = await client.call_tool("update_iocs_in_collection", arguments=tool_arguments)
+        assert not result.isError
+        assert result.content[0].text == "Sucesssfully updated collection"
+
+
+@pytest.mark.asyncio(loop_scope="session")
+@pytest.mark.parametrize(
+    argnames=["tool_arguments", "vt_endpoint", "vt_request_params", "vt_object_response"],
+    argvalues=[
+        # Case 1: Remove files
+        (
+            {"id": "c_id", "relationship": "files", "iocs": ["hash123"], "operation": "remove"},
+            "/api/v3/collections/c_id/files",
+            {"data": [{"type": "file", "id": "hash123"}]},
+            {},
+        ),
+    ],
+    indirect=["vt_endpoint", "vt_request_params",  "vt_object_response"],
+)
+@pytest.mark.usefixtures("vt_delete_object_mock")
+async def test_remove_iocs_from_collection_success(
+    tool_arguments,
+    vt_endpoint, 
+    vt_request_params, 
+    vt_object_response,
+):
+    """Test successful 'remove' operations for `update_iocs_in_collection`."""
+    async with client_session(server._mcp_server) as client:
+        result = await client.call_tool("update_iocs_in_collection", arguments=tool_arguments)
+        assert not result.isError
+        assert result.content[0].text == "Sucesssfully updated collection"
+
+
+# Invalid Local Argument Handling
+@pytest.mark.asyncio(loop_scope="session")
+@pytest.mark.parametrize(
+    argnames=[
+        "tool_arguments", "expected_error"
+    ],
+    argvalues=[
+        (
+            {"id": "c_id", "relationship": "domains", "iocs": ["e.com"], "operation": "invalid_op"},
+            {"error": "Invalid operation 'invalid_op'. Must be one of 'add' or 'remove'"},
+        ),
+        (
+            {"id": "c_id", "relationship": "indicators", "iocs": ["e.com"], "operation": "add"},
+            {"error": "Invalid IOC type 'indicators'. Must be one of ['domains', 'files', 'ip_addresses', 'urls']"},
+        ),
+    ],
+)
+async def test_update_iocs_in_collection_invalid_args(tool_arguments, expected_error):
+    """Test `update_iocs_in_collection` for invalid local arguments."""
+    async with client_session(server._mcp_server) as client:
+        result = await client.call_tool("update_iocs_in_collection", arguments=tool_arguments)
+        assert not result.isError
+        assert json.loads(result.content[0].text) == expected_error
