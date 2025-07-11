@@ -107,7 +107,7 @@ async def get_file_report(hash: str, ctx: Context) -> typing.Dict[str, typing.An
 @server.tool()
 async def get_entities_related_to_a_file(
     hash: str, relationship_name: str, descriptors_only: bool, ctx: Context, limit: int = 10, 
-) -> typing.Dict[str, typing.Any]:
+) -> list[dict[str, typing.Any]]:
     """Retrieve entities related to the the given file hash.
 
     The following table shows a summary of available relationships for file objects.

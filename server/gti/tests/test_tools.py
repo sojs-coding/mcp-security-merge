@@ -376,7 +376,7 @@ async def test_get_entities_related(
             {"hash": "275a021bbfb6489e54d471899f7db9d1663fc695ec2fe2a2c4538aabf651fd0f"},
             "/api/v3/files/275a021bbfb6489e54d471899f7db9d1663fc695ec2fe2a2c4538aabf651fd0f/behaviour_summary",
             {
-                "data": [{"type": "object", "id": "obj-id", "attributes": {"foo": "foo", "bar": ""}}],
+                "data": {"type": "object", "id": "obj-id", "attributes": {"foo": "foo", "bar": ""}},
             },
             {"type": "object", "id": "obj-id", "attributes": {"foo": "foo"}}
         ), 
@@ -394,7 +394,7 @@ async def test_get_entities_related(
             {"id": "collection_id"},
             "/api/v3/collections/collection_id/mitre_tree",
             {
-                "data": [{"type": "object", "id": "obj-id", "attributes": {"foo": "foo", "bar": ""}}],
+                "data": {"type": "object", "id": "obj-id", "attributes": {"foo": "foo", "bar": ""}},
             },
             {"type": "object", "id": "obj-id", "attributes": {"foo": "foo"}}
         ), 
