@@ -259,7 +259,7 @@ async def analyse_file(file_path: str, ctx: Context):
     return utils.sanitize_response(res.to_dict())
 
 @server.tool()
-async def search_documents(
+async def search_digital_threat_monitoring(
     query: str,
     ctx: Context,
     size: int = 10,
@@ -269,8 +269,9 @@ async def search_documents(
     truncate: str = None,
     sanitize: bool = True,
     threat_types: str = None,
+# ) -> list[dict[str, typing.Any]]:
 ) -> dict:
-  """Search for documents in VirusTotal using Lucene syntax.
+  """Search for documents in Digital Threat Monitoring (DTM) using Lucene syntax.
 
   Search requests are limited to 60 seconds in duration.
   Requests exceeding this time will be terminated and should be scoped using date ranges.
