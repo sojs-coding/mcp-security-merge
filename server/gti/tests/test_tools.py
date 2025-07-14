@@ -1032,3 +1032,48 @@ async def test_update_iocs_in_collection_invalid_args(tool_arguments, expected_e
         result = await client.call_tool("update_iocs_in_collection", arguments=tool_arguments)
         assert not result.isError
         assert result.content[0].text == expected_error
+
+@pytest.mark.asyncio(loop_scope="session")
+@pytest.mark.parametrize(
+    argnames=[
+        "tool_arguments", "vt_endpoint", "vt_request_params", "vt_object_response", "expected"
+    ],
+    argvalues=[
+        (
+            {"query": "my-brand"},
+            "/api/v3/dtm/docs/search",
+            {"query": "my-brand"},
+            {
+                "timed_out": False,
+                    "total_docs": 200,
+                    "docs" : [
+                        {"foo": "foo"},
+                        {"bar": "bar"}
+                    ]
+            },
+            {
+                "timed_out": False,
+                "total_docs": 200,
+                "docs" : [
+                        {"foo": "foo"},
+                        {"bar": "bar"}
+                    ]
+            },
+        )
+    ],
+    indirect=["vt_endpoint", "vt_request_params", "vt_object_response"],
+)
+@pytest.mark.usefixtures("vt_post_object_mock")
+async def test_search_documents(
+    vt_post_object_mock,
+    tool_arguments,
+    expected
+):
+    """Test `search_digital_threat_monitoring` tool."""
+    async with client_session(server._mcp_server) as client:
+        result = await client.call_tool("search_digital_threat_monitoring", arguments=tool_arguments)
+        assert isinstance(result, mcp.types.CallToolResult)
+        assert not result.isError
+        assert len(result.content) == 1
+        assert isinstance(result.content[0], mcp.types.TextContent)
+        assert json.loads(result.content[0].text) == expected
