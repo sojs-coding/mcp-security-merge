@@ -1018,11 +1018,11 @@ async def test_remove_iocs_from_collection_success(
     argvalues=[
         (
             {"id": "c_id", "relationship": "domains", "iocs": ["e.com"], "operation": "invalid_op"},
-            {"error": "Invalid operation 'invalid_op'. Must be one of 'add' or 'remove'"},
+            "Error: Invalid operation 'invalid_op'. Must be one of 'add' or 'remove'",
         ),
         (
             {"id": "c_id", "relationship": "indicators", "iocs": ["e.com"], "operation": "add"},
-            {"error": "Invalid IOC type 'indicators'. Must be one of ['domains', 'files', 'ip_addresses', 'urls']"},
+            "Error: Invalid IOC type 'indicators'. Must be one of ['domains', 'files', 'ip_addresses', 'urls']",
         ),
     ],
 )
@@ -1031,4 +1031,4 @@ async def test_update_iocs_in_collection_invalid_args(tool_arguments, expected_e
     async with client_session(server._mcp_server) as client:
         result = await client.call_tool("update_iocs_in_collection", arguments=tool_arguments)
         assert not result.isError
-        assert json.loads(result.content[0].text) == expected_error
+        assert result.content[0].text == expected_error
