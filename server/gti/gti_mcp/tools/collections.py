@@ -414,9 +414,10 @@ async def create_collection(
     description: str,
     iocs: typing.List[str],
     ctx: Context,
-    private: bool = False,
+    private: bool = True,
 ) -> typing.Dict[str, typing.Any]:
   """Creates a new collection in Google Threat Intelligence.
+      Ask for the collection's privacy (public or private) if the user doesn't specify.
 
   Args:
     name (required): The name of the collection.
@@ -477,7 +478,7 @@ async def update_iocs_in_collection(
     relationship: str,
     iocs: typing.List[str],
     operation: str,
-) -> typing.Dict[str, typing.Any]:
+) -> str:
   """Updates (add or remove) Indicators of Compromise (IOCs) to a collection.
   Args:
     id (required): The ID of the collection to update.
@@ -489,8 +490,7 @@ async def update_iocs_in_collection(
     operation (required): The operation to perform. Can be "add" or "remove".
 
   Returns:
-    A dictionary representing the result of the operation, typically a list of
-    relationship objects created.
+    A string indicating the success or failure of the operation.
   """
   async with vt_client(ctx) as client:
 
@@ -502,7 +502,7 @@ async def update_iocs_in_collection(
     }
 
     if relationship not in singular_type_map:
-      return {"error": f"Invalid IOC type '{relationship}'. Must be one of {list(singular_type_map.keys())}"}
+      return f"Error: Invalid IOC type '{relationship}'. Must be one of {list(singular_type_map.keys())}"
 
     singular_type = singular_type_map[relationship]
 
@@ -517,7 +517,7 @@ async def update_iocs_in_collection(
     elif operation == "remove":
       res = await client.delete_async(f"/collections/{id}/{relationship}", json_data=payload)
     else:
-      return {"error": f"Invalid operation '{operation}'. Must be one of 'add' or 'remove'"}
+      return f"Error: Invalid operation '{operation}'. Must be one of 'add' or 'remove'"
 
     status = res._aiohttp_resp.status
     return 'Sucesssfully updated collection' if status == 200 else 'Error updating collection'
