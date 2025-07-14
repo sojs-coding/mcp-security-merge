@@ -1040,9 +1040,9 @@ async def test_update_iocs_in_collection_invalid_args(tool_arguments, expected_e
     ],
     argvalues=[
         (
-            {"query": "Santander"},
+            {"query": "my-brand"},
             "/api/v3/dtm/docs/search",
-            {"query": "Santander"},
+            {"query": "my-brand"},
             {
                 "timed_out": False,
                     "total_docs": 200,
