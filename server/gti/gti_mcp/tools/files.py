@@ -13,6 +13,7 @@
 # limitations under the License.
 import logging
 import typing
+import urllib.parse
 
 from mcp.server.fastmcp import Context
 
@@ -256,3 +257,94 @@ async def analyse_file(file_path: str, ctx: Context):
     res = await client.wait_for_analysis_completion(analysis)
     logging.info(f"Analysis has completed with ID %s", res.id)
     return utils.sanitize_response(res.to_dict())
+
+@server.tool()
+async def search_documents(
+    query: str,
+    ctx: Context,
+    size: int = 10,
+    since: str = None,
+    until: str = None,
+    doc_types: str = None,
+    truncate: str = None,
+    sanitize: bool = True,
+    threat_types: str = None,
+) -> dict:
+  """Search for documents in VirusTotal using Lucene syntax.
+
+  Search requests are limited to 60 seconds in duration.
+  Requests exceeding this time will be terminated and should be scoped using date ranges.
+
+  The following fields and their meanings can be used to compose a query using Lucene syntax (including combining them with AND, OR, and NOT operators along with parentheses):
+  * author.identity.name - The handle used by the forum post author
+  * subject - The subject line of the forum post
+  * body - The body text of the content
+  * inet_location.url - What URL content was found 
+  * language - The content language
+  * title - The title of the web page 
+  * channel.name - The Telegram channel name
+  * domain - A DNS domain name
+  * cve - A CVE entry by ID 
+
+  doc_type can be one of the following:
+  * web_content_publish - General website content
+  * document - Office documents and PDFs
+  * domain_discovery - Newly discovered domain names
+  * email - Malicious emails
+  * forum_post - Darkweb forum posts
+  * message - Chat messages like Telegram
+  * paste - Paste site content like Pastebin
+  * shop_listing - Items for sale on the dark web
+
+  threat_type: one of the following
+  * information-security/apt - Advanced Persistent Threat
+  * information-security/botnet - Botnet
+  * information-security/compromised - Compromised Infrastructure
+  * information-security/doxing - Personal Information Disclosure
+  * information-security/exploit - Exploits
+  * information-security/information-leak - Information Leak
+  * information-security/malware - Malware
+  * information-security/malicious-activity - Malicious Activity
+  * information-security/malicious-infrastructure - Malicious Infrastructure
+  * information-security/health-risk - Health Risk
+  * information-security/information-leak/confidential - Confidential Information Leak
+  * information-security/information-leak/credentials - Credential Leak
+  * information-security/information-leak/payment-cards - Credit Card Leak
+  * information-security/security-research - Security Research
+  * information-security/spam - Spam
+  * information-security/anonymization - Anonymization
+  * information-security/phishing - Phishing
+  * information-security/ransomware - Ransomware
+  * information-security/ransomware-victim-listing - Ransomware Victim Listing
+
+  Args:
+    query (required): The Lucene-like query string for your document search.
+    size (optional): The number of results to return in each page (0 to 25). Defaults to 10.
+    since (optional): The timestamp to search for documents since.
+    until (optional): The timestamp to search for documents from.
+    doc_types (optional): If specified, the search is only executed on the given document types.
+    truncate (optional): The number of characters to truncate all documents fields in the response.
+    sanitize (optional): If true (default), any HTML content in the document fields are sanitized to remove links, scripts, etc.
+    threat_types (optional): If specified, the search is only executed on documents with the specified threat types.
+
+  Returns:
+    A dictionary containing the list of documents found and search metadata.
+  """
+  async with vt_client(ctx) as client:
+    params = {
+        "size": size,
+        "since": since,
+        "until": until,
+        "doc_types": doc_types,
+        "truncate": truncate,
+        "sanitize": str(sanitize).lower(),
+        "threat_types": threat_types,
+    }
+    params = {k: v for k, v in params.items() if v is not None}
+    path = f"/dtm/docs/search?{urllib.parse.urlencode(params)}"
+
+    res = await client.post_async(
+        path=path, json_data={"query": query}
+    )
+    res = await res.json_async()
+    return utils.sanitize_response(res)
