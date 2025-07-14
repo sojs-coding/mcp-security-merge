@@ -271,7 +271,7 @@ async def search_documents(
     threat_types: str = None,
 # ) -> list[dict[str, typing.Any]]:
 ) -> dict:
-  """Search for documents in VirusTotal using Lucene syntax.
+  """Search for documents in Digital Threat Monitoring (DTM) using Lucene syntax.
 
   Search requests are limited to 60 seconds in duration.
   Requests exceeding this time will be terminated and should be scoped using date ranges.
