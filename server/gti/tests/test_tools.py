@@ -1069,9 +1069,9 @@ async def test_search_documents(
     tool_arguments,
     expected
 ):
-    """Test `search_documents` tool."""
+    """Test `search_digital_threat_monitoring` tool."""
     async with client_session(server._mcp_server) as client:
-        result = await client.call_tool("search_documents", arguments=tool_arguments)
+        result = await client.call_tool("search_digital_threat_monitoring", arguments=tool_arguments)
         assert isinstance(result, mcp.types.CallToolResult)
         assert not result.isError
         assert len(result.content) == 1

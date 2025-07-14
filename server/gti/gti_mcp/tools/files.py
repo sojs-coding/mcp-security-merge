@@ -269,7 +269,6 @@ async def search_digital_threat_monitoring(
     truncate: str = None,
     sanitize: bool = True,
     threat_types: str = None,
-# ) -> list[dict[str, typing.Any]]:
 ) -> dict:
   """Search for documents in Digital Threat Monitoring (DTM) using Lucene syntax.
 
