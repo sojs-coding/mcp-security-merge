@@ -259,7 +259,7 @@ async def analyse_file(file_path: str, ctx: Context):
     return utils.sanitize_response(res.to_dict())
 
 @server.tool()
-async def search_documents(
+async def search_digital_threat_monitoring(
     query: str,
     ctx: Context,
     size: int = 10,
