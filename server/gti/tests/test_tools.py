@@ -1064,7 +1064,7 @@ async def test_update_iocs_in_collection_invalid_args(tool_arguments, expected_e
     indirect=["vt_endpoint", "vt_request_params", "vt_object_response"],
 )
 @pytest.mark.usefixtures("vt_post_object_mock")
-async def test_search_documents(
+async def test_search_digital_threat_monitoring(
     vt_post_object_mock,
     tool_arguments,
     expected
