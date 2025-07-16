@@ -265,10 +265,11 @@ async def search_digital_threat_monitoring(
     size: int = 10,
     since: str = None,
     until: str = None,
-    doc_types: str = None,
+    page: str = None,
+    doc_type: str = None,
     truncate: str = None,
     sanitize: bool = True,
-    threat_types: str = None,
+    threat_type: str = None,
 ) -> dict:
   """Search for documents in Digital Threat Monitoring (DTM) using Lucene syntax.
 
@@ -286,7 +287,7 @@ async def search_digital_threat_monitoring(
   * domain - A DNS domain name
   * cve - A CVE entry by ID 
 
-  doc_type can be one of the following:
+  doc_type: one of the following
   * web_content_publish - General website content
   * document - Office documents and PDFs
   * domain_discovery - Newly discovered domain names
@@ -322,10 +323,11 @@ async def search_digital_threat_monitoring(
     size (optional): The number of results to return in each page (0 to 25). Defaults to 10.
     since (optional): The timestamp to search for documents since.
     until (optional): The timestamp to search for documents from.
-    doc_types (optional): If specified, the search is only executed on the given document types.
+    page (optional): The page ID to fetch the page for. This is only used when paginating through pages greater than the first page of results.
+    doc_type (optional): If specified, the search is only executed on the given document types.
     truncate (optional): The number of characters to truncate all documents fields in the response.
     sanitize (optional): If true (default), any HTML content in the document fields are sanitized to remove links, scripts, etc.
-    threat_types (optional): If specified, the search is only executed on documents with the specified threat types.
+    threat_type (optional): If specified, the search is only executed on documents with the specified threat types.
 
   Returns:
     A dictionary containing the list of documents found and search metadata.
@@ -335,10 +337,11 @@ async def search_digital_threat_monitoring(
         "size": size,
         "since": since,
         "until": until,
-        "doc_types": doc_types,
+        "page": page,
+        "doc_type": doc_type,
         "truncate": truncate,
         "sanitize": str(sanitize).lower(),
-        "threat_types": threat_types,
+        "threat_type": threat_type,
     }
     params = {k: v for k, v in params.items() if v is not None}
     path = f"/dtm/docs/search?{urllib.parse.urlencode(params)}"
