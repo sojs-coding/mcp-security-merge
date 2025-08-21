@@ -19,6 +19,9 @@ dependencies = [
 [project.scripts]
 scc_mcp = "scc_mcp:main"
 
+[project.entry-points.mcp]
+scc-mcp = "scc_mcp:main"
+
 [build-system]
 requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"

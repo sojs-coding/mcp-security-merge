@@ -21,3 +21,6 @@ find = {}
 
 [project.scripts]
 gti_mcp = "gti_mcp.server:main"
+
+[project.entry-points.mcp]
+gti-mcp = "gti_mcp.server:main"

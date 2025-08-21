@@ -1,0 +1,395 @@
+name: Publish MCP Server Packages
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'server/**/*.toml'
+      - 'server/**/*.py'
+  workflow_dispatch:  # Allow manual triggering
+
+jobs:
+  detect_changes:
+    runs-on: ubuntu-latest
+    name: Detect package changes
+    outputs:
+      gti_changed: ${{ steps.check_versions.outputs.gti_changed }}
+      scc_changed: ${{ steps.check_versions.outputs.scc_changed }}
+      secops_changed: ${{ steps.check_versions.outputs.secops_changed }}
+      soar_changed: ${{ steps.check_versions.outputs.soar_changed }}
+      # Package names
+      gti_name: ${{ steps.check_versions.outputs.gti_name }}
+      scc_name: ${{ steps.check_versions.outputs.scc_name }}
+      secops_name: ${{ steps.check_versions.outputs.secops_name }}
+      soar_name: ${{ steps.check_versions.outputs.soar_name }}
+      # Version information
+      gti_current_ver: ${{ steps.check_versions.outputs.gti_current_ver }}
+      scc_current_ver: ${{ steps.check_versions.outputs.scc_current_ver }}
+      secops_current_ver: ${{ steps.check_versions.outputs.secops_current_ver }}
+      soar_current_ver: ${{ steps.check_versions.outputs.soar_current_ver }}
+      gti_prev_ver: ${{ steps.check_versions.outputs.gti_prev_ver }}
+      scc_prev_ver: ${{ steps.check_versions.outputs.scc_prev_ver }}
+      secops_prev_ver: ${{ steps.check_versions.outputs.secops_prev_ver }}
+      soar_prev_ver: ${{ steps.check_versions.outputs.soar_prev_ver }}
+      # Status messages
+      gti_status: ${{ steps.check_versions.outputs.gti_status }}
+      scc_status: ${{ steps.check_versions.outputs.scc_status }}
+      secops_status: ${{ steps.check_versions.outputs.secops_status }}
+      soar_status: ${{ steps.check_versions.outputs.soar_status }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0  # Fetch all history for proper version comparison
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install packaging build twine
+
+      - name: Check version changes
+        id: check_versions
+        run: |
+          # Function to compare package versions and check PyPI availability
+          check_version_change() {
+            local package_path=$1
+            local output_var=$2
+            local name_var=$3
+            local current_ver_var=$4
+            local prev_ver_var=$5
+            local status_var=$6
+            
+            # Get package name from pyproject.toml
+            package_name=$(grep -Po "(?<=name = \").*(?=\")" "server/$package_path/pyproject.toml")
+            echo "${name_var}=${package_name}" >> $GITHUB_OUTPUT
+            
+            # Extract current version
+            current_version=$(grep -Po "(?<=version = \").*(?=\")" "server/$package_path/pyproject.toml")
+            echo "${current_ver_var}=${current_version}" >> $GITHUB_OUTPUT
+            
+            # Check if there are changes to this package directory
+            if git diff --name-only HEAD^ HEAD | grep -q "^server/$package_path/"; then
+              # Get previous version if available
+              prev_version=$(git show HEAD^:server/$package_path/pyproject.toml 2>/dev/null | grep -Po "(?<=version = \").*(?=\")" || echo "0.0.0")
+              echo "${prev_ver_var}=${prev_version}" >> $GITHUB_OUTPUT
+              
+              echo "Current $package_path version: $current_version, Previous version: $prev_version"
+              
+              # Use Python to properly compare versions
+              python -c "from packaging import version; exit(0 if version.parse('$current_version') > version.parse('$prev_version') else 1)"
+              if [ $? -eq 0 ]; then
+                echo "$output_var=true" >> $GITHUB_OUTPUT
+                echo "${status_var}=Version increased from $prev_version to $current_version" >> $GITHUB_OUTPUT
+                echo "$package_path version increased from $prev_version to $current_version"
+              else
+                echo "$output_var=false" >> $GITHUB_OUTPUT
+                echo "${status_var}=Version NOT increased (current: $current_version, previous: $prev_version)" >> $GITHUB_OUTPUT
+                echo "$package_path version NOT increased (current: $current_version, previous: $prev_version)"
+              fi
+            else
+              # No changes in this package directory
+              echo "${prev_ver_var}=N/A" >> $GITHUB_OUTPUT
+              echo "${status_var}=No changes detected" >> $GITHUB_OUTPUT
+              echo "$output_var=false" >> $GITHUB_OUTPUT
+              echo "No changes detected in $package_path"
+            fi
+            
+            # Check if package exists on PyPI without requiring a specific version
+            if pip index versions $package_name &>/dev/null; then
+              echo "${name_var}_exists=true" >> $GITHUB_OUTPUT
+              echo "Package $package_name exists on TestPyPI"
+            else
+              # Always publish if package doesn't exist on TestPyPI
+              echo "$output_var=true" >> $GITHUB_OUTPUT
+              echo "${status_var}=New package with version $current_version" >> $GITHUB_OUTPUT
+              echo "New package $package_name with version $current_version will be published"
+              echo "${name_var}_exists=false" >> $GITHUB_OUTPUT
+              echo "Package $package_name does not exist on TestPyPI"
+            fi
+          }
+          
+          # Check each package
+          check_version_change "gti" "gti_changed" "gti_name" "gti_current_ver" "gti_prev_ver" "gti_status"
+          check_version_change "scc" "scc_changed" "scc_name" "scc_current_ver" "scc_prev_ver" "scc_status"
+          check_version_change "secops" "secops_changed" "secops_name" "secops_current_ver" "secops_prev_ver" "secops_status"
+          check_version_change "secops-soar" "soar_changed" "soar_name" "soar_current_ver" "soar_prev_ver" "soar_status"
+
+  display_summary:
+    needs: detect_changes
+    name: Change
+    runs-on: ubuntu-latest
+    if: ${{ needs.detect_changes.outputs.gti_changed == 'true' || 
+            needs.detect_changes.outputs.scc_changed == 'true' || 
+            needs.detect_changes.outputs.secops_changed == 'true' || 
+            needs.detect_changes.outputs.soar_changed == 'true' }}
+    steps:
+      - name: Summary for changes
+        run: |
+          # Echo to console for visibility in logs
+          echo "================ PACKAGE CHANGES SUMMARY ================="
+          
+          # Create GitHub notices for each package change
+          if [ "${{ needs.detect_changes.outputs.gti_changed }}" == "true" ]; then
+            echo "::group::${{ needs.detect_changes.outputs.gti_name }} (${{ needs.detect_changes.outputs.gti_current_ver }})"
+            echo "Status: ${{ needs.detect_changes.outputs.gti_status }}"
+            echo "Previous version: ${{ needs.detect_changes.outputs.gti_prev_ver }}"
+            echo "::endgroup::"
+            echo "::notice title=${{ needs.detect_changes.outputs.gti_name }} Changes::${{ needs.detect_changes.outputs.gti_status }}"
+          fi
+          
+          if [ "${{ needs.detect_changes.outputs.scc_changed }}" == "true" ]; then
+            echo "::group::${{ needs.detect_changes.outputs.scc_name }} (${{ needs.detect_changes.outputs.scc_current_ver }})"
+            echo "Status: ${{ needs.detect_changes.outputs.scc_status }}"
+            echo "Previous version: ${{ needs.detect_changes.outputs.scc_prev_ver }}"
+            echo "::endgroup::"
+            echo "::notice title=${{ needs.detect_changes.outputs.scc_name }} Changes::${{ needs.detect_changes.outputs.scc_status }}"
+          fi
+          
+          if [ "${{ needs.detect_changes.outputs.secops_changed }}" == "true" ]; then
+            echo "::group::${{ needs.detect_changes.outputs.secops_name }} (${{ needs.detect_changes.outputs.secops_current_ver }})"
+            echo "Status: ${{ needs.detect_changes.outputs.secops_status }}"
+            echo "Previous version: ${{ needs.detect_changes.outputs.secops_prev_ver }}"
+            echo "::endgroup::"
+            echo "::notice title=${{ needs.detect_changes.outputs.secops_name }} Changes::${{ needs.detect_changes.outputs.secops_status }}"
+          fi
+          
+          if [ "${{ needs.detect_changes.outputs.soar_changed }}" == "true" ]; then
+            echo "::group::${{ needs.detect_changes.outputs.soar_name }} (${{ needs.detect_changes.outputs.soar_current_ver }})"
+            echo "Status: ${{ needs.detect_changes.outputs.soar_status }}"
+            echo "Previous version: ${{ needs.detect_changes.outputs.soar_prev_ver }}"
+            echo "::endgroup::"
+            echo "::notice title=${{ needs.detect_changes.outputs.soar_name }} Changes::${{ needs.detect_changes.outputs.soar_status }}"
+          fi
+          
+          # Create a step summary
+          echo "# MCP Package Publication Request" >> $GITHUB_STEP_SUMMARY
+          echo "## Packages to be published:" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Table for package change
+          echo "| Package | Status | Current Version | Previous Version |" >> $GITHUB_STEP_SUMMARY
+          echo "| ------- | ------ | --------------- | --------------- |" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "${{ needs.detect_changes.outputs.gti_changed }}" == "true" ]; then
+            echo "| ${{ needs.detect_changes.outputs.gti_name }} | ${{ needs.detect_changes.outputs.gti_status }} | ${{ needs.detect_changes.outputs.gti_current_ver }} | ${{ needs.detect_changes.outputs.gti_prev_ver }} |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ "${{ needs.detect_changes.outputs.scc_changed }}" == "true" ]; then
+            echo "| ${{ needs.detect_changes.outputs.scc_name }} | ${{ needs.detect_changes.outputs.scc_status }} | ${{ needs.detect_changes.outputs.scc_current_ver }} | ${{ needs.detect_changes.outputs.scc_prev_ver }} |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ "${{ needs.detect_changes.outputs.secops_changed }}" == "true" ]; then
+            echo "| ${{ needs.detect_changes.outputs.secops_name }} | ${{ needs.detect_changes.outputs.secops_status }} | ${{ needs.detect_changes.outputs.secops_current_ver }} | ${{ needs.detect_changes.outputs.secops_prev_ver }} |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ "${{ needs.detect_changes.outputs.soar_changed }}" == "true" ]; then
+            echo "| ${{ needs.detect_changes.outputs.soar_name }} | ${{ needs.detect_changes.outputs.soar_status }} | ${{ needs.detect_changes.outputs.soar_current_ver }} | ${{ needs.detect_changes.outputs.soar_prev_ver }} |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Please review and approve this publication request" >> $GITHUB_STEP_SUMMARY
+          echo "_Packages will be published to TestPyPI_" >> $GITHUB_STEP_SUMMARY
+      
+  request_approval:
+    needs: [detect_changes, display_summary]
+    runs-on: ubuntu-latest
+    name: Approve package publication
+    environment:
+      name: production # The workflow will continue only when approved
+    if: ${{ needs.detect_changes.outputs.gti_changed == 'true' || 
+            needs.detect_changes.outputs.scc_changed == 'true' || 
+            needs.detect_changes.outputs.secops_changed == 'true' || 
+            needs.detect_changes.outputs.soar_changed == 'true' }}
+    outputs:
+      gti_changed: ${{ needs.detect_changes.outputs.gti_changed }}
+      scc_changed: ${{ needs.detect_changes.outputs.scc_changed }}
+      secops_changed: ${{ needs.detect_changes.outputs.secops_changed }}
+      soar_changed: ${{ needs.detect_changes.outputs.soar_changed }}
+      gti_name: ${{ needs.detect_changes.outputs.gti_name }}
+      scc_name: ${{ needs.detect_changes.outputs.scc_name }}
+      secops_name: ${{ needs.detect_changes.outputs.secops_name }}
+      soar_name: ${{ needs.detect_changes.outputs.soar_name }}
+      gti_current_ver: ${{ needs.detect_changes.outputs.gti_current_ver }}
+      scc_current_ver: ${{ needs.detect_changes.outputs.scc_current_ver }}
+      secops_current_ver: ${{ needs.detect_changes.outputs.secops_current_ver }}
+      soar_current_ver: ${{ needs.detect_changes.outputs.soar_current_ver }}
+    steps:
+      - name: Create deployment
+        id: deployment
+        uses: bobheadxi/deployments@v1
+        with:
+          step: start
+          token: ${{ secrets.GITHUB_TOKEN }}
+          env: production
+          desc: "PyPI Package Publication"
+
+      - name: Approved packages
+        run: |
+          echo "# Packages Approved for Publication" >> $GITHUB_STEP_SUMMARY
+          
+          # Add each package to the summary
+          if [ "${{ needs.detect_changes.outputs.gti_changed }}" == "true" ]; then
+            echo "- **${{ needs.detect_changes.outputs.gti_name }}** (${{ needs.detect_changes.outputs.gti_current_ver }})" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ "${{ needs.detect_changes.outputs.scc_changed }}" == "true" ]; then
+            echo "- **${{ needs.detect_changes.outputs.scc_name }}** (${{ needs.detect_changes.outputs.scc_current_ver }})" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ "${{ needs.detect_changes.outputs.secops_changed }}" == "true" ]; then
+            echo "- **${{ needs.detect_changes.outputs.secops_name }}** (${{ needs.detect_changes.outputs.secops_current_ver }})" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ "${{ needs.detect_changes.outputs.soar_changed }}" == "true" ]; then
+            echo "- **${{ needs.detect_changes.outputs.soar_name }}** (${{ needs.detect_changes.outputs.soar_current_ver }})" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "_Publishing to PyPI_" >> $GITHUB_STEP_SUMMARY
+          
+          # Also display as GitHub notices
+          echo "::notice title=Packages Approved for Publication::The following packages will be published:"
+          if [ "${{ needs.detect_changes.outputs.gti_changed }}" == "true" ]; then
+            echo "::notice::${{ needs.detect_changes.outputs.gti_name }} (${{ needs.detect_changes.outputs.gti_current_ver }})"
+          fi
+          
+          if [ "${{ needs.detect_changes.outputs.scc_changed }}" == "true" ]; then
+            echo "::notice::${{ needs.detect_changes.outputs.scc_name }} (${{ needs.detect_changes.outputs.scc_current_ver }})"
+          fi
+          
+          if [ "${{ needs.detect_changes.outputs.secops_changed }}" == "true" ]; then
+            echo "::notice::${{ needs.detect_changes.outputs.secops_name }} (${{ needs.detect_changes.outputs.secops_current_ver }})"
+          fi
+          
+          if [ "${{ needs.detect_changes.outputs.soar_changed }}" == "true" ]; then
+            echo "::notice::${{ needs.detect_changes.outputs.soar_name }} (${{ needs.detect_changes.outputs.soar_current_ver }})"
+          fi
+      
+      - name: Update deployment status
+        if: always()
+        uses: bobheadxi/deployments@v1
+        with:
+          step: finish
+          token: ${{ secrets.GITHUB_TOKEN }}
+          status: ${{ job.status }}
+          env: production
+          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
+
+  publish_gti:
+    needs: request_approval
+    if: ${{ needs.request_approval.outputs.gti_changed == 'true' }}
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install build twine
+      
+      - name: Build and publish
+        working-directory: ./server/gti
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+        run: |
+          python -m build
+          python -m twine upload dist/*
+  
+  publish_scc:
+    needs: request_approval
+    if: ${{ needs.request_approval.outputs.scc_changed == 'true' }}
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install build twine
+      
+      - name: Build and publish
+        working-directory: ./server/scc
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+        run: |
+          python -m build
+          python -m twine upload dist/*
+  
+  publish_secops:
+    needs: request_approval
+    if: ${{ needs.request_approval.outputs.secops_changed == 'true' }}
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install build twine
+      
+      - name: Build and publish
+        working-directory: ./server/secops
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+        run: |
+          python -m build
+          python -m twine upload dist/*
+  
+  publish_soar:
+    needs: request_approval
+    if: ${{ needs.request_approval.outputs.soar_changed == 'true' }}
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install build twine
+      
+      - name: Build and publish
+        working-directory: ./server/secops-soar
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+        run: |
+          python -m build
+          python -m twine upload dist/*
