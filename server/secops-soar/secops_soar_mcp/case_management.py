@@ -261,8 +261,21 @@ def register_tools(mcp: FastMCP):
     async def change_case_priority(
         case_id: Annotated[str, Field(..., description="The ID of the case.")],
         case_priority: Annotated[
-            CasePriority, Field(..., description="The priority of the case.")
-        ],
+        str,
+        Field(
+            ...,
+            description="The priority of the case.",
+            json_schema_extra={
+                "enum": [
+                    "PriorityUnspecified",
+                    "PriorityInfo",
+                    "PriorityLow",
+                    "PriorityMedium",
+                    "PriorityHigh",
+                    "PriorityCritical",
+                ]
+            }
+        )],
     ):
         """Change the priority level of a specific case in the SOAR platform.
 
@@ -295,7 +308,7 @@ def register_tools(mcp: FastMCP):
         """
         return await bindings.http_client.patch(
             Endpoints.BASE_SPECIFIC_CASE_URL.format(CASE_ID=case_id),
-            req={"Priority": case_priority.value},
+            req={"Priority": case_priority},
         )
 
     @mcp.tool()
