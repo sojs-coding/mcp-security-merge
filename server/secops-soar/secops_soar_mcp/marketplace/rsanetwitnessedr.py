@@ -252,7 +252,7 @@ def register_tools(mcp: FastMCP):
             return {"Status": "Failed", "Message": "No active instance found."}
 
     @mcp.tool()
-    async def rsa_net_witness_edr_get_ioc_details(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], ioc_level_threshold: Annotated[List[Any], Field(..., description="Specify IOC level threshold for the entity. If the entity exceeds the threshold, the related entity will be marked as suspicious.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
+    async def rsa_net_witness_edr_get_ioc_details(case_id: Annotated[str, Field(..., description="The ID of the case.")], alert_group_identifiers: Annotated[List[str], Field(..., description="Identifiers for the alert groups.")], ioc_level_threshold: Annotated[List[str], Field(..., description="Specify IOC level threshold for the entity. If the entity exceeds the threshold, the related entity will be marked as suspicious.")], target_entities: Annotated[List[TargetEntity], Field(default_factory=list, description="Optional list of specific target entities (Identifier, EntityType) to run the action on.")], scope: Annotated[str, Field(default="All entities", description="Defines the scope for the action.")]) -> dict:
         """Enrich Siemplify Entities with information about IOCs from RSA Netwitness EDR.
 
         Returns:

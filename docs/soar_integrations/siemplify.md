@@ -107,9 +107,9 @@ Set the SLA for a case. This action has the highest priority and it will overrid
 *   `case_id` (str, required): The ID of the case.
 *   `alert_group_identifiers` (List[str], required): Identifiers for the alert groups.
 *   `sla_period` (str, required): The period of time after which the SLA is in breach.
-*   `sla_time_unit` (List[Any], required): Specify the unit for SLA Time.
+*   `sla_time_unit` (List[str], required): Specify the unit for SLA Time.
 *   `sla_time_to_critical_period` (str, required): The period of time after which the SLA enters the critical period.
-*   `sla_time_to_critical_unit` (List[Any], required): Specify the unit for SLA Time To Critical.
+*   `sla_time_to_critical_unit` (List[str], required): Specify the unit for SLA Time To Critical.
 *   `target_entities` (List[TargetEntity], optional, default=[]): Optional list of specific target entities (Identifier, EntityType) to run the action on.
 *   `scope` (str, optional, default="All entities"): Defines the scope for the action.
 
@@ -307,7 +307,7 @@ Action sets a value for a key specified that is stored in the Siemplify database
 
 *   `case_id` (str, required): The ID of the case.
 *   `alert_group_identifiers` (List[str], required): Identifiers for the alert groups.
-*   `context_scope` (List[Any], required): Specify the Siemplify context scope to return context keys for.
+*   `context_scope` (List[str], required): Specify the Siemplify context scope to return context keys for.
 *   `key_name` (str, required): Specify the key name to set context value for.
 *   `key_value` (str, required): Specify the value to store under the specified key.
 *   `target_entities` (List[TargetEntity], optional, default=[]): Optional list of specific target entities (Identifier, EntityType) to run the action on.
@@ -507,9 +507,9 @@ Set the SLA for an alert. This action has the highest priority and it will overr
 *   `case_id` (str, required): The ID of the case.
 *   `alert_group_identifiers` (List[str], required): Identifiers for the alert groups.
 *   `sla_period` (str, required): The period of time after which the SLA is in breach.
-*   `sla_time_unit` (List[Any], required): Specify the unit for SLA Time.
+*   `sla_time_unit` (List[str], required): Specify the unit for SLA Time.
 *   `sla_time_to_critical_period` (str, required): The period of time after which the SLA enters the critical period.
-*   `sla_time_to_critical_unit` (List[Any], required): Specify the unit for SLA Time To Critical.
+*   `sla_time_to_critical_unit` (List[str], required): Specify the unit for SLA Time To Critical.
 *   `target_entities` (List[TargetEntity], optional, default=[]): Optional list of specific target entities (Identifier, EntityType) to run the action on.
 *   `scope` (str, optional, default="All entities"): Defines the scope for the action.
 
@@ -535,7 +535,7 @@ Action gets a value stored under a specified key in the Siemplify database. Avai
 
 *   `case_id` (str, required): The ID of the case.
 *   `alert_group_identifiers` (List[str], required): Identifiers for the alert groups.
-*   `context_scope` (List[Any], required): Specify the Siemplify context scope to return context keys for.
+*   `context_scope` (List[str], required): Specify the Siemplify context scope to return context keys for.
 *   `key_name` (str, required): Optionally specify the key name to get context value for.
 *   `create_case_wall_table` (Optional[bool], optional, default=None): If enabled, the case wall table will be created as part of action results.
 *   `target_entities` (List[TargetEntity], optional, default=[]): Optional list of specific target entities (Identifier, EntityType) to run the action on.
