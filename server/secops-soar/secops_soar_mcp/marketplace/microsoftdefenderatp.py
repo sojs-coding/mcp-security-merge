@@ -20,8 +20,9 @@ from secops_soar_mcp.utils.models import (
     TargetEntity,
 )
 import json
-from typing import Optional, Any, List, Dict, Union, Annotated
+from typing import Optional, List, Dict, Union, Annotated
 from pydantic import Field
+from secops_soar_mcp.utils.pydantic_list_field import PydanticListField
 
 
 def register_tools(mcp: FastMCP):
