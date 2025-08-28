@@ -277,6 +277,20 @@ async def search_digital_threat_monitoring(
 
   Important Considerations for Effective Querying:
 
+  -   **Date/Time Filtering (`since` and `until`)**:
+    -   Input parameters `since` and `until` filter documents by their creation/modification time.
+    -   These must be strings in RFC3339 format, specifically ending with 'Z' to denote UTC.
+    -   Example: `'2025-04-23T00:00:00Z'`
+
+  -   **Pagination for More Than 25 Results**:
+      -   A single API call returns at most `size` results (maximum 25).
+      -   To retrieve more results, you must paginate:
+          1.  Make your initial search request.
+          2.  The response dictionary will contain a key named `page`.
+          3.  If this `page` key holds a non-empty string value, there are more results available.
+          4.  To fetch the next page, make a subsequent API call. This call MUST include the *exact same parameters* as your original request (query, size, since, until, doc_type, etc.), PLUS the `page` parameter set to the token value received in the previous response's `page` field.
+          5.  Continue this process, using the new `page` token from each response, until the `page` field is absent or empty in the response, indicating the end of the results.
+
   Tokenization:
   - DTM breaks documents into tokens.
   - Example: "some-domain.com" -> "some", "domain", "com".
@@ -303,7 +317,6 @@ async def search_digital_threat_monitoring(
   - Use typed entities for higher precision.
   - Example: organization:"Acme Corp"
   - Prefer typed entities over free text searches.
-  
   
   The following fields and their meanings can be used to compose a query using Lucene syntax (including combining them with AND, OR, and NOT operators along with parentheses):
   * author.identity.name - The handle used by the forum post author
@@ -347,7 +360,6 @@ async def search_digital_threat_monitoring(
   * information-security/security-research - Security Research
   * information-security/spam - Spam
 
-  Input parameters `since` and `until` are timestamps following the RFC3339 format (e.g., `2025-04-23T00:00:00Z`).
   Args:
     query (required): The Lucene-like query string for your document search.
     size (optional): The number of results to return in each page (0 to 25). Defaults to 10.
@@ -379,5 +391,19 @@ async def search_digital_threat_monitoring(
     res = await client.post_async(
         path=path, json_data={"query": query}
     )
-    res = await res.json_async()
-    return utils.sanitize_response(res)
+    
+    res_json = await res.json_async()
+
+    link_header = res.headers.get("link")
+    if link_header and 'rel="next"' in link_header:
+        try:
+            url_part = link_header.split(';')[0].strip().strip('<>')
+            query_string = urllib.parse.urlparse(url_part).query
+            next_page = urllib.parse.parse_qs(query_string).get('page', [None])[0]
+            if next_page:
+                res_json["page"] = next_page
+        except (IndexError, AttributeError):
+            # Could not parse link header, proceed without it
+            pass
+
+    return utils.sanitize_response(res_json)
