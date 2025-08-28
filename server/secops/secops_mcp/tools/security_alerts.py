@@ -13,6 +13,7 @@
 # limitations under the License.
 """Security Operations MCP tools for security alerts."""
 
+import json
 import logging
 from datetime import datetime, timedelta, timezone
 
@@ -144,7 +145,7 @@ async def get_security_alerts(
 
             result += '\n'
 
-        return result
+        return json.dumps(result)
     except Exception as e:
         return f'Error retrieving security alerts: {str(e)}'
 
@@ -285,4 +286,4 @@ Next Steps (using MCP-enabled tools):
     except Exception as e:
         return f'Error retrieving security alert for {alert_id}: {str(e)}'
 
-    return response
+    return json.dumps(response)
