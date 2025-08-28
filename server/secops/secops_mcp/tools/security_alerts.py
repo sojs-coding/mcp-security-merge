@@ -31,7 +31,7 @@ async def get_security_alerts(
     max_alerts: int = 10,
     status_filter: str = 'feedback_summary.status != "CLOSED"',
     region: str = None,
-) -> str:
+) -> Dict[any, str]:
     """Get security alerts directly from Chronicle SIEM.
 
     Retrieves a list of recent security alerts generated within Chronicle, based on
@@ -172,7 +172,7 @@ async def get_security_alert_by_id(
     - View a specific Alert
     - Monitor for specific high-severity alerts or rule triggers.
     - Check for SIEM alerts that might not have corresponding cases yet in other systems.
-    - May need to get this so you know which Alert to update 
+    - May need to get this so you know which Alert to update
 
     Args:
         project_id (Optional[str]): Google Cloud project ID. Defaults to environment configuration.
