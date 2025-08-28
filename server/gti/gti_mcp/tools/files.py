@@ -266,14 +266,23 @@ async def search_digital_threat_monitoring(
     since: str = None,
     until: str = None,
     page: str = None,
-    doc_type: str = None,
     truncate: str = None,
     sanitize: bool = True,
-    threat_type: str = None,
 ) -> dict:
   """Search for historical data in Digital Threat Monitoring (DTM) using Lucene syntax.
 
   Digital theat monitoring is a collection of documents from surface, deep, and dark web sources.
+
+  To filter by document type or threat type, include the conditions within the `query` string
+  using the fields `__type` and `threat_type`, respectively. Combine multiple conditions
+  using Lucene boolean operators (AND, OR, NOT).
+
+  Examples of filtering in the query:
+  - Single document type: `(__type:forum_post) AND (body:security)`
+  - Multiple document types: `(__type:(forum_post OR paste)) AND (body:security)`
+  - Single threat type: `(threat_type:information-security/malware) AND (body:exploit)`
+  - Multiple threat types: `(threat_type:(information-security/malware OR information-security/phishing)) AND (body:exploit)`
+  - Combined: `(__type:document_analysis) AND (threat_type:information-security/information-leak/credentials) AND (body:password)`
 
   Important Considerations for Effective Querying:
 
@@ -311,7 +320,7 @@ async def search_digital_threat_monitoring(
 
   Performance Limit:
   - Searches timeout after 60 seconds.
-  - For broad queries, add date ranges to prevent timeouts.
+  - For broad or complex queries, it is highly recommended to use the `since` and `until` parameters to add time delimiters. This narrows the search scope and helps prevent timeouts.
 
   Noise Reduction:
   - Use typed entities for higher precision.
@@ -366,10 +375,8 @@ async def search_digital_threat_monitoring(
     since (optional): The timestamp to search for documents since (RFC3339 format).
     until (optional): The timestamp to search for documents from (RFC3339 format).
     page (optional): The page ID to fetch the page for. This is only used when paginating through pages greater than the first page of results.
-    doc_type (optional): If specified, the search is only executed on the given document types.
     truncate (optional): The number of characters to truncate all documents fields in the response.
     sanitize (optional): If true (default), any HTML content in the document fields are sanitized to remove links, scripts, etc.
-    threat_type (optional): If specified, the search is only executed on documents with the specified threat types.
 
   Returns:
     A dictionary containing the list of documents found and search metadata.
@@ -380,10 +387,8 @@ async def search_digital_threat_monitoring(
         "since": since,
         "until": until,
         "page": page,
-        "doc_type": doc_type,
         "truncate": truncate,
         "sanitize": str(sanitize).lower(),
-        "threat_type": threat_type,
     }
     params = {k: v for k, v in params.items() if v is not None}
     path = f"/dtm/docs/search?{urllib.parse.urlencode(params)}"
