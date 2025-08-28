@@ -32,7 +32,7 @@ async def get_security_alerts(
     max_alerts: int = 10,
     status_filter: str = 'feedback_summary.status != "CLOSED"',
     region: str = None,
-) -> Dict[any, str]:
+) -> str:
     """Get security alerts directly from Chronicle SIEM.
 
     Retrieves a list of recent security alerts generated within Chronicle, based on
