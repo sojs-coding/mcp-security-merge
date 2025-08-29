@@ -66,9 +66,7 @@ async def search_iocs(query: str, ctx: Context, limit: int = 10, order_by: str =
             "query": query,
             "order": order_by},
         limit=limit)
-  if not isinstance(res, dict):
-    res = [o.to_dict() for o in res]
-  return utils.sanitize_response(res)
+return utils.sanitize_response([o.to_dict() for o in res])
 
 
 @server.tool()
