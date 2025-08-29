@@ -202,7 +202,7 @@ async def get_security_alert_by_id(
     except Exception as e:
         return f'Error retrieving security alert for {alert_id}: {str(e)}'
 
-    return response
+    return json.dumps(response)
 
 @server.tool()
 async def do_update_security_alert(
