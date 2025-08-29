@@ -4,6 +4,15 @@ version = "0.1.0"
 description = "Security Command Center MCP server"
 readme = "README.md"
 requires-python = ">=3.11"
+authors = [
+    { name = "Google SecOps Team", email = "chronicle@google.com" }
+]
+keywords = ["google", "security", "chronicle", "scc", "mcp"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Security",
+]
 dependencies = [
     "httpx>=0.28.1",
     "mcp[cli]>=1.4.1",

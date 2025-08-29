@@ -4,6 +4,15 @@ version = "0.1.0"
 description = "Google SecOps SOAR MCP server"
 readme = "README.md"
 requires-python = ">=3.11"
+authors = [
+    { name = "Google SecOps Team", email = "chronicle@google.com" }
+]
+keywords = ["google", "security", "chronicle", "secops", "soar", "gti", "mcp"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Security",
+]
 dependencies = [
     "aiohttp>=3.11.15",
     "mcp[cli]>=1.4.1"
