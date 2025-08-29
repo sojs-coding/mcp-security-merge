@@ -16,6 +16,12 @@ dependencies = [
     "uvicorn[standard]",
 ]
 
+[project.urls]
+Homepage = "https://github.com/google/mcp-security"
+Documentation = "https://github.com/google/mcp-security/tree/main/server/scc#readme"
+Repository = "https://github.com/google/mcp-security/tree/main/server/scc"
+Issues = "https://github.com/google/mcp-security/issues"
+
 [project.scripts]
 scc_mcp = "scc_mcp:main"
 
