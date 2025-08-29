@@ -338,7 +338,7 @@ async def search_digital_threat_monitoring(
   * domain - A DNS domain name
   * cve - A CVE entry by ID 
 
-  doc_type: one of the following
+  __type: one of the following
   * web_content_publish - General website content
   * domain_discovery - Newly discovered domain names
   * forum_post - Darkweb forum posts
