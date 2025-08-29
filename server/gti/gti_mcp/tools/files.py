@@ -266,16 +266,39 @@ async def search_digital_threat_monitoring(
     since: str = None,
     until: str = None,
     page: str = None,
-    doc_type: str = None,
     truncate: str = None,
     sanitize: bool = True,
-    threat_type: str = None,
 ) -> dict:
   """Search for historical data in Digital Threat Monitoring (DTM) using Lucene syntax.
 
   Digital theat monitoring is a collection of documents from surface, deep, and dark web sources.
 
+  To filter by document type or threat type, include the conditions within the `query` string
+  using the fields `__type` and `threat_type`, respectively. Combine multiple conditions
+  using Lucene boolean operators (AND, OR, NOT).
+
+  Examples of filtering in the query:
+  - Single document type: `(__type:forum_post) AND (body:security)`
+  - Multiple document types: `(__type:(forum_post OR paste)) AND (body:security)`
+  - Single threat type: `(threat_type:information-security/malware) AND (body:exploit)`
+  - Multiple threat types: `(threat_type:(information-security/malware OR information-security/phishing)) AND (body:exploit)`
+  - Combined: `(__type:document_analysis) AND (threat_type:information-security/information-leak/credentials) AND (body:password)`
+
   Important Considerations for Effective Querying:
+
+  -   **Date/Time Filtering (`since` and `until`)**:
+    -   Input parameters `since` and `until` filter documents by their creation/modification time.
+    -   These must be strings in RFC3339 format, specifically ending with 'Z' to denote UTC.
+    -   Example: `'2025-04-23T00:00:00Z'`
+
+  -   **Pagination for More Than 25 Results**:
+      -   A single API call returns at most `size` results (maximum 25).
+      -   To retrieve more results, you must paginate:
+          1.  Make your initial search request.
+          2.  The response dictionary will contain a key named `page`.
+          3.  If this `page` key holds a non-empty string value, there are more results available.
+          4.  To fetch the next page, make a subsequent API call. This call MUST include the *exact same parameters* as your original request (query, size, since, until, doc_type, etc.), PLUS the `page` parameter set to the token value received in the previous response's `page` field.
+          5.  Continue this process, using the new `page` token from each response, until the `page` field is absent or empty in the response, indicating the end of the results.
 
   Tokenization:
   - DTM breaks documents into tokens.
@@ -297,13 +320,12 @@ async def search_digital_threat_monitoring(
 
   Performance Limit:
   - Searches timeout after 60 seconds.
-  - For broad queries, add date ranges to prevent timeouts.
+  - For broad or complex queries, it is highly recommended to use the `since` and `until` parameters to add time delimiters. This narrows the search scope and helps prevent timeouts.
 
   Noise Reduction:
   - Use typed entities for higher precision.
   - Example: organization:"Acme Corp"
   - Prefer typed entities over free text searches.
-  
   
   The following fields and their meanings can be used to compose a query using Lucene syntax (including combining them with AND, OR, and NOT operators along with parentheses):
   * author.identity.name - The handle used by the forum post author
@@ -316,7 +338,7 @@ async def search_digital_threat_monitoring(
   * domain - A DNS domain name
   * cve - A CVE entry by ID 
 
-  doc_type: one of the following
+  __type: one of the following
   * web_content_publish - General website content
   * domain_discovery - Newly discovered domain names
   * forum_post - Darkweb forum posts
@@ -347,17 +369,14 @@ async def search_digital_threat_monitoring(
   * information-security/security-research - Security Research
   * information-security/spam - Spam
 
-  Input parameters `since` and `until` are timestamps following the RFC3339 format (e.g., `2025-04-23T00:00:00Z`).
   Args:
     query (required): The Lucene-like query string for your document search.
     size (optional): The number of results to return in each page (0 to 25). Defaults to 10.
     since (optional): The timestamp to search for documents since (RFC3339 format).
     until (optional): The timestamp to search for documents from (RFC3339 format).
     page (optional): The page ID to fetch the page for. This is only used when paginating through pages greater than the first page of results.
-    doc_type (optional): If specified, the search is only executed on the given document types.
     truncate (optional): The number of characters to truncate all documents fields in the response.
     sanitize (optional): If true (default), any HTML content in the document fields are sanitized to remove links, scripts, etc.
-    threat_type (optional): If specified, the search is only executed on documents with the specified threat types.
 
   Returns:
     A dictionary containing the list of documents found and search metadata.
@@ -368,10 +387,8 @@ async def search_digital_threat_monitoring(
         "since": since,
         "until": until,
         "page": page,
-        "doc_type": doc_type,
         "truncate": truncate,
         "sanitize": str(sanitize).lower(),
-        "threat_type": threat_type,
     }
     params = {k: v for k, v in params.items() if v is not None}
     path = f"/dtm/docs/search?{urllib.parse.urlencode(params)}"
@@ -379,5 +396,19 @@ async def search_digital_threat_monitoring(
     res = await client.post_async(
         path=path, json_data={"query": query}
     )
-    res = await res.json_async()
-    return utils.sanitize_response(res)
+    
+    res_json = await res.json_async()
+
+    link_header = res.headers.get("link")
+    if link_header and 'rel="next"' in link_header:
+        try:
+            url_part = link_header.split(';')[0].strip().strip('<>')
+            query_string = urllib.parse.urlparse(url_part).query
+            next_page = urllib.parse.parse_qs(query_string).get('page', [None])[0]
+            if next_page:
+                res_json["page"] = next_page
+        except (IndexError, AttributeError):
+            # Could not parse link header, proceed without it
+            pass
+
+    return utils.sanitize_response(res_json)
