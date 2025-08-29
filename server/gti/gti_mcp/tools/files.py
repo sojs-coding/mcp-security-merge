@@ -399,6 +399,12 @@ async def search_digital_threat_monitoring(
     
     res_json = await res.json_async()
 
+    # Remove unnecessary information
+    if "docs" in res_json:
+      for i in range(len(res_json["docs"])):
+        res_json["docs"][i].pop("__meta", None)
+        res_json["docs"][i].pop("entities", None)
+       
     link_header = res.headers.get("link")
     if link_header and 'rel="next"' in link_header:
         try:
