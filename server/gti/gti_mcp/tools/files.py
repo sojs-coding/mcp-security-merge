@@ -14,6 +14,7 @@
 import logging
 import typing
 import urllib.parse
+import json
 
 from mcp.server.fastmcp import Context
 
@@ -274,15 +275,15 @@ async def search_digital_threat_monitoring(
   Digital theat monitoring is a collection of documents from surface, deep, and dark web sources.
 
   To filter by document type or threat type, include the conditions within the `query` string
-  using the fields `__type` and `threat_type`, respectively. Combine multiple conditions
+  using the fields `__type` and `label_threat`, respectively. Combine multiple conditions
   using Lucene boolean operators (AND, OR, NOT).
 
   Examples of filtering in the query:
   - Single document type: `(__type:forum_post) AND (body:security)`
   - Multiple document types: `(__type:(forum_post OR paste)) AND (body:security)`
-  - Single threat type: `(threat_type:information-security/malware) AND (body:exploit)`
-  - Multiple threat types: `(threat_type:(information-security/malware OR information-security/phishing)) AND (body:exploit)`
-  - Combined: `(__type:document_analysis) AND (threat_type:information-security/information-leak/credentials) AND (body:password)`
+  - Single threat type: `(label_threat:information-security/malware) AND (body:exploit)`
+  - Multiple threat types: `(label_threat:(information-security/malware OR information-security/phishing)) AND (body:exploit)`
+  - Combined: `(__type:document_analysis) AND (label_threat:information-security/information-leak/credentials) AND (body:password)`
 
   Important Considerations for Effective Querying:
 
@@ -349,7 +350,7 @@ async def search_digital_threat_monitoring(
   * tweet - Tweets from Twitter on cybersecurity topics.
   * document_analysis - Documents (PDF, Office, text) from VirusTotal, including malicious and corporate confidential files.
 
-  threat_type: one of the following
+  label_threat: one of the following
   * information-security/anonymization - Anonymization
   * information-security/apt - Advanced Persistent Threat
   * information-security/botnet - Botnet
@@ -393,11 +394,26 @@ async def search_digital_threat_monitoring(
     params = {k: v for k, v in params.items() if v is not None}
     path = f"/dtm/docs/search?{urllib.parse.urlencode(params)}"
 
-    res = await client.post_async(
-        path=path, json_data={"query": query}
-    )
-    
-    res_json = await res.json_async()
+    try:
+      res = await client.post_async(
+          path=path, json_data={"query": query}
+      )
+      response_text = await res.text_async()
+
+      if "text/html" in res.headers.get("Content-Type", ""):
+        if "request timed out" in response_text.lower():
+          return {"error": "The request timed out. Please try reducing the scope of your query by using `since` and `until` parameters to add time delimiters"}
+        logging.error(response_text)
+        return {"error": "An unexpected error occurred. Received an HTML response instead of JSON."}
+      
+      res_json = json.loads(response_text)
+    except json.JSONDecodeError as json_error:
+      logging.error(f"Failed to parse JSON response: {json_error}")
+      logging.error(response_text)
+      return {"error": f"Failed to parse server response: {json_error}. Response: {response_text[:200]}"}
+    except Exception as e:
+      logging.error(f"An unexpected error occurred: {e}")
+      return {"error": f"An unexpected error occurred: {e}"}
 
     # Remove unnecessary information
     if "docs" in res_json:
