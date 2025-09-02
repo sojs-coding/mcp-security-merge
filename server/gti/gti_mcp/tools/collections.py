@@ -232,8 +232,7 @@ async def search_threats(
         },
         limit=limit,
     )
-  res = utils.sanitize_response([o.to_dict() for o in res])
-  return res
+  return utils.sanitize_response([o.to_dict() for o in res])
 
 
 @server.tool()
