@@ -1160,3 +1160,37 @@ async def test_search_digital_threat_monitoring_errors(
             content = json.loads(result.content[0].text)
             assert "error" in content
             assert content["error"] == expected_error
+
+@pytest.mark.asyncio(loop_scope="session")
+@pytest.mark.parametrize(
+    argnames=[
+        "tool_name", "tool_arguments", "vt_endpoint", "vt_object_response", "expected",
+    ],
+    argvalues=[
+        (
+            "get_entities_related_to_a_collection",
+            {"id": "collection_id", "relationship_name": "files", "descriptors_only": "True"},
+            "/api/v3/collections/collection_id/relationship/files",
+            {
+                "data": [],
+            },
+            [],
+        ),  
+    ],
+    indirect=["vt_endpoint", "vt_object_response"],
+)
+@pytest.mark.usefixtures("vt_get_object_mock")
+async def test_get_entities_related_empty_result(
+    vt_get_object_mock,
+    tool_name,
+    tool_arguments,
+    expected    
+):
+    """Test tools.get_entities_related_to_a_collection when the API returns an empty list."""
+
+    # Execute tool call.
+    async with client_session(server._mcp_server) as client:
+        result = await client.call_tool(tool_name, arguments=tool_arguments)
+        assert isinstance(result, mcp.types.CallToolResult)
+        assert result.isError == False
+        assert result.structuredContent == {"result": expected}
