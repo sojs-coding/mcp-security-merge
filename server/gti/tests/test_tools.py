@@ -1095,7 +1095,7 @@ from unittest.mock import patch, MagicMock, AsyncMock
             "<html><body>Error</body></html>",
             {"Content-Type": "text/html"},
             None,
-            "An unexpected error occurred. Received an HTML response instead of JSON.",
+            "API returned an HTML error page instead of JSON: <html><body>Error</body></html>",
         ),
         (
             "Invalid JSON",
