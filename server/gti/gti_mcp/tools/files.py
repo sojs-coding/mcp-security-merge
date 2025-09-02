@@ -15,6 +15,7 @@ import logging
 import typing
 import urllib.parse
 import json
+import asyncio
 
 from mcp.server.fastmcp import Context
 
@@ -398,21 +399,22 @@ async def search_digital_threat_monitoring(
       res = await client.post_async(
           path=path, json_data={"query": query}
       )
-      response_text = await res.text_async()
 
       if "text/html" in res.headers.get("Content-Type", ""):
+        response_text = await res.text_async()
         if "request timed out" in response_text.lower():
           return {"error": "The request timed out. Please try reducing the scope of your query by using `since` and `until` parameters to add time delimiters"}
         logging.error(response_text)
         return {"error": "An unexpected error occurred. Received an HTML response instead of JSON."}
       
-      res_json = json.loads(response_text)
+      res_json = await res.json_async()
+    except (asyncio.TimeoutError, TimeoutError): # Catch both
+      return {"error": "The request timed out. Please try reducing the scope of your query by using `since` and `until` parameters to add time delimiters"}
     except json.JSONDecodeError as json_error:
       logging.error(f"Failed to parse JSON response: {json_error}")
-      logging.error(response_text)
-      return {"error": f"Failed to parse server response: {json_error}. Response: {response_text[:200]}"}
+      return {"error": f"Failed to parse server response: {json_error}."}
     except Exception as e:
-      logging.error(f"An unexpected error occurred: {e}")
+      logging.error(f"An unexpected error occurred: {e} (type: {type(e)})")
       return {"error": f"An unexpected error occurred: {e}"}
 
     # Remove unnecessary information
