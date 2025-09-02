@@ -1101,7 +1101,7 @@ from unittest.mock import patch, MagicMock, AsyncMock
             "Invalid JSON",
             {"Content-Type": "application/json"},
             None,
-            "Failed to parse server response: Expecting value: line 1 column 1 (char 0). Response: Invalid JSON",
+            "Failed to parse server response: Expecting value: line 1 column 1 (char 0).",
         ),
         (
             "",
@@ -1127,7 +1127,14 @@ async def test_search_digital_threat_monitoring_errors(
 
         async def text_async():
             return mock_response_text
+        
+        async def json_async():
+            if mock_response_text == "Invalid JSON":
+                raise json.JSONDecodeError("Expecting value", mock_response_text, 0)
+            return json.loads(mock_response_text)
+
         mock_response.text_async = text_async
+        mock_response.json_async = json_async
         mock_response.headers = mock_headers
 
         mock_post_async = AsyncMock() # Use AsyncMock here
