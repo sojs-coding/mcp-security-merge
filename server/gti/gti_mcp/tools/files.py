@@ -405,7 +405,7 @@ async def search_digital_threat_monitoring(
         if "request timed out" in response_text.lower():
           return {"error": "The request timed out. Please try reducing the scope of your query by using `since` and `until` parameters to add time delimiters"}
         logging.error(response_text)
-        return {"error": "An unexpected error occurred. Received an HTML response instead of JSON."}
+        return {"error": f"API returned an HTML error page instead of JSON: {response_text}"}
       
       res_json = await res.json_async()
     except (asyncio.TimeoutError, TimeoutError): # Catch both
