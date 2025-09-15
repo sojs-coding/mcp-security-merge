@@ -377,7 +377,7 @@ async def search_digital_threat_monitoring(
     since (optional): The timestamp to search for documents since (RFC3339 format).
     until (optional): The timestamp to search for documents from (RFC3339 format).
     page (optional): The page ID to fetch the page for. This is only used when paginating through pages greater than the first page of results.
-    truncate (optional): The number of characters to truncate all documents fields in the response.
+    truncate (optional): The number of characters (as a string) to truncate all documents fields in the response (e.g., '500').
     sanitize (optional): If true (default), any HTML content in the document fields are sanitized to remove links, scripts, etc.
 
   Returns:
