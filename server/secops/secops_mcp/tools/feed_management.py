@@ -14,7 +14,8 @@
 """Security Operations MCP tools for feed management."""
 
 import logging
-from typing import Any, Dict
+from optparse import Option
+from typing import Any, Dict, Optional
 
 from secops_mcp.server import get_chronicle_client, server
 
@@ -25,11 +26,11 @@ logger = logging.getLogger("secops-mcp")
 
 @server.tool()
 async def list_feeds(
-    project_id: str = None,
-    customer_id: str = None,
-    region: str = None,
+    project_id: Optional[str] = None,
+    customer_id: Optional[str] = None,
+    region: Optional[str] = None,
 ) -> Dict[str, Any]:
-    """List all feeds configured in Chronicle SIEM.
+    """List all feeds configured in Chronicle.
 
     Retrieves a list of all feeds that are configured in the
     Chronicle instance, providing details such as feed name, status,
@@ -105,9 +106,9 @@ async def list_feeds(
 @server.tool()
 async def get_feed(
     feed_id: str,
-    project_id: str = None,
-    customer_id: str = None,
-    region: str = None,
+    project_id: Optional[str] = None,
+    customer_id: Optional[str] = None,
+    region: Optional[str] = None,
 ) -> Dict[str, Any]:
     """Get detailed information about a specific feed.
 
@@ -129,7 +130,7 @@ async def get_feed(
     - Review feed metadata and labels
 
     Args:
-        feed_id (str): The ID of the security feed to retrieve.
+        feed_id (str): The ingestion feed identifier to retrieve details for.
         project_id (Optional[str]): Google Cloud project ID. Defaults to
             environment configuration.
         customer_id (Optional[str]): Chronicle customer ID. Defaults to
@@ -170,17 +171,17 @@ async def get_feed(
 async def create_feed(
     display_name: str,
     feed_details: Dict[str, Any],
-    project_id: str = None,
-    customer_id: str = None,
-    region: str = None,
+    project_id: Optional[str] = None,
+    customer_id: Optional[str] = None,
+    region: Optional[str] = None,
 ) -> Dict[str, Any]:
-    """Create a new feed in Chroni.
+    """Create a new feed in Chronicle.
 
     Creates a new feed configuration for ingesting security data into Chronicle.
     Supports various feed types including HTTP, S3, GCS, and GCP SCC.
 
     **Workflow Integration:**
-    - Use this tool when adding new data sources to your Chroni.
+    - Use this tool when adding new data sources to your Chronicle instance.
     - Helpful for automating data source onboarding processes.
     - Can be integrated with broader security data source management workflows.
 
@@ -245,15 +246,15 @@ async def create_feed(
 @server.tool()
 async def update_feed(
     feed_id: str,
-    display_name: str = None,
+    display_name: Optional[str] = None,
     feed_details: Dict[str, Any] = None,
-    project_id: str = None,
-    customer_id: str = None,
-    region: str = None,
+    project_id: Optional[str] = None,
+    customer_id: Optional[str] = None,
+    region: Optional[str] = None,
 ) -> Dict[str, Any]:
-    """Update an existing feed in Chronicle SIEM.
+    """Update an existing feed in Chronicle.
 
-    Modifies the configuration of an existing feed in Chronicle SIEM. Can
+    Modifies the configuration of an existing feed in Chronicle. Can
     update the display name, connection settings, or other properties.
 
     **Workflow Integration:**
@@ -320,13 +321,13 @@ async def update_feed(
 @server.tool()
 async def enable_feed(
     feed_id: str,
-    project_id: str = None,
-    customer_id: str = None,
-    region: str = None,
+    project_id: Optional[str] = None,
+    customer_id: Optional[str] = None,
+    region: Optional[str] = None,
 ) -> Dict[str, Any]:
-    """Enable a disabled feed in Chronicle SIEM.
+    """Enable a disabled feed in Chronicle.
 
-    Activates a feed that is currently in the DISABLED state, allowing it
+    Activates a feed that is currently in the INACTIVE state, allowing it
     to resume data ingestion.
 
     **Workflow Integration:**
@@ -341,7 +342,7 @@ async def enable_feed(
     - Enable feeds after troubleshooting connectivity issues
 
     Args:
-        feed_id (str): The ID of the feed to enable.
+        feed_id (str): The feed identifier which is to be enabled.
         project_id (Optional[str]): Google Cloud project ID. Defaults to
             environment configuration.
         customer_id (Optional[str]): Chronicle customer ID. Defaults to
@@ -385,13 +386,13 @@ async def enable_feed(
 @server.tool()
 async def disable_feed(
     feed_id: str,
-    project_id: str = None,
-    customer_id: str = None,
-    region: str = None,
+    project_id: Optional[str] = None,
+    customer_id: Optional[str] = None,
+    region: Optional[str] = None,
 ) -> Dict[str, Any]:
-    """Disable an active feed in Chronicle SIEM.
+    """Disable an active feed in Chronicle.
 
-    Stops data ingestion for a feed by setting its state to DISABLED.
+    Stops data ingestion for a feed by setting its state to INACTIVE.
     The feed configuration remains but no new data will be processed.
 
     **Workflow Integration:**
@@ -450,14 +451,14 @@ async def disable_feed(
 @server.tool()
 async def delete_feed(
     feed_id: str,
-    project_id: str = None,
-    customer_id: str = None,
-    region: str = None,
+    project_id: Optional[str] = None,
+    customer_id: Optional[str] = None,
+    region: Optional[str] = None,
 ) -> Dict[str, Any]:
-    """Delete a feed from Chronicle SIEM.
+    """Delete a feed from Chronicle.
 
-    Permanently removes a feed configuration from Chronicle SIEM. This action
-    cannot be undone and will stop any data ingestion from this feed.
+    Permanently removes a feed from Chronicle. This action cannot be undone
+    and will stop any data ingestion from this feed.
 
     **Workflow Integration:**
     - Use this tool when decommissioning data sources.
@@ -511,14 +512,14 @@ async def delete_feed(
 @server.tool()
 async def generate_feed_secret(
     feed_id: str,
-    project_id: str = None,
-    customer_id: str = None,
-    region: str = None,
+    project_id: Optional[str] = None,
+    customer_id: Optional[str] = None,
+    region: Optional[str] = None,
 ) -> Dict[str, Any]:
     """Generate authentication secret for a feed.
 
-    Creates a new authentication secret for feeds that support authentication
-    (e.g., HTTP feeds with basic auth). This replaces any existing secret.
+    Generates a new secret for https push feeds which do not support jwt tokens.
+    This replaces any existing secret.
 
     **Workflow Integration:**
     - Use this tool when setting up authenticated feeds or rotating credentials.
