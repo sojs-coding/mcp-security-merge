@@ -513,7 +513,6 @@ class TestChronicleSecOpsMCP:
 
             # If we have feeds, check the structure of the first one
             if result["feeds"]:
-                print(result["feeds"][0])
                 first_feed = result["feeds"][0]
                 assert "name" in first_feed
                 assert "displayName" in first_feed
