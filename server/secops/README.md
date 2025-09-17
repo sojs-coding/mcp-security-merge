@@ -97,10 +97,10 @@ Chronicle Security Operations suite.
     - Modifies the configuration of an existing feed. Can update the display name, connection settings, or other properties.
 
 - **`enable_feed(feed_id, project_id=None, customer_id=None, region=None)`**
-    - Activates a feed that is currently in the DISABLED state, allowing it to resume data ingestion.
+    - Activates a feed that is currently in the INACTIVE state, allowing it to resume data ingestion.
 
 - **`disable_feed(feed_id, project_id=None, customer_id=None, region=None)`**
-    - Stops data ingestion for a feed by setting its state to DISABLED. The feed configuration remains but no new data will be processed.
+    - Stops data ingestion for a feed by setting its state to INACTIVE. The feed configuration remains but no new data will be processed.
 
 - **`delete_feed(feed_id, project_id=None, customer_id=None, region=None)`**
     - Permanently removes a feed configuration from Chronicle. This action cannot be undone.

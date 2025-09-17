@@ -46,7 +46,7 @@ async def list_feeds(
     **Use Cases:**
     - Inventory all data sources feeding into Chronicle SIEM
     - Verify that critical security log sources are properly configured
-    - Identify feeds that may be disabled or experiencing issues
+    - Identify feeds that may be inactive/disabled or experiencing issues
     - Audit feed configurations as part of security reviews
 
     Args:
@@ -66,7 +66,7 @@ async def list_feeds(
 
     Next Steps (using MCP-enabled tools):
         - Check if specific critical log sources are properly configured
-        - Identify and investigate any disabled feeds
+        - Identify and investigate any inactive/disabled feeds
         - Review feed configurations for proper log type mappings
         - Use parser management tools to verify parsers for these feeds
     """
@@ -90,7 +90,7 @@ async def list_feeds(
             feed_state = feed.get("state", "UNKNOWN")
             if feed_state == "ACTIVE":
                 result["active_feeds"] += 1
-            elif feed_state == "DISABLED":
+            elif feed_state == "INACTIVE":
                 result["disabled_feeds"] += 1
 
             # Add feed details to result
@@ -324,7 +324,7 @@ async def enable_feed(
     customer_id: Optional[str] = None,
     region: Optional[str] = None,
 ) -> Dict[str, Any]:
-    """Enable a disabled feed in Chronicle.
+    """Enable a inactive feed in Chronicle.
 
     Activates a feed that is currently in the INACTIVE state, allowing it
     to resume data ingestion.
@@ -422,7 +422,7 @@ async def disable_feed(
         disable_feed(feed_id="123456789")
 
     Next Steps (using MCP-enabled tools):
-        - Verify the feed is disabled using get_feed
+        - Verify the feed is inactive/disabled using get_feed
         - Update any maintenance tickets or documentation
         - Set a reminder to re-enable the feed when appropriate
         - Document the reason for disabling in your security operations runbook
