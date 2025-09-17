@@ -411,6 +411,9 @@ class TestChronicleSecOpsMCP:
         """
         rule_id = "ru_<insert rule_id>"
 
+        if "insert" in rule_id:
+            pytest.skip("No rule id provided to test get_rule_detections")
+
         result = await get_rule_detections(
             rule_id,
             project_id=chronicle_config["CHRONICLE_PROJECT_ID"],
@@ -430,6 +433,9 @@ class TestChronicleSecOpsMCP:
         """
         rule_id = "ru_<insert rule_id>"
 
+        if "insert" in rule_id:
+            pytest.skip("No rule id provided to test get_rule_detection_errors")
+
         result = await list_rule_errors(
             rule_id,
             project_id=chronicle_config["CHRONICLE_PROJECT_ID"],
@@ -448,6 +454,9 @@ class TestChronicleSecOpsMCP:
             chronicle_config: Dictionary with Chronicle configuration
         """
         alert_id = "de_<insert_detection_id>"
+        
+        if "insert" in alert_id:
+            pytest.skip("No alert id provided to test do_update_security_alert")
 
         result = await do_update_security_alert(
             project_id=chronicle_config["CHRONICLE_PROJECT_ID"],
@@ -470,6 +479,9 @@ class TestChronicleSecOpsMCP:
             chronicle_config: Dictionary with Chronicle configuration
         """
         alert_id = "de_<insert_detection_id>"
+
+        if "insert" in alert_id:
+            pytest.skip("No alert id provided to test get_security_alert_by_id")
 
         result = await get_security_alert_by_id(
             project_id=chronicle_config["CHRONICLE_PROJECT_ID"],
