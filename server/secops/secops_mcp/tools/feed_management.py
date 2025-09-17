@@ -14,7 +14,6 @@
 """Security Operations MCP tools for feed management."""
 
 import logging
-from optparse import Option
 from typing import Any, Dict, Optional
 
 from secops_mcp.server import get_chronicle_client, server
@@ -99,8 +98,8 @@ async def list_feeds(
 
         return result
     except Exception as e:
-        logger.error(f"Error listing feeds: {str(e)}", exc_info=True)
-        return {"error": f"Error listing feeds: {str(e)}"}
+        logger.error(f"Error listing feeds: {e}", exc_info=True)
+        return {"error": f"Error listing feeds: {e}"}
 
 
 @server.tool()
@@ -163,8 +162,8 @@ async def get_feed(
 
         return feed
     except Exception as e:
-        logger.error(f"Error getting feed: {str(e)}", exc_info=True)
-        return {"error": f"Error getting feed: {str(e)}"}
+        logger.error(f"Error getting feed: {e}", exc_info=True)
+        return {"error": f"Error getting feed: {e}"}
 
 
 @server.tool()
@@ -239,8 +238,8 @@ async def create_feed(
         )
 
     except Exception as e:
-        logger.error(f"Error creating feed: {str(e)}", exc_info=True)
-        return {"error": f"Error creating feed: {str(e)}"}
+        logger.error(f"Error creating feed: {e}", exc_info=True)
+        return {"error": f"Error creating feed: {e}"}
 
 
 @server.tool()
@@ -314,8 +313,8 @@ async def update_feed(
             details=feed_details or {},
         )
     except Exception as e:
-        logger.error(f"Error updating feed: {str(e)}", exc_info=True)
-        return {"error": f"Error updating feed: {str(e)}"}
+        logger.error(f"Error updating feed: {e}", exc_info=True)
+        return {"error": f"Error updating feed: {e}"}
 
 
 @server.tool()
@@ -379,8 +378,8 @@ async def enable_feed(
 
         return result
     except Exception as e:
-        logger.error(f"Error enabling feed: {str(e)}", exc_info=True)
-        return {"error": f"Error enabling feed: {str(e)}"}
+        logger.error(f"Error enabling feed: {e}", exc_info=True)
+        return {"error": f"Error enabling feed: {e}"}
 
 
 @server.tool()
@@ -444,8 +443,8 @@ async def disable_feed(
 
         return result
     except Exception as e:
-        logger.error(f"Error disabling feed: {str(e)}", exc_info=True)
-        return {"error": f"Error disabling feed: {str(e)}"}
+        logger.error(f"Error disabling feed: {e}", exc_info=True)
+        return {"error": f"Error disabling feed: {e}"}
 
 
 @server.tool()
@@ -505,8 +504,8 @@ async def delete_feed(
 
         return result
     except Exception as e:
-        logger.error(f"Error deleting feed: {str(e)}", exc_info=True)
-        return {"error": f"Error deleting feed: {str(e)}"}
+        logger.error(f"Error deleting feed: {e}", exc_info=True)
+        return {"error": f"Error deleting feed: {e}"}
 
 
 @server.tool()
@@ -571,5 +570,5 @@ async def generate_feed_secret(
 
         return result
     except Exception as e:
-        logger.error(f"Error generating feed secret: {str(e)}", exc_info=True)
-        return {"error": f"Error generating feed secret: {str(e)}"}
+        logger.error(f"Error generating feed secret: {e}", exc_info=True)
+        return {"error": f"Error generating feed secret: {e}"}
