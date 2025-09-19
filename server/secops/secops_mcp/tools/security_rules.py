@@ -134,9 +134,9 @@ async def search_security_rules(
 @server.tool()
 async def get_detection_rule(
     rule_id: str,
-    project_id: str = None,
-    customer_id: str = None,
-    region: str = None,
+    project_id: Optional[str] = None,
+    customer_id: Optional[str] = None,
+    region: Optional[str] = None,
 ) -> Dict[str, Any]:
     """Retrieve the complete definition and metadata of a specific detection rule from Chronicle SIEM.
 
@@ -170,9 +170,9 @@ async def get_detection_rule(
                       Examples: "ru_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" (latest version),
                       "ru_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx@v_12345_67890" (specific version).
                       If no version suffix is provided, the latest version is returned.
-        project_id (str): Google Cloud project ID. Defaults to environment configuration.
-        customer_id (str): Chronicle customer ID. Defaults to environment configuration.
-        region (str): Chronicle region (e.g., "us", "europe"). Defaults to environment configuration.
+        project_id (Optional[str]): Google Cloud project ID. Defaults to environment configuration.
+        customer_id (Optional[str]): Chronicle customer ID. Defaults to environment configuration.
+        region (Optional[str]): Chronicle region (e.g., "us", "europe"). Defaults to environment configuration.
 
     Returns:
         Dict[str, Any]: Complete rule information including:
