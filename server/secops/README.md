@@ -23,6 +23,9 @@ Chronicle Security Operations suite.
 - **`search_security_rules(query, project_id=None, customer_id=None, region=None)`**
     - Searches security detection rules from Chronicle using regex.
 
+- **`get_detection_rule(rule_id, project_id=None, customer_id=None, region=None)`**
+    - Retrieves complete YARA-L detection rule code and metadata from Chronicle by Rule Id.
+
 - **`get_ioc_matches(project_id=None, customer_id=None, hours_back=24, max_matches=20, region=None)`**
     - Retrieves Indicators of Compromise (IoCs) matches from Chronicle within a specified time range.
 
