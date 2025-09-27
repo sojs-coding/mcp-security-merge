@@ -171,6 +171,24 @@ The configuration for Claude Desktop and Cline is the same (provided below for [
 
 Please refer to the [README file](./run-with-google-adk/README.md) for both - locally running the prebuilt agent and [Cloud Run](https://cloud.google.com/run) deployment.
 
+## MCP Client Config Locations
+
+MCP clients all use the same JSON configuration format (see the [MCP Server Configuration Reference](https://google.github.io/mcp-security/usage_guide.html#mcp-server-configuration-reference)), but they expect the file in different locations.
+
+| Client Application       | Scope     | macOS / Linux Location                                            | Windows Location                                                           | Notes                                                                                                                                                                                                |
+| ------------------------ | --------- | ----------------------------------------------------------------- | -------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Gemini CLI**           | Global    | `~/.gemini/settings.json`                                         | Likely `%APPDATA%\Gemini\settings.json` (not officially documented)        | File must include `mcpServers`. Confirmed in [Google Security Ops post](https://security.googlecloudcommunity.com/google-security-operations-2/google-cloud-security-mcp-servers-in-gemini-cli-922). |
+| **Claude Desktop**       | Global    | `~/Library/Application Support/Claude/claude_desktop_config.json` | `%APPDATA%\Claude\claude_desktop_config.json`                              | Config accessible via *Claude > Settings > Developer > Edit Config*.                                                                                                                                 |
+| **Claude Code**          | Global    | `~/.claude.json`                                                  | Possibly `%APPDATA%\claude.json` (unverified)                              | Primary config file for Claude Code CLI and extensions.                                                                                                                                              |
+| **Cursor IDE (Global)**  | Global    | `~/.cursor/mcp.json`                                              | `%USERPROFILE%\.cursor\mcp.json`                                           | Enables MCP servers globally across all projects.                                                                                                                                                    |
+| **Cursor IDE (Project)** | Project   | `<project-root>/.cursor/mcp.json`                                 | `<project-root>/.cursor/mcp.json`                                          | Workspace-specific config file.                                                                                                                                                                      |
+| **VS Code (Workspace)**  | Workspace | `<project-root>/.vscode/mcp.json`                                 | `<project-root>/.vscode/mcp.json`                                          | Used when an MCP extension (like **Cline**) is installed.                                                                                                                                            |
+| **Cline (VS Code Ext.)** | Global    | Inside VS Code extension data                                     | `%APPDATA%\Code(-Insiders)\User\globalStorage\...\cline_mcp_settings.json` | Exact path varies by VS Code variant and platform.                                                                                                                                                   |
+
+### Tip: Single Config with Symlinks
+
+If you use multiple MCP clients, you can maintain a **single config file** and symlink it into each expected location. This avoids drift and keeps your server definitions consistent.
+
 
 ### Using uv (Recommended)
 
