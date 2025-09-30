@@ -42,7 +42,7 @@ You can install the packages using `uv tool install` (recommended):
 
 ```bash
 # Install packages
-uv tool install secops-mcp
+uv tool install google-secops-mcp
 uv tool install gti-mcp
 uv tool install scc-mcp
 uv tool install secops-soar-mcp
@@ -51,7 +51,7 @@ uv tool install secops-soar-mcp
 Alternatively, you can use pip:
 
 ```bash
-pip install secops-mcp
+pip install google-secops-mcp
 pip install gti-mcp
 pip install scc-mcp
 pip install secops-soar-mcp
@@ -63,7 +63,7 @@ After installation, you can run the servers directly using uvx:
 
 ```bash
 # Run SecOps MCP server
-uvx secops_mcp
+uvx secops-mcp
 
 # Run GTI MCP server
 uvx gti_mcp
@@ -94,7 +94,7 @@ You can configure MCP clients to use the installed packages with uvx. Here's an 
     "secops": {
       "command": "uvx",
       "args": [
-        "secops_mcp"
+        "secops-mcp"
       ],
       "env": {
         "CHRONICLE_PROJECT_ID": "your-project-id",
@@ -107,7 +107,7 @@ You can configure MCP clients to use the installed packages with uvx. Here's an 
     "gti": {
       "command": "uvx",
       "args": [
-        "gti-mcp"
+        "gti_mcp"
       ],
       "env": {
         "VT_APIKEY": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
@@ -118,7 +118,7 @@ You can configure MCP clients to use the installed packages with uvx. Here's an 
     "scc-mcp": {
       "command": "uvx",
       "args": [
-        "scc-mcp"
+        "scc_mcp"
       ],
       "env": {},
       "disabled": false,
@@ -158,6 +158,7 @@ You can also use environment files with uvx:
     }
   }
 }
+```
 
 ## Client Configurations
 The MCP servers from this repo can be used with the following clients
