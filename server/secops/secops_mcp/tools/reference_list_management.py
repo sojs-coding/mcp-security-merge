@@ -16,8 +16,8 @@
 import logging
 from typing import Any, Dict, List, Optional
 
+from secops.chronicle import ReferenceListView
 from secops_mcp.server import get_chronicle_client, server
-
 
 # Configure logging
 logger = logging.getLogger('secops-mcp')
@@ -228,7 +228,11 @@ async def get_reference_list(
         chronicle = get_chronicle_client(project_id, customer_id, region)
 
         # Determine view based on include_entries parameter
-        view = "FULL" if include_entries else "BASIC"
+        view = (
+            ReferenceListView.FULL
+            if include_entries
+            else ReferenceListView.BASIC
+        )
         
         # Get the reference list
         reference_list = chronicle.get_reference_list(name, view=view)
