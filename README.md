@@ -185,7 +185,7 @@ MCP clients all use the same JSON configuration format (see the [MCP Server Conf
 | **VS Code (Workspace)**  | Workspace | `<project-root>/.vscode/mcp.json`     | `<project-root>/.vscode/mcp.json`                                                   | Workspace-level config used when an MCP extension (like **Cline**) is installed. Overrides global config if present.                                                                                 |
 | **Cline (VS Code Ext.)** | Global    | Inside VS Code extension data         | `%APPDATA%\Code\User\globalStorage\<extension-id>\settings\cline_mcp_settings.json` | Exact path varies by VS Code variant and platform. `<extension-id>` corresponds to the installed extension folder (e.g., `saoudrizwan.claude-dev`).                                                  |
 
-### Additional Notes for Testing on Windows
+### Additional Notes for Windows
 
 - `%USERPROFILE%` → `C:\Users\<username>`
 - `%APPDATA%` → `C:\Users\<username>\AppData\Roaming`
