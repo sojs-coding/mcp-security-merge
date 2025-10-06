@@ -63,7 +63,7 @@ After installation, you can run the servers directly using uvx:
 
 ```bash
 # Run SecOps MCP server
-uvx secops-mcp
+uvx --from google-secops-mcp secops_mcp
 
 # Run GTI MCP server
 uvx gti_mcp
@@ -94,7 +94,9 @@ You can configure MCP clients to use the installed packages with uvx. Here's an 
     "secops": {
       "command": "uvx",
       "args": [
-        "secops-mcp"
+        "--from",
+        "google-secops-mcp",
+        "secops_mcp"
       ],
       "env": {
         "CHRONICLE_PROJECT_ID": "your-project-id",
