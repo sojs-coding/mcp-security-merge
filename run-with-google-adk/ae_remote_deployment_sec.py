@@ -25,6 +25,7 @@ import sys
 PROJECT_ID = os.environ.get("GOOGLE_CLOUD_PROJECT")
 LOCATION = os.environ.get("GOOGLE_CLOUD_LOCATION")
 STAGING_BUCKET = os.environ.get("AE_STAGING_BUCKET")
+SERVICE_ACCOUNT = os.environ.get("SERVICE_ACCOUNT")
 
 if not STAGING_BUCKET.startswith("gs://"):
     STAGING_BUCKET="gs://"+STAGING_BUCKET
@@ -32,7 +33,8 @@ if not STAGING_BUCKET.startswith("gs://"):
 vertexai.init(
     project=PROJECT_ID,
     location=LOCATION,
-    staging_bucket=STAGING_BUCKET
+    staging_bucket=STAGING_BUCKET,
+    service_account=SERVICE_ACCOUNT
 )
 
 # TODO add check for number of params.
@@ -61,16 +63,22 @@ env_vars_to_send['AE_RUN'] = 'Y'
 # # remote deplyment and first run
 # # remote run
 from vertexai import agent_engines
+from vertexai.preview import reasoning_engines
 from google_mcp_security_agent import agent
 
 print(f"env_vars_to_send => {env_vars_to_send}")
+
+adk_app = reasoning_engines.AdkApp(
+    agent=agent.root_agent,
+    enable_tracing=True,
+)
 
 if update == "n":
     print("Creating a new Agent Engine Agent")
     remote_app = agent_engines.create(
     # Mostly for agent engine Console.
     display_name="google_security_agent",description="Allows security actions on various google security products", 
-    agent_engine=agent.root_agent,
+    agent_engine=adk_app,
     requirements="requirements.txt",
     extra_packages=[
         "./google_mcp_security_agent", # a directory
@@ -101,14 +109,14 @@ else:
     resource_name=update_resource_name,
     # Mostly for agent engine Console.
     display_name="google_security_agent",description=f"Allows security actions on various google security products, updated {now.strftime("%Y_%m_%d_%H_%M_%S_%f")}", 
-    agent_engine=agent.root_agent,
+    agent_engine=adk_app,
     requirements="requirements.txt",
     extra_packages=[
         "./google_mcp_security_agent", # a directory
         "./utils_extensions_cbs_tools", # a directory
         "./server", # a directory
-        "./temp",
-        "./object-viewer-sa.json", # a file
+        # "./temp",
+        # "./object-viewer-sa.json", # a file
     ],
     env_vars=env_vars_to_send # send all required variables to agent engine.
     )    
