@@ -30,7 +30,7 @@ Please execute the following instructions
    git clone https://github.com/sojs-coding/mcp-security-merge.git
    
    # Goto the agent directory
-   cd mcp-security/run-with-google-adk
+   cd mcp-security-merge/run-with-google-adk
    
    # Create and activate the virtual environment
    python3 -m venv .venv
