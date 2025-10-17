@@ -68,7 +68,6 @@ class FalconClient:
         Returns:
             bool: True if authentication was successful
         """
-        return True
         return self.client.login()
 
     def is_authenticated(self) -> bool:
@@ -77,7 +76,6 @@ class FalconClient:
         Returns:
             bool: True if the client is authenticated
         """
-        return True
         return self.client.token_valid
 
     def command(self, operation: str, **kwargs) -> Dict[str, Any]:

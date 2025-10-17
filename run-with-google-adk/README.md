@@ -27,7 +27,7 @@ Please execute the following instructions
 
 ```bash
    # Clone the repo
-   git clone https://github.com/google/mcp-security.git
+   git clone https://github.com/sojs-coding/mcp-security-merge.git
    
    # Goto the agent directory
    cd mcp-security/run-with-google-adk
@@ -141,6 +141,55 @@ MINIMAL_LOGGING=N
 #IDP_CLIENT_ID=abc123
 #IDP_CLIENT_SECRET=xyz456
 
+# =============================================================================
+# CrowdStrike Falcon API Credentials
+# =============================================================================
+LOAD_FALCON_MCP=N
+# DO NOT SET THIS TO Y IF THERE'S NO FALCON ACCESS
+# Required: Get these from your CrowdStrike console (Support > API Clients and Keys)
+FALCON_CLIENT_ID=your-client-id
+FALCON_CLIENT_SECRET=your-client-secret
+
+# =============================================================================
+# CrowdStrike Falcon API Base URL
+# =============================================================================
+# Required: Choose the correct region for your CrowdStrike instance
+# US-1 (Default):     https://api.crowdstrike.com
+# US-2:               https://api.us-2.crowdstrike.com
+# EU-1:               https://api.eu-1.crowdstrike.com
+# US-GOV:             https://api.laggar.gcw.crowdstrike.com
+FALCON_BASE_URL=https://api.us-2.crowdstrike.com
+
+# =============================================================================
+# Optional: Server Configuration
+# =============================================================================
+# Modules to enable (comma-separated list)
+# Options: detections,incidents,intel,hosts,spotlight,cloud,idp,sensorusage
+# Default: all modules enabled if not specified
+#FALCON_MCP_MODULES=detections,incidents,intel,hosts,spotlight,cloud,idp,sensorusage,serverless,discover
+
+# Transport method to use
+# Options: stdio, sse, streamable-http
+# Default: stdio
+#FALCON_MCP_TRANSPORT=stdio
+
+# Enable debug logging
+# Options: true, false
+# Default: false
+#FALCON_MCP_DEBUG=false
+
+# Host for HTTP transports (sse, streamable-http)
+# Default: 127.0.0.1
+#FALCON_MCP_HOST=127.0.0.1
+
+# Port for HTTP transports (sse, streamable-http)
+# Default: 8000
+#FALCON_MCP_PORT=8000
+
+# User agent comment to include in API requests
+# This will be added to the User-Agent header comment section
+# Example: CustomApp/1.0
+#FALCON_MCP_USER_AGENT_COMMENT=
 
 
 
@@ -509,6 +558,9 @@ Sample XDR
 Sample IDP
 ![](./static/demo-idp.png)
 
+### Additional Products Incorporated
+1. **CrowdStrike Falcon** - For intelligent security analysis
+It has been integrated to the code to showcase how we can have Falcon alongside Google Products
 
 ## 6. Additional Features
 
@@ -527,59 +579,14 @@ The prebuilt agent also allows creating files and signed URLs to these files. A 
    Vertex AI user  
 8. Please note that these roles need to be provided into the project housing your Agent Engine Agent. Also you need to enable the show Google provided role grants to access the Discovery Engine Service Account.
 9. Now to register the agent and make it available to your application use the following shell script. Please replace the variables `AGENT_SPACE_PROJECT_ID ,AGENT_SPACE_APP_NAME ,AGENT_ENGINE_PROJECT_NUMBER , AGENT_LOCATION` and `REASONING_ENGINE_NUMBER` before running the script.
-
-```bash
-#!/bin/bash
-
-TARGET_URL="https://discoveryengine.googleapis.com/v1alpha/projects/AGENT_SPACE_PROJECT_ID/locations/global/collections/default_collection/engines/AGENT_SPACE_APP_NAME/assistants/default_assistant/agents" # 
-
-JSON_DATA=$(cat <<EOF
-{
-    "displayName": "Google Security Agent",
-    "description": "Allows security operations on Google Security Products",
-    "adk_agent_definition": 
-    {
-        "tool_settings": {
-            "tool_description": "Various Tools from SIEM, SOAR and SCC"
-        },
-        "provisioned_reasoning_engine": {
-            "reasoning_engine":"projects/AGENT_ENGINE_PROJECT_NUMBER/locations/AGENT_LOCATION/reasoningEngines/REASONING_ENGINE_NUMBER"
-        }
-    }
-}
-EOF
-)
-
-echo "Sending POST request to: $TARGET_URL"
-echo "Request Body:"
-echo "$JSON_DATA"
-echo ""
-
-# Perform the POST request using curl
-curl -X POST \
-     -H "Content-Type: application/json" \
-     -H "Authorization: Bearer $(gcloud auth print-access-token)" \
-     -H "X-Goog-User-Project: AGENT_SPACE_PROJECT_ID" \
-     -d "$JSON_DATA" \
-     "$TARGET_URL"
-
-echo "" # Add a newline after curl output for better readability
-echo "cURL command finished."
-
+### Publish new agent in Gemini Enterprise
+We've provided register_aea_to_ge.sh. Update the variables in it, and run the commands below.
+```
+chmod +x register_aea_to_ge.sh
+./register_aea_to_ge.sh
 ```
 
 10. You can verify the Agent Registration by running the following shell script. Please replace the variables `AGENT_SPACE_PROJECT_ID` and `AGENT_SPACE_APP_NAME`.
-
-```bash
-#!/bin/bash
-
-curl -X GET \
--H "Authorization: Bearer $(gcloud auth print-access-token)" \
--H "Content-Type: application/json" \
--H "X-Goog-User-Project: AGENT_SPACE_PROJECT_ID" \
-"https://discoveryengine.googleapis.com/v1alpha/projects/AGENT_SPACE_PROJECT_ID/locations/global/collections/default_collection/engines/AGENT_SPACE_APP_NAME/assistants/default_assistant/agents" 
-
-```
 
 11. For both the Creation and Verification you should get an output like the following
 
@@ -604,6 +611,17 @@ curl -X GET \
   ]
 }
 
+```
+## We've also provided other scripts, to list agents, and unpublish agents in Gemini Enterprise
+### List all agents in Gemini Enterprise
+```
+chmod +x view_agents_ge.sh
+./view_agents_ge.sh
+```
+### Unpublish agent in Gemini Enterprise
+```
+chmod +x delete_agent_ge.sh
+./delete_agent_ge.sh
 ```
 
 You can find more about AgentSpace registration [here](https://cloud.google.com/agentspace/agentspace-enterprise/docs/assistant#create-assistant-existing-app).
