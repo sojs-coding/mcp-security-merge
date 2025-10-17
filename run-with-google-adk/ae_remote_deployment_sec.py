@@ -63,22 +63,16 @@ env_vars_to_send['AE_RUN'] = 'Y'
 # # remote deplyment and first run
 # # remote run
 from vertexai import agent_engines
-from vertexai.preview import reasoning_engines
 from google_mcp_security_agent import agent
 
 print(f"env_vars_to_send => {env_vars_to_send}")
-
-adk_app = reasoning_engines.AdkApp(
-    agent=agent.root_agent,
-    enable_tracing=True,
-)
 
 if update == "n":
     print("Creating a new Agent Engine Agent")
     remote_app = agent_engines.create(
     # Mostly for agent engine Console.
     display_name="google_security_agent",description="Allows security actions on various google security products", 
-    agent_engine=adk_app,
+    agent_engine=agent.root_agent,
     requirements="requirements.txt",
     extra_packages=[
         "./google_mcp_security_agent", # a directory
@@ -109,14 +103,14 @@ else:
     resource_name=update_resource_name,
     # Mostly for agent engine Console.
     display_name="google_security_agent",description=f"Allows security actions on various google security products, updated {now.strftime("%Y_%m_%d_%H_%M_%S_%f")}", 
-    agent_engine=adk_app,
+    agent_engine=agent.root_agent,
     requirements="requirements.txt",
     extra_packages=[
         "./google_mcp_security_agent", # a directory
         "./utils_extensions_cbs_tools", # a directory
         "./server", # a directory
-        # "./temp",
-        # "./object-viewer-sa.json", # a file
+        "./temp",
+        "./object-viewer-sa.json", # a file
     ],
     env_vars=env_vars_to_send # send all required variables to agent engine.
     )    
