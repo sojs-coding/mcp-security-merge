@@ -1,11 +1,15 @@
-# Google Security Operations and Threat Intelligence MCP Server
+# Security Operations and Threat Intelligence MCP Server
 
-This repository contains Model Context Protocol (MCP) servers that enable MCP clients (like Claude Desktop or the cline.bot VS Code extension) to access Google's security products and services:
+This repository contains Model Context Protocol (MCP) servers that enable MCP clients (like Claude Desktop or the cline.bot VS Code extension) to access Google's security products and services as well as other security products:
 
+## Google Products
 1. **Google Security Operations (Chronicle)** - For threat detection, investigation, and hunting
 2. **Google Security Operations SOAR** - For security orchestration, automation, and response
 3. **Google Threat Intelligence (GTI)** - For access to Google's threat intelligence data
 4. **Security Command Center (SCC)** - For cloud security and risk management
+
+## Additional Products
+1. **CrowdStrike Falcon** - For intelligent security analysis
 
 Each server can be enabled and run separately, allowing flexibility for environments that don't require all capabilities.
 

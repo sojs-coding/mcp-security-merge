@@ -25,6 +25,7 @@ import sys
 PROJECT_ID = os.environ.get("GOOGLE_CLOUD_PROJECT")
 LOCATION = os.environ.get("GOOGLE_CLOUD_LOCATION")
 STAGING_BUCKET = os.environ.get("AE_STAGING_BUCKET")
+SERVICE_ACCOUNT = os.environ.get("SERVICE_ACCOUNT")
 
 if not STAGING_BUCKET.startswith("gs://"):
     STAGING_BUCKET="gs://"+STAGING_BUCKET
@@ -32,7 +33,8 @@ if not STAGING_BUCKET.startswith("gs://"):
 vertexai.init(
     project=PROJECT_ID,
     location=LOCATION,
-    staging_bucket=STAGING_BUCKET
+    staging_bucket=STAGING_BUCKET,
+    service_account=SERVICE_ACCOUNT
 )
 
 # TODO add check for number of params.

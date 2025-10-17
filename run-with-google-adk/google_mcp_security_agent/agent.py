@@ -22,6 +22,9 @@ from utils_extensions_cbs_tools.callbacks import bmc_trim_llm_request, bac_setup
 from typing import TextIO
 import sys
 
+#Subagents
+from .subagents import falcon_agent
+
 
 logging.basicConfig(
     level=logging.INFO)
@@ -149,7 +152,7 @@ def create_agent():
       tools=tools,
       before_model_callback=bmc_trim_llm_request,
       before_agent_callback=bac_setup_state_variable,
-#      sub_agents=[ADD SUB AGENTS HERE],
+      sub_agents=[falcon_agent],
       description="You are the google_mcp_security_agent."
 
   )
